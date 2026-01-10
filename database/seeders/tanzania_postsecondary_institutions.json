@@ -1,0 +1,1594 @@
+{
+  "source": "Compiled from VETA, NACTVET, TNMC, NACTE and official sources",
+  "scraped_at": "2026-01-09 15:32:43",
+  "total_institutions": 225,
+  "government_institutions": 144,
+  "private_institutions": 81,
+  "by_category": {
+    "vocational_training": 67,
+    "teacher_training": 32,
+    "health_medical": 52,
+    "technical_polytechnic": 19,
+    "agricultural": 15,
+    "police_military": 14,
+    "folk_development": 12,
+    "business_professional": 14
+  },
+  "institutions": [
+    {
+      "name": "Dar es Salaam RVTSC",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "VET001",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Arusha VTC",
+      "region": "Arusha",
+      "type": "government",
+      "code": "VET002",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Moshi RVTSC",
+      "region": "Kilimanjaro",
+      "type": "government",
+      "code": "VET003",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Tanga RVTSC",
+      "region": "Tanga",
+      "type": "government",
+      "code": "VET004",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Mwanza RVTSC",
+      "region": "Mwanza",
+      "type": "government",
+      "code": "VET005",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Dodoma RVTSC",
+      "region": "Dodoma",
+      "type": "government",
+      "code": "VET006",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Mbeya RVTSC",
+      "region": "Mbeya",
+      "type": "government",
+      "code": "VET007",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Iringa RVTSC",
+      "region": "Iringa",
+      "type": "government",
+      "code": "VET008",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Morogoro VTTC",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "VET009",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Kihonda RVTSC",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "VET010",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Tabora RVTSC",
+      "region": "Tabora",
+      "type": "government",
+      "code": "VET011",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Kigoma RVTSC",
+      "region": "Kigoma",
+      "type": "government",
+      "code": "VET012",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Kagera VTC",
+      "region": "Kagera",
+      "type": "government",
+      "code": "VET013",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Mara VTC",
+      "region": "Mara",
+      "type": "government",
+      "code": "VET014",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Shinyanga VTC",
+      "region": "Shinyanga",
+      "type": "government",
+      "code": "VET015",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Singida VTC",
+      "region": "Singida",
+      "type": "government",
+      "code": "VET016",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Manyara RVTSC",
+      "region": "Manyara",
+      "type": "government",
+      "code": "VET017",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Lindi RVTSC",
+      "region": "Lindi",
+      "type": "government",
+      "code": "VET018",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Mtwara RVTSC",
+      "region": "Mtwara",
+      "type": "government",
+      "code": "VET019",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Pwani RVTSC",
+      "region": "Pwani",
+      "type": "government",
+      "code": "VET020",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Mpanda VTC",
+      "region": "Katavi",
+      "type": "government",
+      "code": "VET021",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Songea VTC",
+      "region": "Ruvuma",
+      "type": "government",
+      "code": "VET022",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Mikumi VTC",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "VET023",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Dakawa VTC",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "VET024",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Makete DVTC",
+      "region": "Njombe",
+      "type": "government",
+      "code": "VET025",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Busokelo DVTC",
+      "region": "Mbeya",
+      "type": "government",
+      "code": "VET026",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Ulyankulu VTC",
+      "region": "Tabora",
+      "type": "government",
+      "code": "VET027",
+      "category": "vocational_training"
+    },
+    {
+      "name": "VETA Kipawa ICT Centre",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "VET028",
+      "category": "vocational_training"
+    },
+    {
+      "name": "VETA Chang'ombe",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "VET029",
+      "category": "vocational_training"
+    },
+    {
+      "name": "VETA Karagwe",
+      "region": "Kagera",
+      "type": "government",
+      "code": "VET030",
+      "category": "vocational_training"
+    },
+    {
+      "name": "VETA Simanjiro",
+      "region": "Manyara",
+      "type": "government",
+      "code": "VET031",
+      "category": "vocational_training"
+    },
+    {
+      "name": "VETA Kilindi",
+      "region": "Tanga",
+      "type": "government",
+      "code": "VET032",
+      "category": "vocational_training"
+    },
+    {
+      "name": "VETA Buhigwe",
+      "region": "Kigoma",
+      "type": "government",
+      "code": "VET033",
+      "category": "vocational_training"
+    },
+    {
+      "name": "VETA Kasulu",
+      "region": "Kigoma",
+      "type": "government",
+      "code": "VET034",
+      "category": "vocational_training"
+    },
+    {
+      "name": "VETA Chato",
+      "region": "Geita",
+      "type": "government",
+      "code": "VET035",
+      "category": "vocational_training"
+    },
+    {
+      "name": "VETA Hotel and Tourism Training Institute",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "VET036",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Don Bosco Oysterbay VTC",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "VET037",
+      "category": "vocational_training"
+    },
+    {
+      "name": "St. Gaspar VTC",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "VET038",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Msimbazi Centre",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "VET039",
+      "category": "vocational_training"
+    },
+    {
+      "name": "YMCA VTC",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "VET040",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Tegeta VTC",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "VET041",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Data Star Training College",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "VET042",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Future World Vocational Institute",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "VET043",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Montfort VTC",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "VET044",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Yombo VTC",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "VET045",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Eagle Wings Training College",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "VET046",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Western Training College",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "VET047",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Audrey Veldman VTC",
+      "region": "Arusha",
+      "type": "private",
+      "code": "VET048",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Leguruki VTC",
+      "region": "Arusha",
+      "type": "private",
+      "code": "VET049",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Moshi Institute of Technology",
+      "region": "Kilimanjaro",
+      "type": "private",
+      "code": "VET050",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Kilimanjaro Institute of Technology",
+      "region": "Kilimanjaro",
+      "type": "private",
+      "code": "VET051",
+      "category": "vocational_training"
+    },
+    {
+      "name": "St. Joseph VTC Moshi",
+      "region": "Kilimanjaro",
+      "type": "private",
+      "code": "VET052",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Usangi VTC",
+      "region": "Kilimanjaro",
+      "type": "private",
+      "code": "VET053",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Mbeya Trade School",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "VET054",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Moravian VTC Mbeya",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "VET055",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Kyela Polytechnic",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "VET056",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Mbalizi VTC",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "VET057",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Meta VTC",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "VET058",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Green Hills College VTC",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "VET059",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Grace College VTC",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "VET060",
+      "category": "vocational_training"
+    },
+    {
+      "name": "JKT Itende VTC",
+      "region": "Mbeya",
+      "type": "government",
+      "code": "VET061",
+      "category": "vocational_training"
+    },
+    {
+      "name": "JKT Makutopora VTC",
+      "region": "Dodoma",
+      "type": "government",
+      "code": "VET062",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Mgulani JKT VTC",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "VET063",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Lugalo JWTZ VTC",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "VET064",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Ruanda Prison VTC",
+      "region": "Mbeya",
+      "type": "government",
+      "code": "VET065",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Almaktoum College of Engineering and Technology",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "VET066",
+      "category": "vocational_training"
+    },
+    {
+      "name": "India-Tanzania Centre of Excellence in ICT",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "VET067",
+      "category": "vocational_training"
+    },
+    {
+      "name": "Butimba Teachers College",
+      "region": "Mwanza",
+      "type": "government",
+      "code": "TTC001",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Tabora Teachers College",
+      "region": "Tabora",
+      "type": "government",
+      "code": "TTC002",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Mpwapwa Teachers College",
+      "region": "Dodoma",
+      "type": "government",
+      "code": "TTC003",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Morogoro Teachers College",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "TTC004",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Korogwe Teachers College",
+      "region": "Tanga",
+      "type": "government",
+      "code": "TTC005",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Monduli Teachers College",
+      "region": "Arusha",
+      "type": "government",
+      "code": "TTC006",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Shinyanga Teachers College",
+      "region": "Shinyanga",
+      "type": "government",
+      "code": "TTC007",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Singida Teachers College",
+      "region": "Singida",
+      "type": "government",
+      "code": "TTC008",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Kleruu Teachers College",
+      "region": "Iringa",
+      "type": "government",
+      "code": "TTC009",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Dakawa Teachers College",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "TTC010",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Mtwara Teachers College (K)",
+      "region": "Mtwara",
+      "type": "government",
+      "code": "TTC011",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Mtwara Teachers College (U)",
+      "region": "Mtwara",
+      "type": "government",
+      "code": "TTC012",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Mpanda Teachers College",
+      "region": "Katavi",
+      "type": "government",
+      "code": "TTC013",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Nachingwea Teachers College",
+      "region": "Lindi",
+      "type": "government",
+      "code": "TTC014",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Ndala Teachers College",
+      "region": "Tabora",
+      "type": "private",
+      "code": "TTC015",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Mufindi Teachers College",
+      "region": "Iringa",
+      "type": "government",
+      "code": "TTC016",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Murutunguru Teachers College",
+      "region": "Kagera",
+      "type": "government",
+      "code": "TTC017",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Ngalanga Teachers College",
+      "region": "Ruvuma",
+      "type": "government",
+      "code": "TTC018",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Bunda Teachers College",
+      "region": "Mara",
+      "type": "government",
+      "code": "TTC019",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Kasulu Teachers College",
+      "region": "Kigoma",
+      "type": "government",
+      "code": "TTC020",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Sumbawanga Teachers College",
+      "region": "Rukwa",
+      "type": "government",
+      "code": "TTC021",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Kinampanda Teachers College",
+      "region": "Singida",
+      "type": "government",
+      "code": "TTC022",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Kabanga Teachers College",
+      "region": "Kigoma",
+      "type": "private",
+      "code": "TTC023",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Ndolage Teachers College",
+      "region": "Kagera",
+      "type": "private",
+      "code": "TTC024",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Mwika Training College",
+      "region": "Kilimanjaro",
+      "type": "private",
+      "code": "TTC025",
+      "category": "teacher_training"
+    },
+    {
+      "name": "St. Aggrey Institute of Education",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "TTC026",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Marangu Teachers College",
+      "region": "Kilimanjaro",
+      "type": "private",
+      "code": "TTC027",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Vikindu Teachers College",
+      "region": "Pwani",
+      "type": "government",
+      "code": "TTC028",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Ilonga Teachers College",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "TTC029",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Katoke Teachers College",
+      "region": "Kagera",
+      "type": "private",
+      "code": "TTC030",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Patandi Teachers College",
+      "region": "Arusha",
+      "type": "government",
+      "code": "TTC031",
+      "category": "teacher_training"
+    },
+    {
+      "name": "Tabora School for the Blind",
+      "region": "Tabora",
+      "type": "government",
+      "code": "TTC032",
+      "category": "teacher_training"
+    },
+    {
+      "name": "KCMC School of Nursing",
+      "region": "Kilimanjaro",
+      "type": "private",
+      "code": "HLT001",
+      "category": "health_medical"
+    },
+    {
+      "name": "Bugando School of Nursing",
+      "region": "Mwanza",
+      "type": "private",
+      "code": "HLT002",
+      "category": "health_medical"
+    },
+    {
+      "name": "Muhimbili School of Nursing",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "HLT003",
+      "category": "health_medical"
+    },
+    {
+      "name": "Lugalo Military Medical School",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "HLT004",
+      "category": "health_medical"
+    },
+    {
+      "name": "Zanzibar School of Health",
+      "region": "Zanzibar",
+      "type": "government",
+      "code": "HLT005",
+      "category": "health_medical"
+    },
+    {
+      "name": "St. Magdalene School of Nursing",
+      "region": "Iringa",
+      "type": "private",
+      "code": "HLT006",
+      "category": "health_medical"
+    },
+    {
+      "name": "Mchukwi Nursing School",
+      "region": "Pwani",
+      "type": "private",
+      "code": "HLT007",
+      "category": "health_medical"
+    },
+    {
+      "name": "Kabanga School of Nursing",
+      "region": "Kigoma",
+      "type": "private",
+      "code": "HLT008",
+      "category": "health_medical"
+    },
+    {
+      "name": "Isimila Nursing School",
+      "region": "Iringa",
+      "type": "private",
+      "code": "HLT009",
+      "category": "health_medical"
+    },
+    {
+      "name": "Lugala School of Nursing",
+      "region": "Morogoro",
+      "type": "private",
+      "code": "HLT010",
+      "category": "health_medical"
+    },
+    {
+      "name": "Tukuyu School of Nursing",
+      "region": "Mbeya",
+      "type": "government",
+      "code": "HLT011",
+      "category": "health_medical"
+    },
+    {
+      "name": "Mbalizi Institute of Health Sciences",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "HLT012",
+      "category": "health_medical"
+    },
+    {
+      "name": "Uyole Health Sciences Institute",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "HLT013",
+      "category": "health_medical"
+    },
+    {
+      "name": "Rubya Health Training Institute",
+      "region": "Kagera",
+      "type": "private",
+      "code": "HLT014",
+      "category": "health_medical"
+    },
+    {
+      "name": "Newala School of Nursing",
+      "region": "Mtwara",
+      "type": "government",
+      "code": "HLT015",
+      "category": "health_medical"
+    },
+    {
+      "name": "Archbishop John Ramadhan School of Nursing",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "HLT016",
+      "category": "health_medical"
+    },
+    {
+      "name": "Kulangwa Prinmat Nursing School",
+      "region": "Morogoro",
+      "type": "private",
+      "code": "HLT017",
+      "category": "health_medical"
+    },
+    {
+      "name": "Kisare College of Health Sciences",
+      "region": "Mara",
+      "type": "private",
+      "code": "HLT018",
+      "category": "health_medical"
+    },
+    {
+      "name": "Makambako Institute of Health Sciences",
+      "region": "Njombe",
+      "type": "private",
+      "code": "HLT019",
+      "category": "health_medical"
+    },
+    {
+      "name": "Murgwanza Nursing School",
+      "region": "Kagera",
+      "type": "private",
+      "code": "HLT020",
+      "category": "health_medical"
+    },
+    {
+      "name": "Arusha Lutheran Medical Centre",
+      "region": "Arusha",
+      "type": "private",
+      "code": "HLT021",
+      "category": "health_medical"
+    },
+    {
+      "name": "Geita School of Nursing",
+      "region": "Geita",
+      "type": "government",
+      "code": "HLT022",
+      "category": "health_medical"
+    },
+    {
+      "name": "Bagamoyo School of Nursing",
+      "region": "Pwani",
+      "type": "private",
+      "code": "HLT023",
+      "category": "health_medical"
+    },
+    {
+      "name": "Njombe Institute of Health Sciences",
+      "region": "Njombe",
+      "type": "private",
+      "code": "HLT024",
+      "category": "health_medical"
+    },
+    {
+      "name": "Kiomboi School of Nursing",
+      "region": "Singida",
+      "type": "private",
+      "code": "HLT025",
+      "category": "health_medical"
+    },
+    {
+      "name": "Mkolani Foundation Health Training",
+      "region": "Mwanza",
+      "type": "private",
+      "code": "HLT026",
+      "category": "health_medical"
+    },
+    {
+      "name": "Korogwe School of Nursing",
+      "region": "Tanga",
+      "type": "government",
+      "code": "HLT027",
+      "category": "health_medical"
+    },
+    {
+      "name": "Machame Health Training Institute",
+      "region": "Kilimanjaro",
+      "type": "private",
+      "code": "HLT028",
+      "category": "health_medical"
+    },
+    {
+      "name": "Lake Institute of Health Sciences",
+      "region": "Mwanza",
+      "type": "private",
+      "code": "HLT029",
+      "category": "health_medical"
+    },
+    {
+      "name": "Mvumi Institute of Health Sciences",
+      "region": "Dodoma",
+      "type": "private",
+      "code": "HLT030",
+      "category": "health_medical"
+    },
+    {
+      "name": "Ndolage Institute of Health Sciences",
+      "region": "Kagera",
+      "type": "private",
+      "code": "HLT031",
+      "category": "health_medical"
+    },
+    {
+      "name": "Morogoro Public Health Nursing School",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "HLT032",
+      "category": "health_medical"
+    },
+    {
+      "name": "Mtwara School of Nursing",
+      "region": "Mtwara",
+      "type": "government",
+      "code": "HLT033",
+      "category": "health_medical"
+    },
+    {
+      "name": "Mwambani School of Nursing",
+      "region": "Tanga",
+      "type": "private",
+      "code": "HLT034",
+      "category": "health_medical"
+    },
+    {
+      "name": "New Mafinga Health Institute",
+      "region": "Iringa",
+      "type": "private",
+      "code": "HLT035",
+      "category": "health_medical"
+    },
+    {
+      "name": "Nachingwea School of Nursing",
+      "region": "Lindi",
+      "type": "government",
+      "code": "HLT036",
+      "category": "health_medical"
+    },
+    {
+      "name": "Berega School of Nursing",
+      "region": "Morogoro",
+      "type": "private",
+      "code": "HLT037",
+      "category": "health_medical"
+    },
+    {
+      "name": "Ndanda School of Nursing",
+      "region": "Mtwara",
+      "type": "private",
+      "code": "HLT038",
+      "category": "health_medical"
+    },
+    {
+      "name": "St. Joseph COHAS",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "HLT039",
+      "category": "health_medical"
+    },
+    {
+      "name": "Primary Health Care Institute Iringa",
+      "region": "Iringa",
+      "type": "government",
+      "code": "HLT040",
+      "category": "health_medical"
+    },
+    {
+      "name": "Sr. Dr. Thekla Nursing School",
+      "region": "Lindi",
+      "type": "private",
+      "code": "HLT041",
+      "category": "health_medical"
+    },
+    {
+      "name": "St. John COHAS Mbeya",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "HLT042",
+      "category": "health_medical"
+    },
+    {
+      "name": "A3 Institute of Professional Studies",
+      "region": "Pwani",
+      "type": "private",
+      "code": "HLT043",
+      "category": "health_medical"
+    },
+    {
+      "name": "Greenbird College",
+      "region": "Kilimanjaro",
+      "type": "private",
+      "code": "HLT044",
+      "category": "health_medical"
+    },
+    {
+      "name": "Testimony College of Health Sciences",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "HLT045",
+      "category": "health_medical"
+    },
+    {
+      "name": "Yohana Wavenza Health Institute",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "HLT046",
+      "category": "health_medical"
+    },
+    {
+      "name": "St. Bakhita Health Training Institute",
+      "region": "Mwanza",
+      "type": "private",
+      "code": "HLT047",
+      "category": "health_medical"
+    },
+    {
+      "name": "St. Aggrey College of Health Science",
+      "region": "Mbeya",
+      "type": "private",
+      "code": "HLT048",
+      "category": "health_medical"
+    },
+    {
+      "name": "Tandabui Institute of Health Sciences",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "HLT049",
+      "category": "health_medical"
+    },
+    {
+      "name": "Kilimanjaro Institute of Health Sciences",
+      "region": "Kilimanjaro",
+      "type": "private",
+      "code": "HLT050",
+      "category": "health_medical"
+    },
+    {
+      "name": "Morogoro College of Health Science",
+      "region": "Morogoro",
+      "type": "private",
+      "code": "HLT051",
+      "category": "health_medical"
+    },
+    {
+      "name": "Mwanza College of Health and Allied Sciences",
+      "region": "Mwanza",
+      "type": "private",
+      "code": "HLT052",
+      "category": "health_medical"
+    },
+    {
+      "name": "Dar es Salaam Institute of Technology (DIT)",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "TEC001",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Arusha Technical College (ATC)",
+      "region": "Arusha",
+      "type": "government",
+      "code": "TEC002",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Mbeya Institute of Science and Technology (MIST)",
+      "region": "Mbeya",
+      "type": "government",
+      "code": "TEC003",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Mbeya Polytechnic College",
+      "region": "Mbeya",
+      "type": "government",
+      "code": "TEC004",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "College of Business Education (CBE) Dar",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "TEC005",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "College of Business Education (CBE) Dodoma",
+      "region": "Dodoma",
+      "type": "government",
+      "code": "TEC006",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "College of Business Education (CBE) Mwanza",
+      "region": "Mwanza",
+      "type": "government",
+      "code": "TEC007",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Institute of Finance Management (IFM)",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "TEC008",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Tanzania Institute of Accountancy (TIA) Dar",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "TEC009",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Tanzania Institute of Accountancy (TIA) Mbeya",
+      "region": "Mbeya",
+      "type": "government",
+      "code": "TEC010",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Tanzania Institute of Accountancy (TIA) Mwanza",
+      "region": "Mwanza",
+      "type": "government",
+      "code": "TEC011",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Tanzania Institute of Accountancy (TIA) Singida",
+      "region": "Singida",
+      "type": "government",
+      "code": "TEC012",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "National Institute of Transport (NIT)",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "TEC013",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Tabora Polytechnic College",
+      "region": "Tabora",
+      "type": "government",
+      "code": "TEC014",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Glorious Polytechnic College",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "TEC015",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Tabora East Africa Polytechnic",
+      "region": "Tabora",
+      "type": "private",
+      "code": "TEC016",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Iringa Polytechnic",
+      "region": "Iringa",
+      "type": "private",
+      "code": "TEC017",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "Kihonda Technical College",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "TEC018",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "St. Joseph Institute of Technology",
+      "region": "Dar es Salaam",
+      "type": "private",
+      "code": "TEC019",
+      "category": "technical_polytechnic"
+    },
+    {
+      "name": "MATI Uyole",
+      "region": "Mbeya",
+      "type": "government",
+      "code": "AGR001",
+      "category": "agricultural"
+    },
+    {
+      "name": "MATI Ilonga",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "AGR002",
+      "category": "agricultural"
+    },
+    {
+      "name": "MATI Ukiriguru",
+      "region": "Mwanza",
+      "type": "government",
+      "code": "AGR003",
+      "category": "agricultural"
+    },
+    {
+      "name": "MATI Tengeru",
+      "region": "Arusha",
+      "type": "government",
+      "code": "AGR004",
+      "category": "agricultural"
+    },
+    {
+      "name": "MATI Mlingano",
+      "region": "Tanga",
+      "type": "government",
+      "code": "AGR005",
+      "category": "agricultural"
+    },
+    {
+      "name": "MATI Tumbi",
+      "region": "Tabora",
+      "type": "government",
+      "code": "AGR006",
+      "category": "agricultural"
+    },
+    {
+      "name": "MATI Mubondo",
+      "region": "Kigoma",
+      "type": "government",
+      "code": "AGR007",
+      "category": "agricultural"
+    },
+    {
+      "name": "MATI Igurusi",
+      "region": "Mbeya",
+      "type": "government",
+      "code": "AGR008",
+      "category": "agricultural"
+    },
+    {
+      "name": "Livestock Training Agency (LITA) Morogoro",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "AGR009",
+      "category": "agricultural"
+    },
+    {
+      "name": "Livestock Training Agency (LITA) Tengeru",
+      "region": "Arusha",
+      "type": "government",
+      "code": "AGR010",
+      "category": "agricultural"
+    },
+    {
+      "name": "Livestock Training Agency (LITA) Mpwapwa",
+      "region": "Dodoma",
+      "type": "government",
+      "code": "AGR011",
+      "category": "agricultural"
+    },
+    {
+      "name": "Livestock Training Agency (LITA) Buhuri",
+      "region": "Tanga",
+      "type": "government",
+      "code": "AGR012",
+      "category": "agricultural"
+    },
+    {
+      "name": "Forestry Training Institute Olmotonyi",
+      "region": "Arusha",
+      "type": "government",
+      "code": "AGR013",
+      "category": "agricultural"
+    },
+    {
+      "name": "College of Integrated Agriculture",
+      "region": "Singida",
+      "type": "private",
+      "code": "AGR014",
+      "category": "agricultural"
+    },
+    {
+      "name": "Tanzania Fisheries Research Institute",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "AGR015",
+      "category": "agricultural"
+    },
+    {
+      "name": "Tanzania Police School Moshi",
+      "region": "Kilimanjaro",
+      "type": "government",
+      "code": "SEC001",
+      "category": "police_military"
+    },
+    {
+      "name": "Tanzania Police Staff College Kidatu",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "SEC002",
+      "category": "police_military"
+    },
+    {
+      "name": "Zanzibar Police College",
+      "region": "Zanzibar",
+      "type": "government",
+      "code": "SEC003",
+      "category": "police_military"
+    },
+    {
+      "name": "Tanzania Military Academy Monduli",
+      "region": "Arusha",
+      "type": "government",
+      "code": "SEC004",
+      "category": "police_military"
+    },
+    {
+      "name": "JKT Ruvu",
+      "region": "Pwani",
+      "type": "government",
+      "code": "SEC005",
+      "category": "police_military"
+    },
+    {
+      "name": "JKT Mgambo",
+      "region": "Tanga",
+      "type": "government",
+      "code": "SEC006",
+      "category": "police_military"
+    },
+    {
+      "name": "JKT Mlale",
+      "region": "Kilimanjaro",
+      "type": "government",
+      "code": "SEC007",
+      "category": "police_military"
+    },
+    {
+      "name": "JKT Kanembwa",
+      "region": "Kigoma",
+      "type": "government",
+      "code": "SEC008",
+      "category": "police_military"
+    },
+    {
+      "name": "JKT Oljoro",
+      "region": "Arusha",
+      "type": "government",
+      "code": "SEC009",
+      "category": "police_military"
+    },
+    {
+      "name": "Kiwira Prisons College",
+      "region": "Mbeya",
+      "type": "government",
+      "code": "SEC010",
+      "category": "police_military"
+    },
+    {
+      "name": "Ukonga Prisons Training School",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "SEC011",
+      "category": "police_military"
+    },
+    {
+      "name": "Tanzania Immigration Training Academy (TRITA)",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "SEC012",
+      "category": "police_military"
+    },
+    {
+      "name": "Fire and Rescue Force Training School",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "SEC013",
+      "category": "police_military"
+    },
+    {
+      "name": "National Defence College",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "SEC014",
+      "category": "police_military"
+    },
+    {
+      "name": "Karumo FDC",
+      "region": "Mwanza",
+      "type": "government",
+      "code": "FDC001",
+      "category": "folk_development"
+    },
+    {
+      "name": "Ulembwe FDC",
+      "region": "Njombe",
+      "type": "government",
+      "code": "FDC002",
+      "category": "folk_development"
+    },
+    {
+      "name": "Musoma FDC",
+      "region": "Mara",
+      "type": "government",
+      "code": "FDC003",
+      "category": "folk_development"
+    },
+    {
+      "name": "Rungemba FDC",
+      "region": "Iringa",
+      "type": "government",
+      "code": "FDC004",
+      "category": "folk_development"
+    },
+    {
+      "name": "Handeni FDC",
+      "region": "Tanga",
+      "type": "government",
+      "code": "FDC005",
+      "category": "folk_development"
+    },
+    {
+      "name": "Kisangara FDC",
+      "region": "Kilimanjaro",
+      "type": "government",
+      "code": "FDC006",
+      "category": "folk_development"
+    },
+    {
+      "name": "Buhangija FDC",
+      "region": "Shinyanga",
+      "type": "government",
+      "code": "FDC007",
+      "category": "folk_development"
+    },
+    {
+      "name": "Ifakara FDC",
+      "region": "Morogoro",
+      "type": "government",
+      "code": "FDC008",
+      "category": "folk_development"
+    },
+    {
+      "name": "Masasi FDC",
+      "region": "Mtwara",
+      "type": "government",
+      "code": "FDC009",
+      "category": "folk_development"
+    },
+    {
+      "name": "Nzovwe FDC",
+      "region": "Mbeya",
+      "type": "government",
+      "code": "FDC010",
+      "category": "folk_development"
+    },
+    {
+      "name": "Msalato FDC",
+      "region": "Dodoma",
+      "type": "government",
+      "code": "FDC011",
+      "category": "folk_development"
+    },
+    {
+      "name": "Newala FDC",
+      "region": "Mtwara",
+      "type": "government",
+      "code": "FDC012",
+      "category": "folk_development"
+    },
+    {
+      "name": "National College of Tourism Dar es Salaam",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "BUS001",
+      "category": "business_professional"
+    },
+    {
+      "name": "National College of Tourism Arusha",
+      "region": "Arusha",
+      "type": "government",
+      "code": "BUS002",
+      "category": "business_professional"
+    },
+    {
+      "name": "National College of Tourism Bustani",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "BUS003",
+      "category": "business_professional"
+    },
+    {
+      "name": "Tanzania Utalii College",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "BUS004",
+      "category": "business_professional"
+    },
+    {
+      "name": "Musoma Utalii Training College",
+      "region": "Mara",
+      "type": "government",
+      "code": "BUS005",
+      "category": "business_professional"
+    },
+    {
+      "name": "Lake Utalii College",
+      "region": "Manyara",
+      "type": "private",
+      "code": "BUS006",
+      "category": "business_professional"
+    },
+    {
+      "name": "Law School of Tanzania",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "BUS007",
+      "category": "business_professional"
+    },
+    {
+      "name": "National Meteorological Training Centre",
+      "region": "Kigoma",
+      "type": "government",
+      "code": "BUS008",
+      "category": "business_professional"
+    },
+    {
+      "name": "Tanzania Public Service College",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "BUS009",
+      "category": "business_professional"
+    },
+    {
+      "name": "Local Government Training Institute",
+      "region": "Dodoma",
+      "type": "government",
+      "code": "BUS010",
+      "category": "business_professional"
+    },
+    {
+      "name": "Institute of Social Work",
+      "region": "Dar es Salaam",
+      "type": "government",
+      "code": "BUS011",
+      "category": "business_professional"
+    },
+    {
+      "name": "Community Development Training Institute Tengeru",
+      "region": "Arusha",
+      "type": "government",
+      "code": "BUS012",
+      "category": "business_professional"
+    },
+    {
+      "name": "Arusha Royal Secretarial College",
+      "region": "Arusha",
+      "type": "private",
+      "code": "BUS013",
+      "category": "business_professional"
+    },
+    {
+      "name": "Dodoma Secretarial College",
+      "region": "Dodoma",
+      "type": "private",
+      "code": "BUS014",
+      "category": "business_professional"
+    }
+  ]
+}

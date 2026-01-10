@@ -1,0 +1,6526 @@
+{
+  "source": "NECTA ACSEE 2024 Results",
+  "total_schools": 931,
+  "government_schools": 827,
+  "private_schools": 104,
+  "scraped_at": "2026-01-09 15:19:52",
+  "schools": [
+    {
+      "code": "S0101",
+      "name": "AZANIA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0101"
+    },
+    {
+      "code": "S0103",
+      "name": "BIHAWANA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0103"
+    },
+    {
+      "code": "S0104",
+      "name": "BWIRU BOYS'",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0104"
+    },
+    {
+      "code": "S0105",
+      "name": "CHIDYA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0105"
+    },
+    {
+      "code": "S0106",
+      "name": "DUNG'UNYI SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0106"
+    },
+    {
+      "code": "S0108",
+      "name": "IFUNDA TECHNICAL",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0108"
+    },
+    {
+      "code": "S0109",
+      "name": "IHUNGO",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0109"
+    },
+    {
+      "code": "S0110",
+      "name": "ILBORU",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0110"
+    },
+    {
+      "code": "S0111",
+      "name": "ITAGA SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0111"
+    },
+    {
+      "code": "S0112",
+      "name": "IYUNGA TECHNICAL",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0112"
+    },
+    {
+      "code": "S0113",
+      "name": "MAFINGA SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0113"
+    },
+    {
+      "code": "S0114",
+      "name": "KAENGESA SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0114"
+    },
+    {
+      "code": "S0115",
+      "name": "KAHORORO",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0115"
+    },
+    {
+      "code": "S0116",
+      "name": "KANTALAMBA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0116"
+    },
+    {
+      "code": "S0117",
+      "name": "KASITA SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0117"
+    },
+    {
+      "code": "S0118",
+      "name": "KATOKE SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0118"
+    },
+    {
+      "code": "S0119",
+      "name": "KIBAHA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0119"
+    },
+    {
+      "code": "S0120",
+      "name": "KIGONSERA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0120"
+    },
+    {
+      "code": "S0121",
+      "name": "ST. JAMES SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0121"
+    },
+    {
+      "code": "S0123",
+      "name": "KWIRO",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0123"
+    },
+    {
+      "code": "S0124",
+      "name": "LIKONDE SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0124"
+    },
+    {
+      "code": "S0125",
+      "name": "LYAMUNGO",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0125"
+    },
+    {
+      "code": "S0128",
+      "name": "MALANGALI",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0128"
+    },
+    {
+      "code": "S0129",
+      "name": "MARA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0129"
+    },
+    {
+      "code": "S0130",
+      "name": "MAUA SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0130"
+    },
+    {
+      "code": "S0132",
+      "name": "MILAMBO",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0132"
+    },
+    {
+      "code": "S0133",
+      "name": "MINAKI",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0133"
+    },
+    {
+      "code": "S0134",
+      "name": "MOSHI",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0134"
+    },
+    {
+      "code": "S0135",
+      "name": "MOSHI TECHNICAL",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0135"
+    },
+    {
+      "code": "S0136",
+      "name": "MUSOMA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0136"
+    },
+    {
+      "code": "S0138",
+      "name": "MPWAPWA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0138"
+    },
+    {
+      "code": "S0139",
+      "name": "MTWARA TECHNICAL",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0139"
+    },
+    {
+      "code": "S0140",
+      "name": "MZUMBE",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0140"
+    },
+    {
+      "code": "S0141",
+      "name": "NAMUPA SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0141"
+    },
+    {
+      "code": "S0142",
+      "name": "GALANOS",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0142"
+    },
+    {
+      "code": "S0143",
+      "name": "NJOMBE",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0143"
+    },
+    {
+      "code": "S0144",
+      "name": "NSUMBA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0144"
+    },
+    {
+      "code": "S0145",
+      "name": "NYAKATO",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0145"
+    },
+    {
+      "code": "S0146",
+      "name": "NYEGEZI SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0146"
+    },
+    {
+      "code": "S0147",
+      "name": "PUGU",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0147"
+    },
+    {
+      "code": "S0148",
+      "name": "RUBYA SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0148"
+    },
+    {
+      "code": "S0149",
+      "name": "RUNGWE",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0149"
+    },
+    {
+      "code": "S0150",
+      "name": "SAME",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0150"
+    },
+    {
+      "code": "S0151",
+      "name": "SENGEREMA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0151"
+    },
+    {
+      "code": "S0152",
+      "name": "SHINYANGA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0152"
+    },
+    {
+      "code": "S0153",
+      "name": "SONGEA BOYS'",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0153"
+    },
+    {
+      "code": "S0154",
+      "name": "ST.PETER'S SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0154"
+    },
+    {
+      "code": "S0155",
+      "name": "TABORA BOYS'",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0155"
+    },
+    {
+      "code": "S0156",
+      "name": "TANGA TECHNICAL",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0156"
+    },
+    {
+      "code": "S0158",
+      "name": "TOSAMAGANGA",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0158"
+    },
+    {
+      "code": "S0160",
+      "name": "UMBWE",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0160"
+    },
+    {
+      "code": "S0164",
+      "name": "USA SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0164"
+    },
+    {
+      "code": "S0165",
+      "name": "URU SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0165"
+    },
+    {
+      "code": "S0167",
+      "name": "KIDUGALA LUTHERAN SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0167"
+    },
+    {
+      "code": "S0168",
+      "name": "SANU SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0168"
+    },
+    {
+      "code": "S0174",
+      "name": "CONSOLATA SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0174"
+    },
+    {
+      "code": "S0175",
+      "name": "SALESIAN SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0175"
+    },
+    {
+      "code": "S0176",
+      "name": "LUSANGI MORAVIAN JUNIOR SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0176"
+    },
+    {
+      "code": "S0177",
+      "name": "ST.MARY'S JUNIOR SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0177"
+    },
+    {
+      "code": "S0178",
+      "name": "MANOW LUTHERAN JUNIOR SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0178"
+    },
+    {
+      "code": "S0182",
+      "name": "AL-FAROUQ SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0182"
+    },
+    {
+      "code": "S0184",
+      "name": "AGAPE LUTHERAN JUNIOR SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0184"
+    },
+    {
+      "code": "S0187",
+      "name": "AN-NOOR ISLAMIC BOYS SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0187"
+    },
+    {
+      "code": "S0188",
+      "name": "KIRINJIKO ISLAMIC SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0188"
+    },
+    {
+      "code": "S0189",
+      "name": "FEZA BOYS'",
+      "type": "government",
+      "region_code": "01",
+      "district_code": "0189"
+    },
+    {
+      "code": "S0190",
+      "name": "ST.JOSEPH-KILOCHA SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0190"
+    },
+    {
+      "code": "S0197",
+      "name": "MATANGINI ISLAMIC SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0197"
+    },
+    {
+      "code": "S0198",
+      "name": "AILANGA LUTHERAN JUNIOR SEMINARY",
+      "type": "private",
+      "region_code": "01",
+      "district_code": "0198"
+    },
+    {
+      "code": "S0201",
+      "name": "ASHIRA",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0201"
+    },
+    {
+      "code": "S0202",
+      "name": "BWIRU GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0202"
+    },
+    {
+      "code": "S0203",
+      "name": "IRINGA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0203"
+    },
+    {
+      "code": "S0204",
+      "name": "JANGWANI",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0204"
+    },
+    {
+      "code": "S0205",
+      "name": "KIBOSHO GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0205"
+    },
+    {
+      "code": "S0206",
+      "name": "KILAKALA",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0206"
+    },
+    {
+      "code": "S0207",
+      "name": "KIRAENI GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0207"
+    },
+    {
+      "code": "S0208",
+      "name": "KISUTU",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0208"
+    },
+    {
+      "code": "S0209",
+      "name": "KOROGWE GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0209"
+    },
+    {
+      "code": "S0210",
+      "name": "BIGWA SISTERS' SEMINARY",
+      "type": "private",
+      "region_code": "02",
+      "district_code": "0210"
+    },
+    {
+      "code": "S0211",
+      "name": "LOLEZA",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0211"
+    },
+    {
+      "code": "S0212",
+      "name": "MACHAME GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0212"
+    },
+    {
+      "code": "S0213",
+      "name": "MASASI GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0213"
+    },
+    {
+      "code": "S0214",
+      "name": "MSALATO",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0214"
+    },
+    {
+      "code": "S0215",
+      "name": "MTWARA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0215"
+    },
+    {
+      "code": "S0216",
+      "name": "NGANZA",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0216"
+    },
+    {
+      "code": "S0217",
+      "name": "PERAMIHO GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0217"
+    },
+    {
+      "code": "S0218",
+      "name": "RUGAMBWA",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0218"
+    },
+    {
+      "code": "S0219",
+      "name": "SONGEA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0219"
+    },
+    {
+      "code": "S0220",
+      "name": "TABORA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0220"
+    },
+    {
+      "code": "S0221",
+      "name": "WERUWERU",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0221"
+    },
+    {
+      "code": "S0222",
+      "name": "ZANAKI",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0222"
+    },
+    {
+      "code": "S0223",
+      "name": "MASAMA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0223"
+    },
+    {
+      "code": "S0224",
+      "name": "KIFUNGILO GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0224"
+    },
+    {
+      "code": "S0227",
+      "name": "MASWA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0227"
+    },
+    {
+      "code": "S0228",
+      "name": "MPANDA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0228"
+    },
+    {
+      "code": "S0229",
+      "name": "KONDOA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0229"
+    },
+    {
+      "code": "S0230",
+      "name": "KIBONDO",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0230"
+    },
+    {
+      "code": "S0233",
+      "name": "ST.MARY'S MAZINDE JUU",
+      "type": "private",
+      "region_code": "02",
+      "district_code": "0233"
+    },
+    {
+      "code": "S0234",
+      "name": "ST. LUISE MBINGA GIRLS'",
+      "type": "private",
+      "region_code": "02",
+      "district_code": "0234"
+    },
+    {
+      "code": "S0235",
+      "name": "BUKUMBI",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0235"
+    },
+    {
+      "code": "S0240",
+      "name": "ST. JOSEPH GIRLS' SEMINARY",
+      "type": "private",
+      "region_code": "02",
+      "district_code": "0240"
+    },
+    {
+      "code": "S0241",
+      "name": "KOWAK GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0241"
+    },
+    {
+      "code": "S0245",
+      "name": "PALLOTI GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0245"
+    },
+    {
+      "code": "S0246",
+      "name": "MAASAE GIRLS' LUTHERAN",
+      "type": "private",
+      "region_code": "02",
+      "district_code": "0246"
+    },
+    {
+      "code": "S0247",
+      "name": "BONICONSILI MABAMBA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0247"
+    },
+    {
+      "code": "S0248",
+      "name": "MARIAN GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0248"
+    },
+    {
+      "code": "S0249",
+      "name": "LORETO GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0249"
+    },
+    {
+      "code": "S0252",
+      "name": "AL-KHEIR ISLAMIC GIRLS' SEMINARY",
+      "type": "private",
+      "region_code": "02",
+      "district_code": "0252"
+    },
+    {
+      "code": "S0254",
+      "name": "WALI-UL-ASR GIRLS' SEMINARY",
+      "type": "private",
+      "region_code": "02",
+      "district_code": "0254"
+    },
+    {
+      "code": "S0255",
+      "name": "ST. CHRISTINA GIRLS'",
+      "type": "private",
+      "region_code": "02",
+      "district_code": "0255"
+    },
+    {
+      "code": "S0256",
+      "name": "HURUMA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0256"
+    },
+    {
+      "code": "S0263",
+      "name": "VISITATION GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0263"
+    },
+    {
+      "code": "S0264",
+      "name": "BARBRO-JOHANSSON",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0264"
+    },
+    {
+      "code": "S0266",
+      "name": "REGINAMUNDI GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0266"
+    },
+    {
+      "code": "S0271",
+      "name": "MANYUNYU",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0271"
+    },
+    {
+      "code": "S0272",
+      "name": "AL-IHSAN GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0272"
+    },
+    {
+      "code": "S0275",
+      "name": "GLENRONS GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0275"
+    },
+    {
+      "code": "S0276",
+      "name": "IFUNDA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0276"
+    },
+    {
+      "code": "S0279",
+      "name": "EMMABERG GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0279"
+    },
+    {
+      "code": "S0281",
+      "name": "CHIEF IHUNYO",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0281"
+    },
+    {
+      "code": "S0283",
+      "name": "JOHN THE BAPTIST",
+      "type": "private",
+      "region_code": "02",
+      "district_code": "0283"
+    },
+    {
+      "code": "S0284",
+      "name": "RONECA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0284"
+    },
+    {
+      "code": "S0285",
+      "name": "ST. THERESIA GIRLS'",
+      "type": "private",
+      "region_code": "02",
+      "district_code": "0285"
+    },
+    {
+      "code": "S0291",
+      "name": "GHOMME",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0291"
+    },
+    {
+      "code": "S0298",
+      "name": "FEZA GIRLS'",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0298"
+    },
+    {
+      "code": "S0299",
+      "name": "MKUGWA",
+      "type": "government",
+      "region_code": "02",
+      "district_code": "0299"
+    },
+    {
+      "code": "S0302",
+      "name": "ARUSHA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0302"
+    },
+    {
+      "code": "S0304",
+      "name": "BUKOBA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0304"
+    },
+    {
+      "code": "S0305",
+      "name": "BULUBA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0305"
+    },
+    {
+      "code": "S0306",
+      "name": "DODOMA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0306"
+    },
+    {
+      "code": "S0307",
+      "name": "DODOMA CENTRAL",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0307"
+    },
+    {
+      "code": "S0308",
+      "name": "ENABOISHU",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0308"
+    },
+    {
+      "code": "S0309",
+      "name": "FIDEL CASTRO",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0309"
+    },
+    {
+      "code": "S0310",
+      "name": "FOREST HILL",
+      "type": "private",
+      "region_code": "03",
+      "district_code": "0310"
+    },
+    {
+      "code": "S0312",
+      "name": "HIGHLANDS",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0312"
+    },
+    {
+      "code": "S0313",
+      "name": "IKIZU",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0313"
+    },
+    {
+      "code": "S0314",
+      "name": "KAZIMA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0314"
+    },
+    {
+      "code": "S0316",
+      "name": "KIBASILA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0316"
+    },
+    {
+      "code": "S0317",
+      "name": "KIBO",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0317"
+    },
+    {
+      "code": "S0320",
+      "name": "KIGOMA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0320"
+    },
+    {
+      "code": "S0321",
+      "name": "KINONDONI",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0321"
+    },
+    {
+      "code": "S0323",
+      "name": "LAKE",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0323"
+    },
+    {
+      "code": "S0324",
+      "name": "LINDI",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0324"
+    },
+    {
+      "code": "S0325",
+      "name": "LUGALO",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0325"
+    },
+    {
+      "code": "S0326",
+      "name": "LUMUMBA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0326"
+    },
+    {
+      "code": "S0327",
+      "name": "MINJA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0327"
+    },
+    {
+      "code": "S0328",
+      "name": "MAWENZI",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0328"
+    },
+    {
+      "code": "S0329",
+      "name": "MAKUMIRA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0329"
+    },
+    {
+      "code": "S0330",
+      "name": "MBEYA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0330"
+    },
+    {
+      "code": "S0332",
+      "name": "MOROGORO",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0332"
+    },
+    {
+      "code": "S0333",
+      "name": "MWANZA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0333"
+    },
+    {
+      "code": "S0334",
+      "name": "MWENGE",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0334"
+    },
+    {
+      "code": "S0338",
+      "name": "NDANDA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0338"
+    },
+    {
+      "code": "S0339",
+      "name": "OMUMWANI",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0339"
+    },
+    {
+      "code": "S0341",
+      "name": "SANGU",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0341"
+    },
+    {
+      "code": "S0342",
+      "name": "SHAABAN ROBERT",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0342"
+    },
+    {
+      "code": "S0345",
+      "name": "USAGARA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0345"
+    },
+    {
+      "code": "S0346",
+      "name": "UYUI",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0346"
+    },
+    {
+      "code": "S0347",
+      "name": "TAMBAZA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0347"
+    },
+    {
+      "code": "S0348",
+      "name": "TUMAINI",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0348"
+    },
+    {
+      "code": "S0351",
+      "name": "BAGAMOYO",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0351"
+    },
+    {
+      "code": "S0352",
+      "name": "TARIME",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0352"
+    },
+    {
+      "code": "S0353",
+      "name": "PARANE",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0353"
+    },
+    {
+      "code": "S0355",
+      "name": "LOMWE",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0355"
+    },
+    {
+      "code": "S0356",
+      "name": "VUNJO",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0356"
+    },
+    {
+      "code": "S0359",
+      "name": "KIGURUNYEMBE",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0359"
+    },
+    {
+      "code": "S0360",
+      "name": "KISHOJU",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0360"
+    },
+    {
+      "code": "S0361",
+      "name": "SINGE",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0361"
+    },
+    {
+      "code": "S0363",
+      "name": "MWADUI",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0363"
+    },
+    {
+      "code": "S0364",
+      "name": "KARATU",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0364"
+    },
+    {
+      "code": "S0367",
+      "name": "KILOSA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0367"
+    },
+    {
+      "code": "S0368",
+      "name": "IMBORU",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0368"
+    },
+    {
+      "code": "S0369",
+      "name": "RUVU",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0369"
+    },
+    {
+      "code": "S0370",
+      "name": "IFAKARA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0370"
+    },
+    {
+      "code": "S0376",
+      "name": "SONI SEMINARY",
+      "type": "private",
+      "region_code": "03",
+      "district_code": "0376"
+    },
+    {
+      "code": "S0380",
+      "name": "UCHAMA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0380"
+    },
+    {
+      "code": "S0381",
+      "name": "UTAANI",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0381"
+    },
+    {
+      "code": "S0382",
+      "name": "TUMEKUJA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0382"
+    },
+    {
+      "code": "S0383",
+      "name": "BEN BELLA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0383"
+    },
+    {
+      "code": "S0385",
+      "name": "UJIJI",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0385"
+    },
+    {
+      "code": "S0386",
+      "name": "GEITA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0386"
+    },
+    {
+      "code": "S0387",
+      "name": "KARAGWE",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0387"
+    },
+    {
+      "code": "S0388",
+      "name": "MARANGU",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0388"
+    },
+    {
+      "code": "S0389",
+      "name": "SHAURITANGA",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0389"
+    },
+    {
+      "code": "S0390",
+      "name": "HAMAMNI",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0390"
+    },
+    {
+      "code": "S0391",
+      "name": "HAILE SELASSIE",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0391"
+    },
+    {
+      "code": "S0397",
+      "name": "RULENGE",
+      "type": "government",
+      "region_code": "03",
+      "district_code": "0397"
+    },
+    {
+      "code": "S0400",
+      "name": "SHAMIANI",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0400"
+    },
+    {
+      "code": "S0401",
+      "name": "NAMFUA",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0401"
+    },
+    {
+      "code": "S0404",
+      "name": "TUNDURU",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0404"
+    },
+    {
+      "code": "S0405",
+      "name": "BIHARAMULO",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0405"
+    },
+    {
+      "code": "S0409",
+      "name": "MORINGE SOKOINE",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0409"
+    },
+    {
+      "code": "S0413",
+      "name": "KIBITI",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0413"
+    },
+    {
+      "code": "S0416",
+      "name": "MONDULI TEACHERS' COLLEGE",
+      "type": "private",
+      "region_code": "04",
+      "district_code": "0416"
+    },
+    {
+      "code": "S0417",
+      "name": "MWAKALELI",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0417"
+    },
+    {
+      "code": "S0418",
+      "name": "LUTENGANO",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0418"
+    },
+    {
+      "code": "S0419",
+      "name": "CHOME",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0419"
+    },
+    {
+      "code": "S0420",
+      "name": "CHANJALE SEMINARY",
+      "type": "private",
+      "region_code": "04",
+      "district_code": "0420"
+    },
+    {
+      "code": "S0425",
+      "name": "MPWAPWA TEACHERS' COLLEGE",
+      "type": "private",
+      "region_code": "04",
+      "district_code": "0425"
+    },
+    {
+      "code": "S0426",
+      "name": "WANGING'OMBE",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0426"
+    },
+    {
+      "code": "S0427",
+      "name": "MAKAMBAKO",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0427"
+    },
+    {
+      "code": "S0429",
+      "name": "LUPEMBE",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0429"
+    },
+    {
+      "code": "S0430",
+      "name": "UWEMBA",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0430"
+    },
+    {
+      "code": "S0431",
+      "name": "MTWANGO",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0431"
+    },
+    {
+      "code": "S0432",
+      "name": "JABAL-HIRA MUSLIM JUNIOR SEMINARY",
+      "type": "private",
+      "region_code": "04",
+      "district_code": "0432"
+    },
+    {
+      "code": "S0436",
+      "name": "KAFULE",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0436"
+    },
+    {
+      "code": "S0439",
+      "name": "BUPANDAGILA",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0439"
+    },
+    {
+      "code": "S0440",
+      "name": "SONGEA TEACHERS' COLLEGE",
+      "type": "private",
+      "region_code": "04",
+      "district_code": "0440"
+    },
+    {
+      "code": "S0441",
+      "name": "KILWA",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0441"
+    },
+    {
+      "code": "S0443",
+      "name": "META",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0443"
+    },
+    {
+      "code": "S0445",
+      "name": "MWEMBETOGWA",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0445"
+    },
+    {
+      "code": "S0446",
+      "name": "MGOLOLO",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0446"
+    },
+    {
+      "code": "S0447",
+      "name": "MDABULO",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0447"
+    },
+    {
+      "code": "S0448",
+      "name": "SADANI",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0448"
+    },
+    {
+      "code": "S0449",
+      "name": "J.J.MUNGAI",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0449"
+    },
+    {
+      "code": "S0455",
+      "name": "TWEYAMBE",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0455"
+    },
+    {
+      "code": "S0457",
+      "name": "IGAWILO",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0457"
+    },
+    {
+      "code": "S0458",
+      "name": "KASULU TEACHERS' COLLEGE",
+      "type": "private",
+      "region_code": "04",
+      "district_code": "0458"
+    },
+    {
+      "code": "S0461",
+      "name": "JOHN PAUL II KAHAMA",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0461"
+    },
+    {
+      "code": "S0465",
+      "name": "JAMHURI",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0465"
+    },
+    {
+      "code": "S0466",
+      "name": "WARI",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0466"
+    },
+    {
+      "code": "S0468",
+      "name": "KIRIKI",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0468"
+    },
+    {
+      "code": "S0471",
+      "name": "MBOZI",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0471"
+    },
+    {
+      "code": "S0473",
+      "name": "KANYIGO",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0473"
+    },
+    {
+      "code": "S0474",
+      "name": "KISOMACHI",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0474"
+    },
+    {
+      "code": "S0478",
+      "name": "KIPOKE",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0478"
+    },
+    {
+      "code": "S0484",
+      "name": "MKINGA",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0484"
+    },
+    {
+      "code": "S0485",
+      "name": "MAJENGO",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0485"
+    },
+    {
+      "code": "S0488",
+      "name": "RUTABO",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0488"
+    },
+    {
+      "code": "S0489",
+      "name": "SUJI",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0489"
+    },
+    {
+      "code": "S0493",
+      "name": "AL-HARAMAIN ISLAMIC SEMINARY",
+      "type": "private",
+      "region_code": "04",
+      "district_code": "0493"
+    },
+    {
+      "code": "S0496",
+      "name": "JITEGEMEE",
+      "type": "government",
+      "region_code": "04",
+      "district_code": "0496"
+    },
+    {
+      "code": "S0500",
+      "name": "WANIKE",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0500"
+    },
+    {
+      "code": "S0501",
+      "name": "UWELENI",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0501"
+    },
+    {
+      "code": "S0506",
+      "name": "UNGWASI",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0506"
+    },
+    {
+      "code": "S0511",
+      "name": "HANDENI",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0511"
+    },
+    {
+      "code": "S0514",
+      "name": "UROKI",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0514"
+    },
+    {
+      "code": "S0515",
+      "name": "ILULA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0515"
+    },
+    {
+      "code": "S0516",
+      "name": "MOMBO",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0516"
+    },
+    {
+      "code": "S0517",
+      "name": "KILI",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0517"
+    },
+    {
+      "code": "S0521",
+      "name": "MATOMBO",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0521"
+    },
+    {
+      "code": "S0524",
+      "name": "RUJEWA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0524"
+    },
+    {
+      "code": "S0526",
+      "name": "MRINGA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0526"
+    },
+    {
+      "code": "S0527",
+      "name": "ULAYASI",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0527"
+    },
+    {
+      "code": "S0530",
+      "name": "NDWIKA GIRLS'",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0530"
+    },
+    {
+      "code": "S0533",
+      "name": "SARWATT",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0533"
+    },
+    {
+      "code": "S0534",
+      "name": "ST.ANTHONY'S",
+      "type": "private",
+      "region_code": "05",
+      "district_code": "0534"
+    },
+    {
+      "code": "S0535",
+      "name": "MAKOGA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0535"
+    },
+    {
+      "code": "S0537",
+      "name": "ST.PAUL'S LIULI",
+      "type": "private",
+      "region_code": "05",
+      "district_code": "0537"
+    },
+    {
+      "code": "S0538",
+      "name": "VWAWA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0538"
+    },
+    {
+      "code": "S0539",
+      "name": "MAGU",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0539"
+    },
+    {
+      "code": "S0540",
+      "name": "MAPOSENI",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0540"
+    },
+    {
+      "code": "S0541",
+      "name": "MARAMBA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0541"
+    },
+    {
+      "code": "S0543",
+      "name": "MANEROMANGO",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0543"
+    },
+    {
+      "code": "S0544",
+      "name": "MKUU",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0544"
+    },
+    {
+      "code": "S0546",
+      "name": "PAMBA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0546"
+    },
+    {
+      "code": "S0547",
+      "name": "MAZWI",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0547"
+    },
+    {
+      "code": "S0548",
+      "name": "SHAMBALAI",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0548"
+    },
+    {
+      "code": "S0549",
+      "name": "LUGOBA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0549"
+    },
+    {
+      "code": "S0550",
+      "name": "BUGENE",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0550"
+    },
+    {
+      "code": "S0551",
+      "name": "NACHINGWEA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0551"
+    },
+    {
+      "code": "S0552",
+      "name": "MAGOTO",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0552"
+    },
+    {
+      "code": "S0554",
+      "name": "NGUDU",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0554"
+    },
+    {
+      "code": "S0555",
+      "name": "BUNGU",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0555"
+    },
+    {
+      "code": "S0556",
+      "name": "MAKONGORO",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0556"
+    },
+    {
+      "code": "S0558",
+      "name": "MWANGA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0558"
+    },
+    {
+      "code": "S0559",
+      "name": "BWABUKI",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0559"
+    },
+    {
+      "code": "S0560",
+      "name": "KASULU",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0560"
+    },
+    {
+      "code": "S0561",
+      "name": "MONTFORT",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0561"
+    },
+    {
+      "code": "S0563",
+      "name": "TABORA TEACHERS' COLLEGE",
+      "type": "private",
+      "region_code": "05",
+      "district_code": "0563"
+    },
+    {
+      "code": "S0564",
+      "name": "BUSWELU",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0564"
+    },
+    {
+      "code": "S0566",
+      "name": "BUTIMBA TEACHERS' COLLEGE",
+      "type": "private",
+      "region_code": "05",
+      "district_code": "0566"
+    },
+    {
+      "code": "S0578",
+      "name": "TAQWA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0578"
+    },
+    {
+      "code": "S0580",
+      "name": "IGOWOLE",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0580"
+    },
+    {
+      "code": "S0581",
+      "name": "ILEJE",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0581"
+    },
+    {
+      "code": "S0584",
+      "name": "LWANDAI",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0584"
+    },
+    {
+      "code": "S0585",
+      "name": "MUNANILA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0585"
+    },
+    {
+      "code": "S0586",
+      "name": "KAISHO",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0586"
+    },
+    {
+      "code": "S0590",
+      "name": "WILIMA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0590"
+    },
+    {
+      "code": "S0591",
+      "name": "RUANDA",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0591"
+    },
+    {
+      "code": "S0596",
+      "name": "LIWALE DAY",
+      "type": "government",
+      "region_code": "05",
+      "district_code": "0596"
+    },
+    {
+      "code": "S0600",
+      "name": "BUNDA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0600"
+    },
+    {
+      "code": "S0601",
+      "name": "SERENGETI DAY",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0601"
+    },
+    {
+      "code": "S0604",
+      "name": "KIBAKWE",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0604"
+    },
+    {
+      "code": "S0607",
+      "name": "LULUMBA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0607"
+    },
+    {
+      "code": "S0609",
+      "name": "MATAI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0609"
+    },
+    {
+      "code": "S0610",
+      "name": "NKASI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0610"
+    },
+    {
+      "code": "S0611",
+      "name": "KABANGA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0611"
+    },
+    {
+      "code": "S0612",
+      "name": "KAGANGO",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0612"
+    },
+    {
+      "code": "S0613",
+      "name": "NYAMPULUKANO",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0613"
+    },
+    {
+      "code": "S0614",
+      "name": "NYERERE",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0614"
+    },
+    {
+      "code": "S0616",
+      "name": "MWANDIGA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0616"
+    },
+    {
+      "code": "S0617",
+      "name": "LUSANGA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0617"
+    },
+    {
+      "code": "S0618",
+      "name": "LUPALILO",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0618"
+    },
+    {
+      "code": "S0622",
+      "name": "KUNDUCHI GIRLS' ISLAMIC HIGH SCHOOL",
+      "type": "private",
+      "region_code": "06",
+      "district_code": "0622"
+    },
+    {
+      "code": "S0625",
+      "name": "BALANGDALALU",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0625"
+    },
+    {
+      "code": "S0629",
+      "name": "EDMUND-RICE-SINON",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0629"
+    },
+    {
+      "code": "S0632",
+      "name": "BONDENI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0632"
+    },
+    {
+      "code": "S0633",
+      "name": "TALLO",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0633"
+    },
+    {
+      "code": "S0635",
+      "name": "MSUFINI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0635"
+    },
+    {
+      "code": "S0638",
+      "name": "BUNAZI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0638"
+    },
+    {
+      "code": "S0639",
+      "name": "UDZUNGWA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0639"
+    },
+    {
+      "code": "S0640",
+      "name": "MBALIZI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0640"
+    },
+    {
+      "code": "S0641",
+      "name": "MEATU",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0641"
+    },
+    {
+      "code": "S0643",
+      "name": "DAREDA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0643"
+    },
+    {
+      "code": "S0651",
+      "name": "UKUMBI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0651"
+    },
+    {
+      "code": "S0652",
+      "name": "POMERINI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0652"
+    },
+    {
+      "code": "S0653",
+      "name": "MWAKAVUTA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0653"
+    },
+    {
+      "code": "S0660",
+      "name": "MOROGORO TEACHERS' COLLEGE",
+      "type": "private",
+      "region_code": "06",
+      "district_code": "0660"
+    },
+    {
+      "code": "S0662",
+      "name": "MWANZI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0662"
+    },
+    {
+      "code": "S0663",
+      "name": "SANGITI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0663"
+    },
+    {
+      "code": "S0665",
+      "name": "MWEMBENI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0665"
+    },
+    {
+      "code": "S0667",
+      "name": "NYAISHOZI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0667"
+    },
+    {
+      "code": "S0668",
+      "name": "DAKAWA HIGH SCHOOL",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0668"
+    },
+    {
+      "code": "S0669",
+      "name": "UTETE",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0669"
+    },
+    {
+      "code": "S0670",
+      "name": "NYANG'HWALE",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0670"
+    },
+    {
+      "code": "S0671",
+      "name": "UBUNGO ISLAMIC HIGH SCHOOL",
+      "type": "private",
+      "region_code": "06",
+      "district_code": "0671"
+    },
+    {
+      "code": "S0673",
+      "name": "NANGWA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0673"
+    },
+    {
+      "code": "S0675",
+      "name": "MBUGWE",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0675"
+    },
+    {
+      "code": "S0676",
+      "name": "MABIRA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0676"
+    },
+    {
+      "code": "S0677",
+      "name": "TANDAHIMBA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0677"
+    },
+    {
+      "code": "S0680",
+      "name": "MWAZYE",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0680"
+    },
+    {
+      "code": "S0681",
+      "name": "IVUMWE",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0681"
+    },
+    {
+      "code": "S0682",
+      "name": "MPOROTO",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0682"
+    },
+    {
+      "code": "S0685",
+      "name": "NAMABENGO",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0685"
+    },
+    {
+      "code": "S0686",
+      "name": "CHATO",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0686"
+    },
+    {
+      "code": "S0688",
+      "name": "MSAKILA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0688"
+    },
+    {
+      "code": "S0689",
+      "name": "ENDASAK",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0689"
+    },
+    {
+      "code": "S0692",
+      "name": "ROSMINI",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0692"
+    },
+    {
+      "code": "S0694",
+      "name": "KANGA",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0694"
+    },
+    {
+      "code": "S0697",
+      "name": "KIGWE",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0697"
+    },
+    {
+      "code": "S0698",
+      "name": "ECKERNFORDE",
+      "type": "government",
+      "region_code": "06",
+      "district_code": "0698"
+    },
+    {
+      "code": "S0702",
+      "name": "IKWIRIRI",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0702"
+    },
+    {
+      "code": "S0704",
+      "name": "NSHAMBA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0704"
+    },
+    {
+      "code": "S0705",
+      "name": "LUPILA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0705"
+    },
+    {
+      "code": "S0706",
+      "name": "KALANGALALA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0706"
+    },
+    {
+      "code": "S0707",
+      "name": "KITETO",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0707"
+    },
+    {
+      "code": "S0708",
+      "name": "KIPINGO",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0708"
+    },
+    {
+      "code": "S0709",
+      "name": "BUKONGO",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0709"
+    },
+    {
+      "code": "S0710",
+      "name": "BINZA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0710"
+    },
+    {
+      "code": "S0711",
+      "name": "KITOMONDO",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0711"
+    },
+    {
+      "code": "S0712",
+      "name": "BARIADI",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0712"
+    },
+    {
+      "code": "S0713",
+      "name": "IGUNGA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0713"
+    },
+    {
+      "code": "S0715",
+      "name": "ILONGERO",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0715"
+    },
+    {
+      "code": "S0716",
+      "name": "MALECELA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0716"
+    },
+    {
+      "code": "S0720",
+      "name": "MPITIMBI",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0720"
+    },
+    {
+      "code": "S0721",
+      "name": "LEGURUKI",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0721"
+    },
+    {
+      "code": "S0725",
+      "name": "NEWMAN",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0725"
+    },
+    {
+      "code": "S0726",
+      "name": "MBEKENYERA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0726"
+    },
+    {
+      "code": "S0727",
+      "name": "MKWAJUNI",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0727"
+    },
+    {
+      "code": "S0729",
+      "name": "MSOLWA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0729"
+    },
+    {
+      "code": "S0731",
+      "name": "MAKONGO",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0731"
+    },
+    {
+      "code": "S0738",
+      "name": "RIDHWAA SEMINARY",
+      "type": "private",
+      "region_code": "07",
+      "district_code": "0738"
+    },
+    {
+      "code": "S0739",
+      "name": "HIJRA SEMINARY",
+      "type": "private",
+      "region_code": "07",
+      "district_code": "0739"
+    },
+    {
+      "code": "S0740",
+      "name": "ALI HASSAN MWINYI ISLAMIC",
+      "type": "private",
+      "region_code": "07",
+      "district_code": "0740"
+    },
+    {
+      "code": "S0741",
+      "name": "ITENDE",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0741"
+    },
+    {
+      "code": "S0742",
+      "name": "BULONGWA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0742"
+    },
+    {
+      "code": "S0744",
+      "name": "NANGA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0744"
+    },
+    {
+      "code": "S0746",
+      "name": "MNYAMBE",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0746"
+    },
+    {
+      "code": "S0748",
+      "name": "KAWAWA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0748"
+    },
+    {
+      "code": "S0750",
+      "name": "OSHARA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0750"
+    },
+    {
+      "code": "S0751",
+      "name": "RUHUWIKO",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0751"
+    },
+    {
+      "code": "S0752",
+      "name": "RUNZEWE",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0752"
+    },
+    {
+      "code": "S0754",
+      "name": "URAMBO DAY",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0754"
+    },
+    {
+      "code": "S0757",
+      "name": "KYELA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0757"
+    },
+    {
+      "code": "S0759",
+      "name": "GAIRO",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0759"
+    },
+    {
+      "code": "S0765",
+      "name": "UNYANYEMBE",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0765"
+    },
+    {
+      "code": "S0766",
+      "name": "KIMAMBA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0766"
+    },
+    {
+      "code": "S0769",
+      "name": "MALAGARASI",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0769"
+    },
+    {
+      "code": "S0770",
+      "name": "SUMVE",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0770"
+    },
+    {
+      "code": "S0771",
+      "name": "ASKOFU ADRIAN MKOBA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0771"
+    },
+    {
+      "code": "S0774",
+      "name": "LUPA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0774"
+    },
+    {
+      "code": "S0778",
+      "name": "SONGE",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0778"
+    },
+    {
+      "code": "S0782",
+      "name": "MWIKA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0782"
+    },
+    {
+      "code": "S0784",
+      "name": "AIRWING",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0784"
+    },
+    {
+      "code": "S0786",
+      "name": "NDONO",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0786"
+    },
+    {
+      "code": "S0787",
+      "name": "MSANGENI",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0787"
+    },
+    {
+      "code": "S0788",
+      "name": "BUTURI",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0788"
+    },
+    {
+      "code": "S0792",
+      "name": "MANGAKA",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0792"
+    },
+    {
+      "code": "S0796",
+      "name": "MCHANGAMDOGO",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0796"
+    },
+    {
+      "code": "S0798",
+      "name": "KOROGWE TEACHERS' COLLEGE",
+      "type": "private",
+      "region_code": "07",
+      "district_code": "0798"
+    },
+    {
+      "code": "S0799",
+      "name": "MONDO",
+      "type": "government",
+      "region_code": "07",
+      "district_code": "0799"
+    },
+    {
+      "code": "S0800",
+      "name": "LOYOLA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0800"
+    },
+    {
+      "code": "S0801",
+      "name": "MATOLA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0801"
+    },
+    {
+      "code": "S0804",
+      "name": "MVUMI",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0804"
+    },
+    {
+      "code": "S0811",
+      "name": "KIFARU",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0811"
+    },
+    {
+      "code": "S0812",
+      "name": "MAHIWA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0812"
+    },
+    {
+      "code": "S0818",
+      "name": "TARAKEA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0818"
+    },
+    {
+      "code": "S0821",
+      "name": "NYANDUGA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0821"
+    },
+    {
+      "code": "S0824",
+      "name": "IDETE",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0824"
+    },
+    {
+      "code": "S0825",
+      "name": "MUDIO ISLAMIC SEMINARY",
+      "type": "private",
+      "region_code": "08",
+      "district_code": "0825"
+    },
+    {
+      "code": "S0826",
+      "name": "MALAMPAKA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0826"
+    },
+    {
+      "code": "S0827",
+      "name": "MASONYA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0827"
+    },
+    {
+      "code": "S0831",
+      "name": "NANGWANDA GIRLS'",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0831"
+    },
+    {
+      "code": "S0832",
+      "name": "KIPONDA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0832"
+    },
+    {
+      "code": "S0833",
+      "name": "JANG'OMBE",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0833"
+    },
+    {
+      "code": "S0836",
+      "name": "KILUVYA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0836"
+    },
+    {
+      "code": "S0840",
+      "name": "ISMANI",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0840"
+    },
+    {
+      "code": "S0841",
+      "name": "HUMURA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0841"
+    },
+    {
+      "code": "S0845",
+      "name": "KIGONIGONI",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0845"
+    },
+    {
+      "code": "S0849",
+      "name": "MOREMBE DAY",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0849"
+    },
+    {
+      "code": "S0851",
+      "name": "USANGI DAY",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0851"
+    },
+    {
+      "code": "S0853",
+      "name": "KIZWITE",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0853"
+    },
+    {
+      "code": "S0854",
+      "name": "NYANGAO",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0854"
+    },
+    {
+      "code": "S0857",
+      "name": "LONGIDO",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0857"
+    },
+    {
+      "code": "S0859",
+      "name": "RANGWI",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0859"
+    },
+    {
+      "code": "S0861",
+      "name": "NELSON-MANDELA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0861"
+    },
+    {
+      "code": "S0862",
+      "name": "KONGEI",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0862"
+    },
+    {
+      "code": "S0867",
+      "name": "PANDAHILL",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0867"
+    },
+    {
+      "code": "S0870",
+      "name": "KILANGALANGA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0870"
+    },
+    {
+      "code": "S0880",
+      "name": "KAIGARA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0880"
+    },
+    {
+      "code": "S0881",
+      "name": "MANGA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0881"
+    },
+    {
+      "code": "S0882",
+      "name": "SONGEA MUSLIM SEMINARY",
+      "type": "private",
+      "region_code": "08",
+      "district_code": "0882"
+    },
+    {
+      "code": "S0883",
+      "name": "DONBOSCO-DIDIA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0883"
+    },
+    {
+      "code": "S0884",
+      "name": "MAMBWE",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0884"
+    },
+    {
+      "code": "S0885",
+      "name": "KANADI",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0885"
+    },
+    {
+      "code": "S0887",
+      "name": "INYONGA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0887"
+    },
+    {
+      "code": "S0890",
+      "name": "IWALANJE",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0890"
+    },
+    {
+      "code": "S0896",
+      "name": "KIZUKA",
+      "type": "government",
+      "region_code": "08",
+      "district_code": "0896"
+    },
+    {
+      "code": "S0901",
+      "name": "KISIWANI",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0901"
+    },
+    {
+      "code": "S0904",
+      "name": "KONGWA",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0904"
+    },
+    {
+      "code": "S0906",
+      "name": "VUDOI",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0906"
+    },
+    {
+      "code": "S0909",
+      "name": "NAZARENE",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0909"
+    },
+    {
+      "code": "S0912",
+      "name": "BOGWE",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0912"
+    },
+    {
+      "code": "S0913",
+      "name": "USONGWE",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0913"
+    },
+    {
+      "code": "S0922",
+      "name": "MWINYI",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0922"
+    },
+    {
+      "code": "S0924",
+      "name": "IKUNGI",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0924"
+    },
+    {
+      "code": "S0925",
+      "name": "KASOMA",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0925"
+    },
+    {
+      "code": "S0927",
+      "name": "LANGASANI",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0927"
+    },
+    {
+      "code": "S0935",
+      "name": "MWANDOYA",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0935"
+    },
+    {
+      "code": "S0936",
+      "name": "KALIUA",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0936"
+    },
+    {
+      "code": "S0938",
+      "name": "MBEZI BEACH",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0938"
+    },
+    {
+      "code": "S0947",
+      "name": "DR. OLSEN",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0947"
+    },
+    {
+      "code": "S0948",
+      "name": "BUMANGI",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0948"
+    },
+    {
+      "code": "S0949",
+      "name": "IRKISONGO",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0949"
+    },
+    {
+      "code": "S0954",
+      "name": "MKONGO",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0954"
+    },
+    {
+      "code": "S0956",
+      "name": "ILEMBO",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0956"
+    },
+    {
+      "code": "S0960",
+      "name": "BENJAMIN WILLIAM MKAPA HIGH SCHOOL",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0960"
+    },
+    {
+      "code": "S0961",
+      "name": "MAGOMA",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0961"
+    },
+    {
+      "code": "S0964",
+      "name": "HOMBOLO",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0964"
+    },
+    {
+      "code": "S0968",
+      "name": "MATAKA",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0968"
+    },
+    {
+      "code": "S0970",
+      "name": "DUTWA",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0970"
+    },
+    {
+      "code": "S0972",
+      "name": "CHILONWA",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0972"
+    },
+    {
+      "code": "S0973",
+      "name": "EINOTI",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0973"
+    },
+    {
+      "code": "S0978",
+      "name": "DIGODIGO",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0978"
+    },
+    {
+      "code": "S0984",
+      "name": "BUKAMA",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0984"
+    },
+    {
+      "code": "S0995",
+      "name": "TURKISH MAARIF",
+      "type": "government",
+      "region_code": "09",
+      "district_code": "0995"
+    },
+    {
+      "code": "S1003",
+      "name": "MANDAKA TEACHER'S COLLEGE",
+      "type": "private",
+      "region_code": "10",
+      "district_code": "1003"
+    },
+    {
+      "code": "S1008",
+      "name": "ST.MAURUS CHEMCHEMI",
+      "type": "private",
+      "region_code": "10",
+      "district_code": "1008"
+    },
+    {
+      "code": "S1009",
+      "name": "BABATI DAY",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1009"
+    },
+    {
+      "code": "S1011",
+      "name": "CHANG'OMBE",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1011"
+    },
+    {
+      "code": "S1013",
+      "name": "CHIEF DODO DAY",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1013"
+    },
+    {
+      "code": "S1026",
+      "name": "PUMA",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1026"
+    },
+    {
+      "code": "S1027",
+      "name": "CHAMWINO",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1027"
+    },
+    {
+      "code": "S1028",
+      "name": "BUTUNDWE",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1028"
+    },
+    {
+      "code": "S1032",
+      "name": "ITIGI",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1032"
+    },
+    {
+      "code": "S1033",
+      "name": "AMANI ABEID KARUME",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1033"
+    },
+    {
+      "code": "S1034",
+      "name": "ITILIMA",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1034"
+    },
+    {
+      "code": "S1043",
+      "name": "TUKUYU",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1043"
+    },
+    {
+      "code": "S1051",
+      "name": "MKOLANI",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1051"
+    },
+    {
+      "code": "S1053",
+      "name": "RAFSANJANI-SOGA",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1053"
+    },
+    {
+      "code": "S1055",
+      "name": "SOUTHERN HIGHLANDS",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1055"
+    },
+    {
+      "code": "S1061",
+      "name": "MAKIBA",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1061"
+    },
+    {
+      "code": "S1063",
+      "name": "MULBADAW",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1063"
+    },
+    {
+      "code": "S1068",
+      "name": "NASIBUGANI",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1068"
+    },
+    {
+      "code": "S1069",
+      "name": "MLANGALI",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1069"
+    },
+    {
+      "code": "S1071",
+      "name": "ST. MATTHEW'S",
+      "type": "private",
+      "region_code": "10",
+      "district_code": "1071"
+    },
+    {
+      "code": "S1072",
+      "name": "KAMENE",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1072"
+    },
+    {
+      "code": "S1077",
+      "name": "OCEAN",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1077"
+    },
+    {
+      "code": "S1084",
+      "name": "VUMA",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1084"
+    },
+    {
+      "code": "S1092",
+      "name": "KWEMARAMBA",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1092"
+    },
+    {
+      "code": "S1093",
+      "name": "ALDERSGATE",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1093"
+    },
+    {
+      "code": "S1094",
+      "name": "JIHAD",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1094"
+    },
+    {
+      "code": "S1098",
+      "name": "MAJI YA CHAI",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1098"
+    },
+    {
+      "code": "S1099",
+      "name": "NYEHUNGE",
+      "type": "government",
+      "region_code": "10",
+      "district_code": "1099"
+    },
+    {
+      "code": "S1104",
+      "name": "IDODI",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1104"
+    },
+    {
+      "code": "S1106",
+      "name": "KIKARO",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1106"
+    },
+    {
+      "code": "S1107",
+      "name": "MWAMASHIMBA",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1107"
+    },
+    {
+      "code": "S1118",
+      "name": "MLONGWEMA",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1118"
+    },
+    {
+      "code": "S1119",
+      "name": "ZANZIBAR COMMERCIAL",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1119"
+    },
+    {
+      "code": "S1122",
+      "name": "CHIKANAMLILO",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1122"
+    },
+    {
+      "code": "S1126",
+      "name": "MINZIRO",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1126"
+    },
+    {
+      "code": "S1127",
+      "name": "BUGANDO",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1127"
+    },
+    {
+      "code": "S1129",
+      "name": "IGUGUNO",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1129"
+    },
+    {
+      "code": "S1132",
+      "name": "SIMANJIRO",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1132"
+    },
+    {
+      "code": "S1136",
+      "name": "KASANGEZI",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1136"
+    },
+    {
+      "code": "S1139",
+      "name": "SOYA",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1139"
+    },
+    {
+      "code": "S1140",
+      "name": "MWALIMU NYERERE",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1140"
+    },
+    {
+      "code": "S1141",
+      "name": "SWILLA",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1141"
+    },
+    {
+      "code": "S1144",
+      "name": "ISIMILA",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1144"
+    },
+    {
+      "code": "S1148",
+      "name": "MADIBIRA",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1148"
+    },
+    {
+      "code": "S1153",
+      "name": "BUSERESERE",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1153"
+    },
+    {
+      "code": "S1155",
+      "name": "SONGA",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1155"
+    },
+    {
+      "code": "S1157",
+      "name": "IWAWA",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1157"
+    },
+    {
+      "code": "S1159",
+      "name": "EMBARWAY",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1159"
+    },
+    {
+      "code": "S1160",
+      "name": "MUYENZI",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1160"
+    },
+    {
+      "code": "S1161",
+      "name": "MAWELEWELE",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1161"
+    },
+    {
+      "code": "S1164",
+      "name": "MISSUNGWI",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1164"
+    },
+    {
+      "code": "S1174",
+      "name": "COASTAL",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1174"
+    },
+    {
+      "code": "S1177",
+      "name": "MAMIRE",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1177"
+    },
+    {
+      "code": "S1183",
+      "name": "SANYA JUU",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1183"
+    },
+    {
+      "code": "S1186",
+      "name": "MAKITA",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1186"
+    },
+    {
+      "code": "S1187",
+      "name": "ST.MARY GORETI",
+      "type": "private",
+      "region_code": "11",
+      "district_code": "1187"
+    },
+    {
+      "code": "S1197",
+      "name": "GREEN ACRES",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1197"
+    },
+    {
+      "code": "S1198",
+      "name": "TANZANIA ADVENTIST",
+      "type": "private",
+      "region_code": "11",
+      "district_code": "1198"
+    },
+    {
+      "code": "S1199",
+      "name": "MADABA",
+      "type": "government",
+      "region_code": "11",
+      "district_code": "1199"
+    },
+    {
+      "code": "S1201",
+      "name": "LUFILYO",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1201"
+    },
+    {
+      "code": "S1202",
+      "name": "MTERA",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1202"
+    },
+    {
+      "code": "S1205",
+      "name": "GEHANDU",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1205"
+    },
+    {
+      "code": "S1215",
+      "name": "ENGUSERO",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1215"
+    },
+    {
+      "code": "S1220",
+      "name": "MSAMALA",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1220"
+    },
+    {
+      "code": "S1232",
+      "name": "KATE",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1232"
+    },
+    {
+      "code": "S1238",
+      "name": "MKULA",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1238"
+    },
+    {
+      "code": "S1240",
+      "name": "DAKAMA",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1240"
+    },
+    {
+      "code": "S1241",
+      "name": "JUHUDI",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1241"
+    },
+    {
+      "code": "S1245",
+      "name": "KAINAM",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1245"
+    },
+    {
+      "code": "S1246",
+      "name": "MIDLANDS",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1246"
+    },
+    {
+      "code": "S1249",
+      "name": "SIMBEGA",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1249"
+    },
+    {
+      "code": "S1251",
+      "name": "ZIBA",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1251"
+    },
+    {
+      "code": "S1255",
+      "name": "NKOWE",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1255"
+    },
+    {
+      "code": "S1257",
+      "name": "ARAFAH ISLAMIC SEMINARY",
+      "type": "private",
+      "region_code": "12",
+      "district_code": "1257"
+    },
+    {
+      "code": "S1258",
+      "name": "TUMATI",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1258"
+    },
+    {
+      "code": "S1261",
+      "name": "MERRIWA",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1261"
+    },
+    {
+      "code": "S1262",
+      "name": "MATEMA BEACH",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1262"
+    },
+    {
+      "code": "S1264",
+      "name": "BWAWANI",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1264"
+    },
+    {
+      "code": "S1268",
+      "name": "KISIMIRI",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1268"
+    },
+    {
+      "code": "S1270",
+      "name": "NYARUBANDA",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1270"
+    },
+    {
+      "code": "S1272",
+      "name": "KISARIKA",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1272"
+    },
+    {
+      "code": "S1274",
+      "name": "LOLIONDO",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1274"
+    },
+    {
+      "code": "S1278",
+      "name": "MBEZI",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1278"
+    },
+    {
+      "code": "S1282",
+      "name": "UBIRI",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1282"
+    },
+    {
+      "code": "S1284",
+      "name": "NORTHERN HIGHLANDS",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1284"
+    },
+    {
+      "code": "S1285",
+      "name": "FLORIAN",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1285"
+    },
+    {
+      "code": "S1288",
+      "name": "HAI",
+      "type": "government",
+      "region_code": "12",
+      "district_code": "1288"
+    },
+    {
+      "code": "S1291",
+      "name": "PEMBA ISLAMIC COLLEGE",
+      "type": "private",
+      "region_code": "12",
+      "district_code": "1291"
+    },
+    {
+      "code": "S1310",
+      "name": "TABATA",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1310"
+    },
+    {
+      "code": "S1315",
+      "name": "LAKE TANGANYIKA",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1315"
+    },
+    {
+      "code": "S1318",
+      "name": "NANDEMBO",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1318"
+    },
+    {
+      "code": "S1322",
+      "name": "NTABA",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1322"
+    },
+    {
+      "code": "S1324",
+      "name": "HARAMBEE",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1324"
+    },
+    {
+      "code": "S1338",
+      "name": "CHIUNGUTWA",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1338"
+    },
+    {
+      "code": "S1339",
+      "name": "KYERWA BRIGHT STAR",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1339"
+    },
+    {
+      "code": "S1340",
+      "name": "LWANGWA",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1340"
+    },
+    {
+      "code": "S1341",
+      "name": "NAKAGURU",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1341"
+    },
+    {
+      "code": "S1343",
+      "name": "ANNE MARIE",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1343"
+    },
+    {
+      "code": "S1344",
+      "name": "MWALIMU J K NYERERE",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1344"
+    },
+    {
+      "code": "S1349",
+      "name": "NYAKAHURA",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1349"
+    },
+    {
+      "code": "S1351",
+      "name": "BURONGE",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1351"
+    },
+    {
+      "code": "S1353",
+      "name": "ZAKIA MEGHJI",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1353"
+    },
+    {
+      "code": "S1356",
+      "name": "KAMENA",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1356"
+    },
+    {
+      "code": "S1361",
+      "name": "SAMORA MACHEL",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1361"
+    },
+    {
+      "code": "S1366",
+      "name": "HIGH VIEW SCHOOL OF ZANZIBAR",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1366"
+    },
+    {
+      "code": "S1373",
+      "name": "MBELEI",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1373"
+    },
+    {
+      "code": "S1375",
+      "name": "NEW ERA",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1375"
+    },
+    {
+      "code": "S1378",
+      "name": "KLERRUU TEACHERS' COLLEGE",
+      "type": "private",
+      "region_code": "13",
+      "district_code": "1378"
+    },
+    {
+      "code": "S1380",
+      "name": "TUKUYU TEACHERS' COLLEGE",
+      "type": "private",
+      "region_code": "13",
+      "district_code": "1380"
+    },
+    {
+      "code": "S1383",
+      "name": "MZINGA",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1383"
+    },
+    {
+      "code": "S1384",
+      "name": "MATEMANGA",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1384"
+    },
+    {
+      "code": "S1392",
+      "name": "NATTA",
+      "type": "government",
+      "region_code": "13",
+      "district_code": "1392"
+    },
+    {
+      "code": "S1402",
+      "name": "KASAMWA",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1402"
+    },
+    {
+      "code": "S1409",
+      "name": "HAGAFILO",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1409"
+    },
+    {
+      "code": "S1410",
+      "name": "MSALALA",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1410"
+    },
+    {
+      "code": "S1411",
+      "name": "KIUTA",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1411"
+    },
+    {
+      "code": "S1418",
+      "name": "KISHAPU",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1418"
+    },
+    {
+      "code": "S1420",
+      "name": "KAYUKI",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1420"
+    },
+    {
+      "code": "S1430",
+      "name": "KIUMA",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1430"
+    },
+    {
+      "code": "S1433",
+      "name": "BALILI",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1433"
+    },
+    {
+      "code": "S1434",
+      "name": "PIUS",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1434"
+    },
+    {
+      "code": "S1442",
+      "name": "MWANDET",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1442"
+    },
+    {
+      "code": "S1450",
+      "name": "EFATHA SEMINARY",
+      "type": "private",
+      "region_code": "14",
+      "district_code": "1450"
+    },
+    {
+      "code": "S1454",
+      "name": "LONDONI",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1454"
+    },
+    {
+      "code": "S1463",
+      "name": "AMANAH ISLAMIC SEMINARY",
+      "type": "private",
+      "region_code": "14",
+      "district_code": "1463"
+    },
+    {
+      "code": "S1466",
+      "name": "MAGADINI",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1466"
+    },
+    {
+      "code": "S1469",
+      "name": "MBONEA",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1469"
+    },
+    {
+      "code": "S1474",
+      "name": "WHITE LAKE",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1474"
+    },
+    {
+      "code": "S1482",
+      "name": "KAGEMU",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1482"
+    },
+    {
+      "code": "S1495",
+      "name": "GENESIS HIGH SCHOOL",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1495"
+    },
+    {
+      "code": "S1498",
+      "name": "LUGEYE",
+      "type": "government",
+      "region_code": "14",
+      "district_code": "1498"
+    },
+    {
+      "code": "S1507",
+      "name": "TAGAMENDA",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1507"
+    },
+    {
+      "code": "S1509",
+      "name": "MAWINDI",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1509"
+    },
+    {
+      "code": "S1519",
+      "name": "ARUSHA TURKISH MAARIF",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1519"
+    },
+    {
+      "code": "S1522",
+      "name": "SCOLASTICA",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1522"
+    },
+    {
+      "code": "S1523",
+      "name": "AGAPE MBAGALA",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1523"
+    },
+    {
+      "code": "S1531",
+      "name": "OLD SHINYANGA",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1531"
+    },
+    {
+      "code": "S1535",
+      "name": "NAWENGE",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1535"
+    },
+    {
+      "code": "S1549",
+      "name": "ENGUTOTO",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1549"
+    },
+    {
+      "code": "S1552",
+      "name": "CHISENGA",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1552"
+    },
+    {
+      "code": "S1573",
+      "name": "MLANGARINI",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1573"
+    },
+    {
+      "code": "S1578",
+      "name": "CHANGARAWE",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1578"
+    },
+    {
+      "code": "S1584",
+      "name": "KIWANJA",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1584"
+    },
+    {
+      "code": "S1593",
+      "name": "KENT",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1593"
+    },
+    {
+      "code": "S1596",
+      "name": "NYERERE HIGH SCHOOL-MIGOLI",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1596"
+    },
+    {
+      "code": "S1598",
+      "name": "KAKONKO",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1598"
+    },
+    {
+      "code": "S1599",
+      "name": "BAOBAB",
+      "type": "government",
+      "region_code": "15",
+      "district_code": "1599"
+    },
+    {
+      "code": "S1600",
+      "name": "BISHOP DURNING HIGH SCHOOL",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1600"
+    },
+    {
+      "code": "S1604",
+      "name": "THOMAS MORE MACHRINA",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1604"
+    },
+    {
+      "code": "S1608",
+      "name": "NTUNDURU",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1608"
+    },
+    {
+      "code": "S1609",
+      "name": "RORYA",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1609"
+    },
+    {
+      "code": "S1610",
+      "name": "CHIEF KIDULILE",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1610"
+    },
+    {
+      "code": "S1611",
+      "name": "KALENGE",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1611"
+    },
+    {
+      "code": "S1623",
+      "name": "AGGREY",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1623"
+    },
+    {
+      "code": "S1628",
+      "name": "MENGELE",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1628"
+    },
+    {
+      "code": "S1637",
+      "name": "MILUNDIKWA",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1637"
+    },
+    {
+      "code": "S1642",
+      "name": "HERI",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1642"
+    },
+    {
+      "code": "S1645",
+      "name": "LUBALA",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1645"
+    },
+    {
+      "code": "S1648",
+      "name": "SUMBAWANGA",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1648"
+    },
+    {
+      "code": "S1659",
+      "name": "ABOUD JUMBE",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1659"
+    },
+    {
+      "code": "S1661",
+      "name": "NURU",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1661"
+    },
+    {
+      "code": "S1662",
+      "name": "MKONO",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1662"
+    },
+    {
+      "code": "S1668",
+      "name": "KIWELE",
+      "type": "government",
+      "region_code": "16",
+      "district_code": "1668"
+    },
+    {
+      "code": "S1682",
+      "name": "AL-RIYAMI ACADEMY",
+      "type": "private",
+      "region_code": "16",
+      "district_code": "1682"
+    },
+    {
+      "code": "S1718",
+      "name": "BEREGE",
+      "type": "government",
+      "region_code": "17",
+      "district_code": "1718"
+    },
+    {
+      "code": "S1719",
+      "name": "NASULI",
+      "type": "government",
+      "region_code": "17",
+      "district_code": "1719"
+    },
+    {
+      "code": "S1722",
+      "name": "TEMEKE",
+      "type": "government",
+      "region_code": "17",
+      "district_code": "1722"
+    },
+    {
+      "code": "S1732",
+      "name": "MBALAMAZIWA",
+      "type": "government",
+      "region_code": "17",
+      "district_code": "1732"
+    },
+    {
+      "code": "S1757",
+      "name": "BENDEL MEMORIAL",
+      "type": "government",
+      "region_code": "17",
+      "district_code": "1757"
+    },
+    {
+      "code": "S1769",
+      "name": "SHANTA MINE",
+      "type": "government",
+      "region_code": "17",
+      "district_code": "1769"
+    },
+    {
+      "code": "S1770",
+      "name": "IMAGE",
+      "type": "government",
+      "region_code": "17",
+      "district_code": "1770"
+    },
+    {
+      "code": "S1800",
+      "name": "NSIMBO",
+      "type": "government",
+      "region_code": "18",
+      "district_code": "1800"
+    },
+    {
+      "code": "S1821",
+      "name": "KIMALA",
+      "type": "government",
+      "region_code": "18",
+      "district_code": "1821"
+    },
+    {
+      "code": "S1822",
+      "name": "ANNAGAMAZO",
+      "type": "government",
+      "region_code": "18",
+      "district_code": "1822"
+    },
+    {
+      "code": "S1842",
+      "name": "TAWHEED SEMINARY",
+      "type": "private",
+      "region_code": "18",
+      "district_code": "1842"
+    },
+    {
+      "code": "S1865",
+      "name": "MKINGALEO",
+      "type": "government",
+      "region_code": "18",
+      "district_code": "1865"
+    },
+    {
+      "code": "S1884",
+      "name": "PIUS MSEKWA",
+      "type": "government",
+      "region_code": "18",
+      "district_code": "1884"
+    },
+    {
+      "code": "S1888",
+      "name": "PATRICK MISSION",
+      "type": "government",
+      "region_code": "18",
+      "district_code": "1888"
+    },
+    {
+      "code": "S1913",
+      "name": "ITIPINGI",
+      "type": "government",
+      "region_code": "19",
+      "district_code": "1913"
+    },
+    {
+      "code": "S1936",
+      "name": "BUKOMBE",
+      "type": "government",
+      "region_code": "19",
+      "district_code": "1936"
+    },
+    {
+      "code": "S1939",
+      "name": "MAWENI",
+      "type": "government",
+      "region_code": "19",
+      "district_code": "1939"
+    },
+    {
+      "code": "S1985",
+      "name": "AYALAGAYA",
+      "type": "government",
+      "region_code": "19",
+      "district_code": "1985"
+    },
+    {
+      "code": "S2006",
+      "name": "MSAKWALO",
+      "type": "government",
+      "region_code": "20",
+      "district_code": "2006"
+    },
+    {
+      "code": "S2010",
+      "name": "KIFAI MODERN",
+      "type": "government",
+      "region_code": "20",
+      "district_code": "2010"
+    },
+    {
+      "code": "S2044",
+      "name": "IDUDA",
+      "type": "government",
+      "region_code": "20",
+      "district_code": "2044"
+    },
+    {
+      "code": "S2067",
+      "name": "MPEMBA",
+      "type": "government",
+      "region_code": "20",
+      "district_code": "2067"
+    },
+    {
+      "code": "S2073",
+      "name": "NANUNGU",
+      "type": "government",
+      "region_code": "20",
+      "district_code": "2073"
+    },
+    {
+      "code": "S2105",
+      "name": "NYALANJA",
+      "type": "government",
+      "region_code": "21",
+      "district_code": "2105"
+    },
+    {
+      "code": "S2119",
+      "name": "HARVEST MISSION",
+      "type": "private",
+      "region_code": "21",
+      "district_code": "2119"
+    },
+    {
+      "code": "S2147",
+      "name": "HAMZA AZIZI ALLY MEMORIAL",
+      "type": "government",
+      "region_code": "21",
+      "district_code": "2147"
+    },
+    {
+      "code": "S2153",
+      "name": "AQUINAS",
+      "type": "government",
+      "region_code": "21",
+      "district_code": "2153"
+    },
+    {
+      "code": "S2178",
+      "name": "GOLDEN RIDGE",
+      "type": "government",
+      "region_code": "21",
+      "district_code": "2178"
+    },
+    {
+      "code": "S2180",
+      "name": "MAGNIFICAT",
+      "type": "government",
+      "region_code": "21",
+      "district_code": "2180"
+    },
+    {
+      "code": "S2186",
+      "name": "MTINKO",
+      "type": "government",
+      "region_code": "21",
+      "district_code": "2186"
+    },
+    {
+      "code": "S2191",
+      "name": "MWANAMWEMA SHEIN",
+      "type": "government",
+      "region_code": "21",
+      "district_code": "2191"
+    },
+    {
+      "code": "S2202",
+      "name": "MUNGUMAJI",
+      "type": "government",
+      "region_code": "22",
+      "district_code": "2202"
+    },
+    {
+      "code": "S2211",
+      "name": "MWILAMVYA",
+      "type": "government",
+      "region_code": "22",
+      "district_code": "2211"
+    },
+    {
+      "code": "S2213",
+      "name": "USEVYA",
+      "type": "government",
+      "region_code": "22",
+      "district_code": "2213"
+    },
+    {
+      "code": "S2214",
+      "name": "RUNGWA",
+      "type": "government",
+      "region_code": "22",
+      "district_code": "2214"
+    },
+    {
+      "code": "S2241",
+      "name": "ILEMELA",
+      "type": "government",
+      "region_code": "22",
+      "district_code": "2241"
+    },
+    {
+      "code": "S2278",
+      "name": "MACECHU",
+      "type": "government",
+      "region_code": "22",
+      "district_code": "2278"
+    },
+    {
+      "code": "S2300",
+      "name": "MTIMBWE",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2300"
+    },
+    {
+      "code": "S2315",
+      "name": "KANDOTO SAYANSI GIRLS",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2315"
+    },
+    {
+      "code": "S2318",
+      "name": "YAKOBI",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2318"
+    },
+    {
+      "code": "S2325",
+      "name": "CANOSSA",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2325"
+    },
+    {
+      "code": "S2326",
+      "name": "MANGUANJUKI",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2326"
+    },
+    {
+      "code": "S2327",
+      "name": "FOUNTAIN GATE DODOMA",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2327"
+    },
+    {
+      "code": "S2333",
+      "name": "BRAVO",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2333"
+    },
+    {
+      "code": "S2334",
+      "name": "ISLAMIYA",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2334"
+    },
+    {
+      "code": "S2335",
+      "name": "YOHANNES",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2335"
+    },
+    {
+      "code": "S2339",
+      "name": "KO'SIRYAMU",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2339"
+    },
+    {
+      "code": "S2344",
+      "name": "WALIUL ISLAMIC BOYS'",
+      "type": "private",
+      "region_code": "23",
+      "district_code": "2344"
+    },
+    {
+      "code": "S2348",
+      "name": "ILALA ISLAMIC",
+      "type": "private",
+      "region_code": "23",
+      "district_code": "2348"
+    },
+    {
+      "code": "S2357",
+      "name": "MOUNT KIPENGERE",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2357"
+    },
+    {
+      "code": "S2359",
+      "name": "MAGHABE",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2359"
+    },
+    {
+      "code": "S2378",
+      "name": "AIRPORT",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2378"
+    },
+    {
+      "code": "S2384",
+      "name": "MWISI",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2384"
+    },
+    {
+      "code": "S2385",
+      "name": "KAREMA",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2385"
+    },
+    {
+      "code": "S2386",
+      "name": "TLAWI",
+      "type": "government",
+      "region_code": "23",
+      "district_code": "2386"
+    },
+    {
+      "code": "S2422",
+      "name": "UMBA",
+      "type": "government",
+      "region_code": "24",
+      "district_code": "2422"
+    },
+    {
+      "code": "S2426",
+      "name": "CHAMAZI ISLAMIC SEMINARY",
+      "type": "private",
+      "region_code": "24",
+      "district_code": "2426"
+    },
+    {
+      "code": "S2427",
+      "name": "ISONGOLE",
+      "type": "government",
+      "region_code": "24",
+      "district_code": "2427"
+    },
+    {
+      "code": "S2433",
+      "name": "GANAKO",
+      "type": "government",
+      "region_code": "24",
+      "district_code": "2433"
+    },
+    {
+      "code": "S2448",
+      "name": "MVUMI MISSION",
+      "type": "government",
+      "region_code": "24",
+      "district_code": "2448"
+    },
+    {
+      "code": "S2453",
+      "name": "MPUI",
+      "type": "government",
+      "region_code": "24",
+      "district_code": "2453"
+    },
+    {
+      "code": "S2469",
+      "name": "CELINA KOMBANI",
+      "type": "government",
+      "region_code": "24",
+      "district_code": "2469"
+    },
+    {
+      "code": "S2476",
+      "name": "MBAGALA",
+      "type": "government",
+      "region_code": "24",
+      "district_code": "2476"
+    },
+    {
+      "code": "S2497",
+      "name": "KIPETA",
+      "type": "government",
+      "region_code": "24",
+      "district_code": "2497"
+    },
+    {
+      "code": "S2499",
+      "name": "TUSIIME",
+      "type": "government",
+      "region_code": "24",
+      "district_code": "2499"
+    },
+    {
+      "code": "S2511",
+      "name": "MADISI",
+      "type": "government",
+      "region_code": "25",
+      "district_code": "2511"
+    },
+    {
+      "code": "S2512",
+      "name": "MOHORO",
+      "type": "government",
+      "region_code": "25",
+      "district_code": "2512"
+    },
+    {
+      "code": "S2516",
+      "name": "GRACE",
+      "type": "government",
+      "region_code": "25",
+      "district_code": "2516"
+    },
+    {
+      "code": "S2518",
+      "name": "KIWERE",
+      "type": "government",
+      "region_code": "25",
+      "district_code": "2518"
+    },
+    {
+      "code": "S2524",
+      "name": "MURUSAGAMBA",
+      "type": "government",
+      "region_code": "25",
+      "district_code": "2524"
+    },
+    {
+      "code": "S2531",
+      "name": "KASHISHI",
+      "type": "government",
+      "region_code": "25",
+      "district_code": "2531"
+    },
+    {
+      "code": "S2549",
+      "name": "ALPHA",
+      "type": "government",
+      "region_code": "25",
+      "district_code": "2549"
+    },
+    {
+      "code": "S2647",
+      "name": "DENIS",
+      "type": "government",
+      "region_code": "26",
+      "district_code": "2647"
+    },
+    {
+      "code": "S2655",
+      "name": "MARANATHA",
+      "type": "government",
+      "region_code": "26",
+      "district_code": "2655"
+    },
+    {
+      "code": "S2713",
+      "name": "NYAMUNGA",
+      "type": "government",
+      "region_code": "27",
+      "district_code": "2713"
+    },
+    {
+      "code": "S2804",
+      "name": "MUSOMA UTALII",
+      "type": "government",
+      "region_code": "28",
+      "district_code": "2804"
+    },
+    {
+      "code": "S2809",
+      "name": "MALAMBO",
+      "type": "government",
+      "region_code": "28",
+      "district_code": "2809"
+    },
+    {
+      "code": "S2810",
+      "name": "SAMUNGE",
+      "type": "government",
+      "region_code": "28",
+      "district_code": "2810"
+    },
+    {
+      "code": "S2859",
+      "name": "MAFIGA",
+      "type": "government",
+      "region_code": "28",
+      "district_code": "2859"
+    },
+    {
+      "code": "S2888",
+      "name": "MAZAE",
+      "type": "government",
+      "region_code": "28",
+      "district_code": "2888"
+    },
+    {
+      "code": "S2944",
+      "name": "MAGAMBA",
+      "type": "government",
+      "region_code": "29",
+      "district_code": "2944"
+    },
+    {
+      "code": "S2998",
+      "name": "BULUNDE",
+      "type": "government",
+      "region_code": "29",
+      "district_code": "2998"
+    },
+    {
+      "code": "S3000",
+      "name": "KIEMBESAMAKI 'A' ISLAMIC",
+      "type": "private",
+      "region_code": "30",
+      "district_code": "3000"
+    },
+    {
+      "code": "S3057",
+      "name": "MUKIRE",
+      "type": "government",
+      "region_code": "30",
+      "district_code": "3057"
+    },
+    {
+      "code": "S3058",
+      "name": "KIMULI",
+      "type": "government",
+      "region_code": "30",
+      "district_code": "3058"
+    },
+    {
+      "code": "S3063",
+      "name": "ISINGIRO",
+      "type": "government",
+      "region_code": "30",
+      "district_code": "3063"
+    },
+    {
+      "code": "S3064",
+      "name": "NYABISHENGE",
+      "type": "government",
+      "region_code": "30",
+      "district_code": "3064"
+    },
+    {
+      "code": "S3096",
+      "name": "MUNDINDI",
+      "type": "government",
+      "region_code": "30",
+      "district_code": "3096"
+    },
+    {
+      "code": "S3097",
+      "name": "DYNAMIC HIGH SCHOOL",
+      "type": "government",
+      "region_code": "30",
+      "district_code": "3097"
+    },
+    {
+      "code": "S3112",
+      "name": "NYANTAKARA",
+      "type": "government",
+      "region_code": "31",
+      "district_code": "3112"
+    },
+    {
+      "code": "S3135",
+      "name": "KAFUNDO",
+      "type": "government",
+      "region_code": "31",
+      "district_code": "3135"
+    },
+    {
+      "code": "S3156",
+      "name": "MWANALUGALI",
+      "type": "government",
+      "region_code": "31",
+      "district_code": "3156"
+    },
+    {
+      "code": "S3194",
+      "name": "SANJE",
+      "type": "government",
+      "region_code": "31",
+      "district_code": "3194"
+    },
+    {
+      "code": "S3228",
+      "name": "MIKWAMBE",
+      "type": "government",
+      "region_code": "32",
+      "district_code": "3228"
+    },
+    {
+      "code": "S3230",
+      "name": "NGUVA",
+      "type": "government",
+      "region_code": "32",
+      "district_code": "3230"
+    },
+    {
+      "code": "S3241",
+      "name": "JOSIAH GIRLS' HIGH SCHOOL",
+      "type": "government",
+      "region_code": "32",
+      "district_code": "3241"
+    },
+    {
+      "code": "S3308",
+      "name": "NAMWAI",
+      "type": "government",
+      "region_code": "33",
+      "district_code": "3308"
+    },
+    {
+      "code": "S3397",
+      "name": "TONGANI",
+      "type": "government",
+      "region_code": "33",
+      "district_code": "3397"
+    },
+    {
+      "code": "S3442",
+      "name": "TURA",
+      "type": "government",
+      "region_code": "34",
+      "district_code": "3442"
+    },
+    {
+      "code": "S3464",
+      "name": "ZOGOWALE",
+      "type": "government",
+      "region_code": "34",
+      "district_code": "3464"
+    },
+    {
+      "code": "S3470",
+      "name": "ABBEY",
+      "type": "government",
+      "region_code": "34",
+      "district_code": "3470"
+    },
+    {
+      "code": "S3482",
+      "name": "MWENYEHERI ANUARITE",
+      "type": "government",
+      "region_code": "34",
+      "district_code": "3482"
+    },
+    {
+      "code": "S3485",
+      "name": "WAAMUZI",
+      "type": "government",
+      "region_code": "34",
+      "district_code": "3485"
+    },
+    {
+      "code": "S3487",
+      "name": "NAISINYAI",
+      "type": "government",
+      "region_code": "34",
+      "district_code": "3487"
+    },
+    {
+      "code": "S3495",
+      "name": "KISAZA",
+      "type": "government",
+      "region_code": "34",
+      "district_code": "3495"
+    },
+    {
+      "code": "S3503",
+      "name": "MWENDAKULIMA",
+      "type": "government",
+      "region_code": "35",
+      "district_code": "3503"
+    },
+    {
+      "code": "S3532",
+      "name": "ACACIA",
+      "type": "government",
+      "region_code": "35",
+      "district_code": "3532"
+    },
+    {
+      "code": "S3535",
+      "name": "DEBRABANT",
+      "type": "government",
+      "region_code": "35",
+      "district_code": "3535"
+    },
+    {
+      "code": "S3536",
+      "name": "LILIAN KIBO",
+      "type": "government",
+      "region_code": "35",
+      "district_code": "3536"
+    },
+    {
+      "code": "S3537",
+      "name": "PAWAGA",
+      "type": "government",
+      "region_code": "35",
+      "district_code": "3537"
+    },
+    {
+      "code": "S3560",
+      "name": "UCHILE",
+      "type": "government",
+      "region_code": "35",
+      "district_code": "3560"
+    },
+    {
+      "code": "S3591",
+      "name": "RUSUMO",
+      "type": "government",
+      "region_code": "35",
+      "district_code": "3591"
+    },
+    {
+      "code": "S3601",
+      "name": "ILASI",
+      "type": "government",
+      "region_code": "36",
+      "district_code": "3601"
+    },
+    {
+      "code": "S3630",
+      "name": "HOLLYWOOD",
+      "type": "government",
+      "region_code": "36",
+      "district_code": "3630"
+    },
+    {
+      "code": "S3646",
+      "name": "ST. MARY'S DULUTI",
+      "type": "private",
+      "region_code": "36",
+      "district_code": "3646"
+    },
+    {
+      "code": "S3661",
+      "name": "BEROYA",
+      "type": "government",
+      "region_code": "36",
+      "district_code": "3661"
+    },
+    {
+      "code": "S3664",
+      "name": "MATAMBA",
+      "type": "government",
+      "region_code": "36",
+      "district_code": "3664"
+    },
+    {
+      "code": "S3691",
+      "name": "ANNA MKAPA",
+      "type": "government",
+      "region_code": "36",
+      "district_code": "3691"
+    },
+    {
+      "code": "S3730",
+      "name": "MBAMBA BAY",
+      "type": "government",
+      "region_code": "37",
+      "district_code": "3730"
+    },
+    {
+      "code": "S3761",
+      "name": "KISARAWE II",
+      "type": "government",
+      "region_code": "37",
+      "district_code": "3761"
+    },
+    {
+      "code": "S3773",
+      "name": "OJAKI",
+      "type": "government",
+      "region_code": "37",
+      "district_code": "3773"
+    },
+    {
+      "code": "S3788",
+      "name": "UYUMBU",
+      "type": "government",
+      "region_code": "37",
+      "district_code": "3788"
+    },
+    {
+      "code": "S3789",
+      "name": "MCHUNGAJI MWEMA",
+      "type": "government",
+      "region_code": "37",
+      "district_code": "3789"
+    },
+    {
+      "code": "S3790",
+      "name": "MAFISA",
+      "type": "government",
+      "region_code": "37",
+      "district_code": "3790"
+    },
+    {
+      "code": "S3793",
+      "name": "RUANGWA",
+      "type": "government",
+      "region_code": "37",
+      "district_code": "3793"
+    },
+    {
+      "code": "S3794",
+      "name": "NYANKUMBU",
+      "type": "government",
+      "region_code": "37",
+      "district_code": "3794"
+    },
+    {
+      "code": "S3795",
+      "name": "YEMEN",
+      "type": "government",
+      "region_code": "37",
+      "district_code": "3795"
+    },
+    {
+      "code": "S3800",
+      "name": "KIKODI",
+      "type": "government",
+      "region_code": "38",
+      "district_code": "3800"
+    },
+    {
+      "code": "S3804",
+      "name": "MUHEZA HIGH SCHOOL",
+      "type": "government",
+      "region_code": "38",
+      "district_code": "3804"
+    },
+    {
+      "code": "S3805",
+      "name": "MWIMBI",
+      "type": "government",
+      "region_code": "38",
+      "district_code": "3805"
+    },
+    {
+      "code": "S3809",
+      "name": "MWERA",
+      "type": "government",
+      "region_code": "38",
+      "district_code": "3809"
+    },
+    {
+      "code": "S3811",
+      "name": "OVERLAND",
+      "type": "government",
+      "region_code": "38",
+      "district_code": "3811"
+    },
+    {
+      "code": "S3825",
+      "name": "LUKIMA",
+      "type": "government",
+      "region_code": "38",
+      "district_code": "3825"
+    },
+    {
+      "code": "S3838",
+      "name": "PEACE HOUSE",
+      "type": "government",
+      "region_code": "38",
+      "district_code": "3838"
+    },
+    {
+      "code": "S3881",
+      "name": "AHMES",
+      "type": "government",
+      "region_code": "38",
+      "district_code": "3881"
+    },
+    {
+      "code": "S3885",
+      "name": "WENDA HIGH SCHOOL",
+      "type": "government",
+      "region_code": "38",
+      "district_code": "3885"
+    },
+    {
+      "code": "S3886",
+      "name": "SIMBA WA YUDA",
+      "type": "government",
+      "region_code": "38",
+      "district_code": "3886"
+    },
+    {
+      "code": "S3897",
+      "name": "MISIMA",
+      "type": "government",
+      "region_code": "38",
+      "district_code": "3897"
+    },
+    {
+      "code": "S3905",
+      "name": "UWATA",
+      "type": "government",
+      "region_code": "39",
+      "district_code": "3905"
+    },
+    {
+      "code": "S3912",
+      "name": "KIBURUBUTU",
+      "type": "government",
+      "region_code": "39",
+      "district_code": "3912"
+    },
+    {
+      "code": "S3914",
+      "name": "ALFAGEMS",
+      "type": "government",
+      "region_code": "39",
+      "district_code": "3914"
+    },
+    {
+      "code": "S3920",
+      "name": "INGWE",
+      "type": "government",
+      "region_code": "39",
+      "district_code": "3920"
+    },
+    {
+      "code": "S3941",
+      "name": "LUGUFU GIRLS'",
+      "type": "government",
+      "region_code": "39",
+      "district_code": "3941"
+    },
+    {
+      "code": "S3981",
+      "name": "MUSTAFA SABODO",
+      "type": "government",
+      "region_code": "39",
+      "district_code": "3981"
+    },
+    {
+      "code": "S3983",
+      "name": "ULAMBYA",
+      "type": "government",
+      "region_code": "39",
+      "district_code": "3983"
+    },
+    {
+      "code": "S3993",
+      "name": "VANESSA",
+      "type": "government",
+      "region_code": "39",
+      "district_code": "3993"
+    },
+    {
+      "code": "S4002",
+      "name": "MWANAKWEREKWE 'C'",
+      "type": "government",
+      "region_code": "40",
+      "district_code": "4002"
+    },
+    {
+      "code": "S4007",
+      "name": "AGUSTIVO",
+      "type": "government",
+      "region_code": "40",
+      "district_code": "4007"
+    },
+    {
+      "code": "S4014",
+      "name": "WINNING SPIRIT",
+      "type": "government",
+      "region_code": "40",
+      "district_code": "4014"
+    },
+    {
+      "code": "S4016",
+      "name": "ISALU EXCEL HIGH SCHOOL",
+      "type": "government",
+      "region_code": "40",
+      "district_code": "4016"
+    },
+    {
+      "code": "S4025",
+      "name": "MNYUZI",
+      "type": "government",
+      "region_code": "40",
+      "district_code": "4025"
+    },
+    {
+      "code": "S4039",
+      "name": "ST. THERESA OF THE CHILD JESUS",
+      "type": "private",
+      "region_code": "40",
+      "district_code": "4039"
+    },
+    {
+      "code": "S4042",
+      "name": "KARANSI",
+      "type": "government",
+      "region_code": "40",
+      "district_code": "4042"
+    },
+    {
+      "code": "S4054",
+      "name": "ILULU",
+      "type": "government",
+      "region_code": "40",
+      "district_code": "4054"
+    },
+    {
+      "code": "S4071",
+      "name": "AGGREY CHANJI",
+      "type": "government",
+      "region_code": "40",
+      "district_code": "4071"
+    },
+    {
+      "code": "S4084",
+      "name": "JENERALI DAVID MSUGULI",
+      "type": "government",
+      "region_code": "40",
+      "district_code": "4084"
+    },
+    {
+      "code": "S4087",
+      "name": "WIZA",
+      "type": "government",
+      "region_code": "40",
+      "district_code": "4087"
+    },
+    {
+      "code": "S4092",
+      "name": "BUSEGWE GIRLS'",
+      "type": "government",
+      "region_code": "40",
+      "district_code": "4092"
+    },
+    {
+      "code": "S4126",
+      "name": "LUPIRO",
+      "type": "government",
+      "region_code": "41",
+      "district_code": "4126"
+    },
+    {
+      "code": "S4131",
+      "name": "NYANZA ADVENTIST",
+      "type": "private",
+      "region_code": "41",
+      "district_code": "4131"
+    },
+    {
+      "code": "S4139",
+      "name": "IDIGIMA",
+      "type": "government",
+      "region_code": "41",
+      "district_code": "4139"
+    },
+    {
+      "code": "S4163",
+      "name": "KIJOTA HULL HIGH SCHOOL",
+      "type": "government",
+      "region_code": "41",
+      "district_code": "4163"
+    },
+    {
+      "code": "S4186",
+      "name": "LYCEUM",
+      "type": "government",
+      "region_code": "41",
+      "district_code": "4186"
+    },
+    {
+      "code": "S4192",
+      "name": "KABUNGU",
+      "type": "government",
+      "region_code": "41",
+      "district_code": "4192"
+    },
+    {
+      "code": "S4193",
+      "name": "HARRISON UWATA",
+      "type": "government",
+      "region_code": "41",
+      "district_code": "4193"
+    },
+    {
+      "code": "S4207",
+      "name": "MARIA DE MATTIAS",
+      "type": "government",
+      "region_code": "42",
+      "district_code": "4207"
+    },
+    {
+      "code": "S4213",
+      "name": "MARIAN BOYS'",
+      "type": "government",
+      "region_code": "42",
+      "district_code": "4213"
+    },
+    {
+      "code": "S4217",
+      "name": "ALGEBRA ISLAMIC SEMINARY",
+      "type": "private",
+      "region_code": "42",
+      "district_code": "4217"
+    },
+    {
+      "code": "S4223",
+      "name": "MBWENITETA",
+      "type": "government",
+      "region_code": "42",
+      "district_code": "4223"
+    },
+    {
+      "code": "S4236",
+      "name": "DINOBB  HIGH SCHOOL",
+      "type": "government",
+      "region_code": "42",
+      "district_code": "4236"
+    },
+    {
+      "code": "S4294",
+      "name": "KATOKE LWERU",
+      "type": "government",
+      "region_code": "42",
+      "district_code": "4294"
+    },
+    {
+      "code": "S4340",
+      "name": "GIRANGO",
+      "type": "government",
+      "region_code": "43",
+      "district_code": "4340"
+    },
+    {
+      "code": "S4351",
+      "name": "GENDA",
+      "type": "government",
+      "region_code": "43",
+      "district_code": "4351"
+    },
+    {
+      "code": "S4379",
+      "name": "MWATULOLE",
+      "type": "government",
+      "region_code": "43",
+      "district_code": "4379"
+    },
+    {
+      "code": "S4382",
+      "name": "BWINA",
+      "type": "government",
+      "region_code": "43",
+      "district_code": "4382"
+    },
+    {
+      "code": "S4405",
+      "name": "ST. AMEDEUS",
+      "type": "private",
+      "region_code": "44",
+      "district_code": "4405"
+    },
+    {
+      "code": "S4416",
+      "name": "MIZENGO PINDA",
+      "type": "government",
+      "region_code": "44",
+      "district_code": "4416"
+    },
+    {
+      "code": "S4419",
+      "name": "LUKOLE",
+      "type": "government",
+      "region_code": "44",
+      "district_code": "4419"
+    },
+    {
+      "code": "S4448",
+      "name": "SIKIRARI",
+      "type": "government",
+      "region_code": "44",
+      "district_code": "4448"
+    },
+    {
+      "code": "S4459",
+      "name": "ST.JUDE'S",
+      "type": "private",
+      "region_code": "44",
+      "district_code": "4459"
+    },
+    {
+      "code": "S4472",
+      "name": "GOD'S BRIDGE",
+      "type": "government",
+      "region_code": "44",
+      "district_code": "4472"
+    },
+    {
+      "code": "S4476",
+      "name": "SSP HIGH",
+      "type": "government",
+      "region_code": "44",
+      "district_code": "4476"
+    },
+    {
+      "code": "S4502",
+      "name": "AFRICAN TABATA HIGH SCHOOL",
+      "type": "government",
+      "region_code": "45",
+      "district_code": "4502"
+    },
+    {
+      "code": "S4514",
+      "name": "ORKEESWA",
+      "type": "government",
+      "region_code": "45",
+      "district_code": "4514"
+    },
+    {
+      "code": "S4515",
+      "name": "ST.ACHILLEUS KIWANUKA KIJWIRE",
+      "type": "private",
+      "region_code": "45",
+      "district_code": "4515"
+    },
+    {
+      "code": "S4516",
+      "name": "ST. JAMES KIGOMA",
+      "type": "private",
+      "region_code": "45",
+      "district_code": "4516"
+    },
+    {
+      "code": "S4534",
+      "name": "MUBABA",
+      "type": "government",
+      "region_code": "45",
+      "district_code": "4534"
+    },
+    {
+      "code": "S4535",
+      "name": "JIKOMBOE",
+      "type": "government",
+      "region_code": "45",
+      "district_code": "4535"
+    },
+    {
+      "code": "S4554",
+      "name": "HENRY GOGARTY",
+      "type": "government",
+      "region_code": "45",
+      "district_code": "4554"
+    },
+    {
+      "code": "S4555",
+      "name": "GLORIOUS",
+      "type": "government",
+      "region_code": "45",
+      "district_code": "4555"
+    },
+    {
+      "code": "S4556",
+      "name": "ST. CLARA",
+      "type": "private",
+      "region_code": "45",
+      "district_code": "4556"
+    },
+    {
+      "code": "S4565",
+      "name": "GILI",
+      "type": "government",
+      "region_code": "45",
+      "district_code": "4565"
+    },
+    {
+      "code": "S4569",
+      "name": "ST. MARIE EUGENIE",
+      "type": "private",
+      "region_code": "45",
+      "district_code": "4569"
+    },
+    {
+      "code": "S4575",
+      "name": "MESSA",
+      "type": "government",
+      "region_code": "45",
+      "district_code": "4575"
+    },
+    {
+      "code": "S4593",
+      "name": "ITULAHUMBA",
+      "type": "government",
+      "region_code": "45",
+      "district_code": "4593"
+    },
+    {
+      "code": "S4605",
+      "name": "MAGUFULI",
+      "type": "government",
+      "region_code": "46",
+      "district_code": "4605"
+    },
+    {
+      "code": "S4619",
+      "name": "CALL AND VISION",
+      "type": "government",
+      "region_code": "46",
+      "district_code": "4619"
+    },
+    {
+      "code": "S4624",
+      "name": "PREMIER GIRLS'",
+      "type": "government",
+      "region_code": "46",
+      "district_code": "4624"
+    },
+    {
+      "code": "S4628",
+      "name": "JIFUNZENI",
+      "type": "government",
+      "region_code": "46",
+      "district_code": "4628"
+    },
+    {
+      "code": "S4631",
+      "name": "KAIZIREGE",
+      "type": "government",
+      "region_code": "46",
+      "district_code": "4631"
+    },
+    {
+      "code": "S4645",
+      "name": "ALLIANCE BOYS'",
+      "type": "government",
+      "region_code": "46",
+      "district_code": "4645"
+    },
+    {
+      "code": "S4646",
+      "name": "PAMOJA",
+      "type": "government",
+      "region_code": "46",
+      "district_code": "4646"
+    },
+    {
+      "code": "S4661",
+      "name": "KAJUMULO ALEXANDER GIRLS'",
+      "type": "government",
+      "region_code": "46",
+      "district_code": "4661"
+    },
+    {
+      "code": "S4692",
+      "name": "ST.JOSEPH'S CATHEDRAL",
+      "type": "private",
+      "region_code": "46",
+      "district_code": "4692"
+    },
+    {
+      "code": "S4735",
+      "name": "IBWAGA",
+      "type": "government",
+      "region_code": "47",
+      "district_code": "4735"
+    },
+    {
+      "code": "S4746",
+      "name": "CORNERSTONE LEADERSHIP",
+      "type": "government",
+      "region_code": "47",
+      "district_code": "4746"
+    },
+    {
+      "code": "S4759",
+      "name": "HEBRON",
+      "type": "government",
+      "region_code": "47",
+      "district_code": "4759"
+    },
+    {
+      "code": "S4780",
+      "name": "HAWA MCHOPA",
+      "type": "government",
+      "region_code": "47",
+      "district_code": "4780"
+    },
+    {
+      "code": "S4785",
+      "name": "KIRANDO",
+      "type": "government",
+      "region_code": "47",
+      "district_code": "4785"
+    },
+    {
+      "code": "S4797",
+      "name": "FARAJA SIHA SEMINARY",
+      "type": "private",
+      "region_code": "47",
+      "district_code": "4797"
+    },
+    {
+      "code": "S4799",
+      "name": "MTWARA ISLAMIC",
+      "type": "private",
+      "region_code": "47",
+      "district_code": "4799"
+    },
+    {
+      "code": "S4803",
+      "name": "NDYUDA",
+      "type": "government",
+      "region_code": "48",
+      "district_code": "4803"
+    },
+    {
+      "code": "S4811",
+      "name": "BIDII",
+      "type": "government",
+      "region_code": "48",
+      "district_code": "4811"
+    },
+    {
+      "code": "S4816",
+      "name": "NAINOKANOKA",
+      "type": "government",
+      "region_code": "48",
+      "district_code": "4816"
+    },
+    {
+      "code": "S4827",
+      "name": "ST. PETER CLAVER",
+      "type": "private",
+      "region_code": "48",
+      "district_code": "4827"
+    },
+    {
+      "code": "S4828",
+      "name": "GILGAL",
+      "type": "government",
+      "region_code": "48",
+      "district_code": "4828"
+    },
+    {
+      "code": "S4836",
+      "name": "ALLIANCE GIRLS",
+      "type": "government",
+      "region_code": "48",
+      "district_code": "4836"
+    },
+    {
+      "code": "S4848",
+      "name": "AFRICAN RAINBOW",
+      "type": "government",
+      "region_code": "48",
+      "district_code": "4848"
+    },
+    {
+      "code": "S4854",
+      "name": "GEITA ADVENTIST",
+      "type": "private",
+      "region_code": "48",
+      "district_code": "4854"
+    },
+    {
+      "code": "S4856",
+      "name": "TWIHULUMILE",
+      "type": "government",
+      "region_code": "48",
+      "district_code": "4856"
+    },
+    {
+      "code": "S4861",
+      "name": "EMBOREET",
+      "type": "government",
+      "region_code": "48",
+      "district_code": "4861"
+    },
+    {
+      "code": "S4862",
+      "name": "GOMBE HIGH SCHOOL",
+      "type": "government",
+      "region_code": "48",
+      "district_code": "4862"
+    },
+    {
+      "code": "S4875",
+      "name": "HAYATUL ISLAMIYA",
+      "type": "government",
+      "region_code": "48",
+      "district_code": "4875"
+    },
+    {
+      "code": "S4894",
+      "name": "CANAAN",
+      "type": "government",
+      "region_code": "48",
+      "district_code": "4894"
+    },
+    {
+      "code": "S4921",
+      "name": "KAMAGI",
+      "type": "government",
+      "region_code": "49",
+      "district_code": "4921"
+    },
+    {
+      "code": "S4922",
+      "name": "WATU",
+      "type": "government",
+      "region_code": "49",
+      "district_code": "4922"
+    },
+    {
+      "code": "S4928",
+      "name": "LIVINGSTONE BOYS'",
+      "type": "government",
+      "region_code": "49",
+      "district_code": "4928"
+    },
+    {
+      "code": "S4929",
+      "name": "TINDE GIRLS' HIGH SCHOOL",
+      "type": "government",
+      "region_code": "49",
+      "district_code": "4929"
+    },
+    {
+      "code": "S4933",
+      "name": "MGUTWA",
+      "type": "government",
+      "region_code": "49",
+      "district_code": "4933"
+    },
+    {
+      "code": "S4948",
+      "name": "BUKIMAU",
+      "type": "government",
+      "region_code": "49",
+      "district_code": "4948"
+    },
+    {
+      "code": "S4964",
+      "name": "HERITAGE",
+      "type": "government",
+      "region_code": "49",
+      "district_code": "4964"
+    },
+    {
+      "code": "S5000",
+      "name": "WAMA-NAKAYAMA",
+      "type": "government",
+      "region_code": "50",
+      "district_code": "5000"
+    },
+    {
+      "code": "S5014",
+      "name": "PADUCAH HILL",
+      "type": "government",
+      "region_code": "50",
+      "district_code": "5014"
+    },
+    {
+      "code": "S5025",
+      "name": "KEIFO",
+      "type": "government",
+      "region_code": "50",
+      "district_code": "5025"
+    },
+    {
+      "code": "S5032",
+      "name": "UCHIRA GIRLS ISLAMIC",
+      "type": "private",
+      "region_code": "50",
+      "district_code": "5032"
+    },
+    {
+      "code": "S5038",
+      "name": "MWL. TUTUBA",
+      "type": "government",
+      "region_code": "50",
+      "district_code": "5038"
+    },
+    {
+      "code": "S5047",
+      "name": "MADUNGU",
+      "type": "government",
+      "region_code": "50",
+      "district_code": "5047"
+    },
+    {
+      "code": "S5053",
+      "name": "SANTAKAGWA",
+      "type": "government",
+      "region_code": "50",
+      "district_code": "5053"
+    },
+    {
+      "code": "S5060",
+      "name": "BEIT-EL-RAS",
+      "type": "government",
+      "region_code": "50",
+      "district_code": "5060"
+    },
+    {
+      "code": "S5096",
+      "name": "KIMANI",
+      "type": "government",
+      "region_code": "50",
+      "district_code": "5096"
+    },
+    {
+      "code": "S5098",
+      "name": "MUYOVOZI",
+      "type": "government",
+      "region_code": "50",
+      "district_code": "5098"
+    },
+    {
+      "code": "S5117",
+      "name": "MARIST BOYS",
+      "type": "private",
+      "region_code": "51",
+      "district_code": "5117"
+    },
+    {
+      "code": "S5126",
+      "name": "KORONA",
+      "type": "government",
+      "region_code": "51",
+      "district_code": "5126"
+    },
+    {
+      "code": "S5128",
+      "name": "OSWE",
+      "type": "government",
+      "region_code": "51",
+      "district_code": "5128"
+    },
+    {
+      "code": "S5130",
+      "name": "SHAMSIYE BOYS'",
+      "type": "government",
+      "region_code": "51",
+      "district_code": "5130"
+    },
+    {
+      "code": "S5145",
+      "name": "MIONO",
+      "type": "government",
+      "region_code": "51",
+      "district_code": "5145"
+    },
+    {
+      "code": "S5150",
+      "name": "CHASASA",
+      "type": "government",
+      "region_code": "51",
+      "district_code": "5150"
+    },
+    {
+      "code": "S5151",
+      "name": "FARAJA",
+      "type": "government",
+      "region_code": "51",
+      "district_code": "5151"
+    },
+    {
+      "code": "S5154",
+      "name": "BRIGHT FUTURE GIRLS",
+      "type": "government",
+      "region_code": "51",
+      "district_code": "5154"
+    },
+    {
+      "code": "S5159",
+      "name": "SUMA ENGIKARETH",
+      "type": "government",
+      "region_code": "51",
+      "district_code": "5159"
+    },
+    {
+      "code": "S5164",
+      "name": "ST. MARCUS",
+      "type": "private",
+      "region_code": "51",
+      "district_code": "5164"
+    },
+    {
+      "code": "S5171",
+      "name": "MPENDAE",
+      "type": "government",
+      "region_code": "51",
+      "district_code": "5171"
+    },
+    {
+      "code": "S5174",
+      "name": "ST CATHERINE'S",
+      "type": "private",
+      "region_code": "51",
+      "district_code": "5174"
+    },
+    {
+      "code": "S5184",
+      "name": "ST AUGUSTINE-TAGASTE",
+      "type": "private",
+      "region_code": "51",
+      "district_code": "5184"
+    },
+    {
+      "code": "S5196",
+      "name": "GREEN CITY",
+      "type": "government",
+      "region_code": "51",
+      "district_code": "5196"
+    },
+    {
+      "code": "S5204",
+      "name": "MAKETE GIRLS''",
+      "type": "government",
+      "region_code": "52",
+      "district_code": "5204"
+    },
+    {
+      "code": "S5208",
+      "name": "JOSEPHINE GIRLS'",
+      "type": "government",
+      "region_code": "52",
+      "district_code": "5208"
+    },
+    {
+      "code": "S5232",
+      "name": "ONE WORLD",
+      "type": "government",
+      "region_code": "52",
+      "district_code": "5232"
+    },
+    {
+      "code": "S5233",
+      "name": "EMANUEL NCHIMBI",
+      "type": "government",
+      "region_code": "52",
+      "district_code": "5233"
+    },
+    {
+      "code": "S5236",
+      "name": "SONGWE SUNRISE",
+      "type": "government",
+      "region_code": "52",
+      "district_code": "5236"
+    },
+    {
+      "code": "S5249",
+      "name": "ZANZIBAR FEZA",
+      "type": "government",
+      "region_code": "52",
+      "district_code": "5249"
+    },
+    {
+      "code": "S5260",
+      "name": "ARUSHA GIRLS'",
+      "type": "government",
+      "region_code": "52",
+      "district_code": "5260"
+    },
+    {
+      "code": "S5282",
+      "name": "JULIUS KAMBARAGE NYERERE",
+      "type": "government",
+      "region_code": "52",
+      "district_code": "5282"
+    },
+    {
+      "code": "S5295",
+      "name": "KILAMSA",
+      "type": "government",
+      "region_code": "52",
+      "district_code": "5295"
+    },
+    {
+      "code": "S5315",
+      "name": "MKINDI",
+      "type": "government",
+      "region_code": "53",
+      "district_code": "5315"
+    },
+    {
+      "code": "S5325",
+      "name": "IMPERIAL",
+      "type": "government",
+      "region_code": "53",
+      "district_code": "5325"
+    },
+    {
+      "code": "S5353",
+      "name": "LUGUFU BOYS'",
+      "type": "government",
+      "region_code": "53",
+      "district_code": "5353"
+    },
+    {
+      "code": "S5377",
+      "name": "ROHILA",
+      "type": "government",
+      "region_code": "53",
+      "district_code": "5377"
+    },
+    {
+      "code": "S5379",
+      "name": "ISTIQAAMA TANGA ISLAMIC",
+      "type": "private",
+      "region_code": "53",
+      "district_code": "5379"
+    },
+    {
+      "code": "S5394",
+      "name": "ABDULRAHIM BUSOKA",
+      "type": "government",
+      "region_code": "53",
+      "district_code": "5394"
+    },
+    {
+      "code": "S5397",
+      "name": "MSASANI ISLAMIC",
+      "type": "private",
+      "region_code": "53",
+      "district_code": "5397"
+    },
+    {
+      "code": "S5407",
+      "name": "MKUZO ISLAMIC",
+      "type": "private",
+      "region_code": "54",
+      "district_code": "5407"
+    },
+    {
+      "code": "S5472",
+      "name": "SAVANNAH PLAINS",
+      "type": "government",
+      "region_code": "54",
+      "district_code": "5472"
+    },
+    {
+      "code": "S5493",
+      "name": "TUMAINI SENIOR",
+      "type": "government",
+      "region_code": "54",
+      "district_code": "5493"
+    },
+    {
+      "code": "S5537",
+      "name": "ALI KHAMIS CAMP",
+      "type": "government",
+      "region_code": "55",
+      "district_code": "5537"
+    },
+    {
+      "code": "S5555",
+      "name": "KEMEBOS",
+      "type": "government",
+      "region_code": "55",
+      "district_code": "5555"
+    },
+    {
+      "code": "S5567",
+      "name": "BOREGA",
+      "type": "government",
+      "region_code": "55",
+      "district_code": "5567"
+    },
+    {
+      "code": "S5572",
+      "name": "MOH'D JUMA PINDUA",
+      "type": "government",
+      "region_code": "55",
+      "district_code": "5572"
+    },
+    {
+      "code": "S5579",
+      "name": "KWARARA",
+      "type": "government",
+      "region_code": "55",
+      "district_code": "5579"
+    },
+    {
+      "code": "S5595",
+      "name": "KIGOMA GRAND",
+      "type": "government",
+      "region_code": "55",
+      "district_code": "5595"
+    },
+    {
+      "code": "S5596",
+      "name": "BURHANI",
+      "type": "government",
+      "region_code": "55",
+      "district_code": "5596"
+    },
+    {
+      "code": "S5663",
+      "name": "ELPAS",
+      "type": "government",
+      "region_code": "56",
+      "district_code": "5663"
+    },
+    {
+      "code": "S5682",
+      "name": "ZANZIBAR UNIVERSITY HIGH SCHOOL",
+      "type": "government",
+      "region_code": "56",
+      "district_code": "5682"
+    },
+    {
+      "code": "S5708",
+      "name": "MAARIF",
+      "type": "government",
+      "region_code": "57",
+      "district_code": "5708"
+    },
+    {
+      "code": "S5782",
+      "name": "EFFORTS",
+      "type": "government",
+      "region_code": "57",
+      "district_code": "5782"
+    },
+    {
+      "code": "S5792",
+      "name": "NGARA BOYS",
+      "type": "government",
+      "region_code": "57",
+      "district_code": "5792"
+    },
+    {
+      "code": "S5816",
+      "name": "MABWE TUMAINI",
+      "type": "government",
+      "region_code": "58",
+      "district_code": "5816"
+    },
+    {
+      "code": "S5857",
+      "name": "MWITANI HIGH SCHOOL",
+      "type": "government",
+      "region_code": "58",
+      "district_code": "5857"
+    },
+    {
+      "code": "S5877",
+      "name": "MASHUJAA-SINZA",
+      "type": "government",
+      "region_code": "58",
+      "district_code": "5877"
+    },
+    {
+      "code": "S5889",
+      "name": "ALPHA GIRLS",
+      "type": "government",
+      "region_code": "58",
+      "district_code": "5889"
+    },
+    {
+      "code": "S5896",
+      "name": "LUCAS MALIA",
+      "type": "government",
+      "region_code": "58",
+      "district_code": "5896"
+    },
+    {
+      "code": "S5931",
+      "name": "DKT SALMINI AMOUR JUMA",
+      "type": "government",
+      "region_code": "59",
+      "district_code": "5931"
+    },
+    {
+      "code": "S5932",
+      "name": "ABEID AMANI KARUME",
+      "type": "government",
+      "region_code": "59",
+      "district_code": "5932"
+    },
+    {
+      "code": "S5933",
+      "name": "ALI HASSAN MWINYI",
+      "type": "government",
+      "region_code": "59",
+      "district_code": "5933"
+    },
+    {
+      "code": "S5934",
+      "name": "DR. SALIM AHMED SALIM",
+      "type": "government",
+      "region_code": "59",
+      "district_code": "5934"
+    },
+    {
+      "code": "S5935",
+      "name": "DKT AMANI A KARUME",
+      "type": "government",
+      "region_code": "59",
+      "district_code": "5935"
+    },
+    {
+      "code": "S5936",
+      "name": "IDRISSA ABDULWAKIL",
+      "type": "government",
+      "region_code": "59",
+      "district_code": "5936"
+    },
+    {
+      "code": "S5953",
+      "name": "ARUSHA SCIENCE",
+      "type": "government",
+      "region_code": "59",
+      "district_code": "5953"
+    },
+    {
+      "code": "S6010",
+      "name": "ABOUD JUMBE MWINYI",
+      "type": "government",
+      "region_code": "60",
+      "district_code": "6010"
+    },
+    {
+      "code": "S6056",
+      "name": "BUNGE GIRLS",
+      "type": "government",
+      "region_code": "60",
+      "district_code": "6056"
+    },
+    {
+      "code": "S6062",
+      "name": "JOKATE MWEGELO",
+      "type": "government",
+      "region_code": "60",
+      "district_code": "6062"
+    },
+    {
+      "code": "S6064",
+      "name": "DR. JOHN POMBE MAGUFULI (U)",
+      "type": "government",
+      "region_code": "60",
+      "district_code": "6064"
+    },
+    {
+      "code": "S6075",
+      "name": "SHINYANGA TEACHERS COLLEGE",
+      "type": "private",
+      "region_code": "60",
+      "district_code": "6075"
+    },
+    {
+      "code": "S6136",
+      "name": "KATALA HIGH SCHOOL",
+      "type": "government",
+      "region_code": "61",
+      "district_code": "6136"
+    },
+    {
+      "code": "S6208",
+      "name": "DINECHA",
+      "type": "government",
+      "region_code": "62",
+      "district_code": "6208"
+    },
+    {
+      "code": "S6209",
+      "name": "SANTHOME SABS",
+      "type": "government",
+      "region_code": "62",
+      "district_code": "6209"
+    },
+    {
+      "code": "S6247",
+      "name": "SOKOINE MEMORIAL",
+      "type": "government",
+      "region_code": "62",
+      "district_code": "6247"
+    },
+    {
+      "code": "S6249",
+      "name": "HANDENI GIRLS HIGH SCHOOL",
+      "type": "government",
+      "region_code": "62",
+      "district_code": "6249"
+    },
+    {
+      "code": "S6278",
+      "name": "DKT. ALI MOHAMED SHEIN",
+      "type": "government",
+      "region_code": "62",
+      "district_code": "6278"
+    },
+    {
+      "code": "S6337",
+      "name": "JENISTER MHAGAMA",
+      "type": "government",
+      "region_code": "63",
+      "district_code": "6337"
+    },
+    {
+      "code": "S6360",
+      "name": "GREEN LANE",
+      "type": "government",
+      "region_code": "63",
+      "district_code": "6360"
+    },
+    {
+      "code": "S6364",
+      "name": "TUNDUMA TC  CENTRE",
+      "type": "government",
+      "region_code": "63",
+      "district_code": "6364"
+    },
+    {
+      "code": "S6383",
+      "name": "PREMIER BOYS",
+      "type": "government",
+      "region_code": "63",
+      "district_code": "6383"
+    },
+    {
+      "code": "S6426",
+      "name": "UKEREWE",
+      "type": "government",
+      "region_code": "64",
+      "district_code": "6426"
+    },
+    {
+      "code": "S6486",
+      "name": "KIBAIGWA GIRLS",
+      "type": "government",
+      "region_code": "64",
+      "district_code": "6486"
+    },
+    {
+      "code": "S6494",
+      "name": "JANETH MAGUFULI GIRLS",
+      "type": "government",
+      "region_code": "64",
+      "district_code": "6494"
+    },
+    {
+      "code": "S6495",
+      "name": "MUUNGANO BOYS",
+      "type": "government",
+      "region_code": "64",
+      "district_code": "6495"
+    },
+    {
+      "code": "S6600",
+      "name": "BEST VIEW ACADEMY",
+      "type": "private",
+      "region_code": "66",
+      "district_code": "6600"
+    },
+    {
+      "code": "S6612",
+      "name": "BEREGA",
+      "type": "government",
+      "region_code": "66",
+      "district_code": "6612"
+    },
+    {
+      "code": "S6789",
+      "name": "CHISUNGA",
+      "type": "government",
+      "region_code": "67",
+      "district_code": "6789"
+    },
+    {
+      "code": "S6915",
+      "name": "AHMES MBWENI",
+      "type": "government",
+      "region_code": "69",
+      "district_code": "6915"
+    }
+  ]
+}

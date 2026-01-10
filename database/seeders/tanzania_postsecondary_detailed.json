@@ -1,0 +1,3366 @@
+{
+  "metadata": {
+    "source": "Research from VETA, NACTVET, Ministry of Agriculture, TNMC and official sources",
+    "compiled_at": "2026-01-09 16:56:34",
+    "total_institutions": 52,
+    "total_departments": 113,
+    "total_programmes": 336,
+    "by_category": {
+      "vocational_training": 11,
+      "technical_polytechnic": 3,
+      "teacher_training": 9,
+      "health_medical": 8,
+      "agricultural": 9,
+      "folk_development": 3,
+      "business_professional": 5,
+      "police_military": 4
+    }
+  },
+  "qualification_levels": [
+    {
+      "code": "NVA1",
+      "name": "National Vocational Award Level 1",
+      "duration_years": 1
+    },
+    {
+      "code": "NVA2",
+      "name": "National Vocational Award Level 2",
+      "duration_years": 1
+    },
+    {
+      "code": "NVA3",
+      "name": "National Vocational Award Level 3",
+      "duration_years": 1
+    },
+    {
+      "code": "NTA4",
+      "name": "Basic Technician Certificate (NTA Level 4)",
+      "duration_years": 1
+    },
+    {
+      "code": "NTA5",
+      "name": "Technician Certificate (NTA Level 5)",
+      "duration_years": 1
+    },
+    {
+      "code": "NTA6",
+      "name": "Ordinary Diploma (NTA Level 6)",
+      "duration_years": 2
+    },
+    {
+      "code": "NTA7",
+      "name": "Higher Diploma (NTA Level 7)",
+      "duration_years": 1
+    },
+    {
+      "code": "NTA8",
+      "name": "Bachelor's Degree (NTA Level 8)",
+      "duration_years": 3
+    },
+    {
+      "code": "CERT",
+      "name": "Certificate",
+      "duration_years": 2
+    },
+    {
+      "code": "DIP",
+      "name": "Diploma",
+      "duration_years": 2
+    },
+    {
+      "code": "ADV_DIP",
+      "name": "Advanced Diploma",
+      "duration_years": 1
+    }
+  ],
+  "institutions": [
+    {
+      "code": "VETA-DSM",
+      "name": "Dar es Salaam Regional Vocational Training and Service Centre",
+      "acronym": "VETA Dar es Salaam",
+      "type": "government_vocational",
+      "category": "vocational_training",
+      "region": "Dar es Salaam",
+      "established": 1994,
+      "website": "https://www.veta.go.tz",
+      "departments": [
+        {
+          "code": "ELEC",
+          "name": "Department of Electrical",
+          "programmes": [
+            {
+              "code": "ELEC-NVA2",
+              "name": "Domestic Electrical Installation Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "ELEC-NVA3",
+              "name": "Electrical Installation Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "INDEL-NVA3",
+              "name": "Industrial Electrical Installation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "ELEC-NTA6",
+              "name": "Ordinary Diploma in Electrical Engineering",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "MECH",
+          "name": "Department of Mechanical",
+          "programmes": [
+            {
+              "code": "FIT-NVA3",
+              "name": "Fitter Mechanics",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "MACH-NVA3",
+              "name": "Machine Tool Operation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "REFRIG-NVA3",
+              "name": "Refrigeration and Air Conditioning",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AUTO",
+          "name": "Department of Automotive",
+          "programmes": [
+            {
+              "code": "MVM-NVA2",
+              "name": "Motor Vehicle Mechanics Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MVM-NVA3",
+              "name": "Motor Vehicle Mechanics Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TRUCK-NVA3",
+              "name": "Truck Mechanics",
+              "level": "NVA3",
+              "duration": 3
+            },
+            {
+              "code": "AUTOELEC-NVA3",
+              "name": "Auto-Electrical",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "AUTOBODY-NVA3",
+              "name": "Auto Body Repair and Spray Painting",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CIVIL",
+          "name": "Department of Civil and Building",
+          "programmes": [
+            {
+              "code": "MAS-NVA2",
+              "name": "Masonry and Bricklaying Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MAS-NVA3",
+              "name": "Masonry and Bricklaying Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CARP-NVA2",
+              "name": "Carpentry and Joinery Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "CARP-NVA3",
+              "name": "Carpentry and Joinery Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PLUMB-NVA2",
+              "name": "Plumbing and Pipe Fitting Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "PLUMB-NVA3",
+              "name": "Plumbing and Pipe Fitting Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CIVDRAFT-NVA3",
+              "name": "Civil Draughting",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PAINT-NVA2",
+              "name": "Painting and Decorating",
+              "level": "NVA2",
+              "duration": 1
+            }
+          ]
+        },
+        {
+          "code": "ICT",
+          "name": "Department of ICT",
+          "programmes": [
+            {
+              "code": "ICT-NVA2",
+              "name": "Information Technology Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "ICT-NVA3",
+              "name": "Information Technology Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "ICT-NTA6",
+              "name": "Ordinary Diploma in ICT",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "COMM",
+          "name": "Department of Commercial Services",
+          "programmes": [
+            {
+              "code": "COMP-NVA2",
+              "name": "Computer Applications Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "COMP-NVA3",
+              "name": "Computer Applications Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "SEC-NVA3",
+              "name": "Secretarial Studies",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "ACCT-NVA3",
+              "name": "Accounting Technician",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "WELD",
+          "name": "Department of Welding and Fabrication",
+          "programmes": [
+            {
+              "code": "WELD-NVA2",
+              "name": "Welding and Metal Fabrication Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "WELD-NVA3",
+              "name": "Welding and Metal Fabrication Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "SHEET-NVA3",
+              "name": "Sheet Metal Work",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "VETA-ARUSHA",
+      "name": "Arusha Vocational Training Centre",
+      "acronym": "VETA Arusha",
+      "type": "government_vocational",
+      "category": "vocational_training",
+      "region": "Arusha",
+      "established": 1994,
+      "departments": [
+        {
+          "code": "ELEC",
+          "name": "Department of Electrical",
+          "programmes": [
+            {
+              "code": "ELEC-NVA2",
+              "name": "Domestic Electrical Installation Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "ELEC-NVA3",
+              "name": "Electrical Installation Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "INDEL-NVA3",
+              "name": "Industrial Electrical Installation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "ELEC-NTA6",
+              "name": "Ordinary Diploma in Electrical Engineering",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AUTO",
+          "name": "Department of Automotive",
+          "programmes": [
+            {
+              "code": "MVM-NVA2",
+              "name": "Motor Vehicle Mechanics Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MVM-NVA3",
+              "name": "Motor Vehicle Mechanics Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TRUCK-NVA3",
+              "name": "Truck Mechanics",
+              "level": "NVA3",
+              "duration": 3
+            },
+            {
+              "code": "AUTOELEC-NVA3",
+              "name": "Auto-Electrical",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "AUTOBODY-NVA3",
+              "name": "Auto Body Repair and Spray Painting",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CIVIL",
+          "name": "Department of Civil and Building",
+          "programmes": [
+            {
+              "code": "MAS-NVA2",
+              "name": "Masonry and Bricklaying Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MAS-NVA3",
+              "name": "Masonry and Bricklaying Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CARP-NVA2",
+              "name": "Carpentry and Joinery Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "CARP-NVA3",
+              "name": "Carpentry and Joinery Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PLUMB-NVA2",
+              "name": "Plumbing and Pipe Fitting Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "PLUMB-NVA3",
+              "name": "Plumbing and Pipe Fitting Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CIVDRAFT-NVA3",
+              "name": "Civil Draughting",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PAINT-NVA2",
+              "name": "Painting and Decorating",
+              "level": "NVA2",
+              "duration": 1
+            }
+          ]
+        },
+        {
+          "code": "HOSP",
+          "name": "Department of Hospitality",
+          "programmes": [
+            {
+              "code": "HOTEL-NVA2",
+              "name": "Hotel Operations Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "HOTEL-NVA3",
+              "name": "Hotel Operations Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "COOK-NVA3",
+              "name": "Food Production (Cookery)",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TOUR-NVA3",
+              "name": "Tour Guiding",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "FB-NVA3",
+              "name": "Food and Beverage Service",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "VETA-MOSHI",
+      "name": "Moshi Regional Vocational Training and Service Centre",
+      "acronym": "VETA Moshi",
+      "type": "government_vocational",
+      "category": "vocational_training",
+      "region": "Kilimanjaro",
+      "established": 1994,
+      "departments": [
+        {
+          "code": "ELEC",
+          "name": "Department of Electrical",
+          "programmes": [
+            {
+              "code": "ELEC-NVA2",
+              "name": "Domestic Electrical Installation Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "ELEC-NVA3",
+              "name": "Electrical Installation Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "INDEL-NVA3",
+              "name": "Industrial Electrical Installation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "ELEC-NTA6",
+              "name": "Ordinary Diploma in Electrical Engineering",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AUTO",
+          "name": "Department of Automotive",
+          "programmes": [
+            {
+              "code": "MVM-NVA2",
+              "name": "Motor Vehicle Mechanics Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MVM-NVA3",
+              "name": "Motor Vehicle Mechanics Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TRUCK-NVA3",
+              "name": "Truck Mechanics",
+              "level": "NVA3",
+              "duration": 3
+            },
+            {
+              "code": "AUTOELEC-NVA3",
+              "name": "Auto-Electrical",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "AUTOBODY-NVA3",
+              "name": "Auto Body Repair and Spray Painting",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CIVIL",
+          "name": "Department of Civil and Building",
+          "programmes": [
+            {
+              "code": "MAS-NVA2",
+              "name": "Masonry and Bricklaying Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MAS-NVA3",
+              "name": "Masonry and Bricklaying Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CARP-NVA2",
+              "name": "Carpentry and Joinery Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "CARP-NVA3",
+              "name": "Carpentry and Joinery Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PLUMB-NVA2",
+              "name": "Plumbing and Pipe Fitting Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "PLUMB-NVA3",
+              "name": "Plumbing and Pipe Fitting Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CIVDRAFT-NVA3",
+              "name": "Civil Draughting",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PAINT-NVA2",
+              "name": "Painting and Decorating",
+              "level": "NVA2",
+              "duration": 1
+            }
+          ]
+        },
+        {
+          "code": "TEXT",
+          "name": "Department of Clothing and Textile",
+          "programmes": [
+            {
+              "code": "TAIL-NVA2",
+              "name": "Tailoring Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "TAIL-NVA3",
+              "name": "Tailoring and Fashion Design Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TEXT-NVA3",
+              "name": "Textile Technology",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "VETA-MWANZA",
+      "name": "Mwanza Regional Vocational Training and Service Centre",
+      "acronym": "VETA Mwanza",
+      "type": "government_vocational",
+      "category": "vocational_training",
+      "region": "Mwanza",
+      "established": 1994,
+      "departments": [
+        {
+          "code": "ELEC",
+          "name": "Department of Electrical",
+          "programmes": [
+            {
+              "code": "ELEC-NVA2",
+              "name": "Domestic Electrical Installation Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "ELEC-NVA3",
+              "name": "Electrical Installation Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "INDEL-NVA3",
+              "name": "Industrial Electrical Installation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "ELEC-NTA6",
+              "name": "Ordinary Diploma in Electrical Engineering",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AUTO",
+          "name": "Department of Automotive",
+          "programmes": [
+            {
+              "code": "MVM-NVA2",
+              "name": "Motor Vehicle Mechanics Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MVM-NVA3",
+              "name": "Motor Vehicle Mechanics Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TRUCK-NVA3",
+              "name": "Truck Mechanics",
+              "level": "NVA3",
+              "duration": 3
+            },
+            {
+              "code": "AUTOELEC-NVA3",
+              "name": "Auto-Electrical",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "AUTOBODY-NVA3",
+              "name": "Auto Body Repair and Spray Painting",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CIVIL",
+          "name": "Department of Civil and Building",
+          "programmes": [
+            {
+              "code": "MAS-NVA2",
+              "name": "Masonry and Bricklaying Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MAS-NVA3",
+              "name": "Masonry and Bricklaying Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CARP-NVA2",
+              "name": "Carpentry and Joinery Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "CARP-NVA3",
+              "name": "Carpentry and Joinery Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PLUMB-NVA2",
+              "name": "Plumbing and Pipe Fitting Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "PLUMB-NVA3",
+              "name": "Plumbing and Pipe Fitting Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CIVDRAFT-NVA3",
+              "name": "Civil Draughting",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PAINT-NVA2",
+              "name": "Painting and Decorating",
+              "level": "NVA2",
+              "duration": 1
+            }
+          ]
+        },
+        {
+          "code": "MECH",
+          "name": "Department of Mechanical",
+          "programmes": [
+            {
+              "code": "FIT-NVA3",
+              "name": "Fitter Mechanics",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "MACH-NVA3",
+              "name": "Machine Tool Operation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "REFRIG-NVA3",
+              "name": "Refrigeration and Air Conditioning",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "VETA-MBEYA",
+      "name": "Mbeya Regional Vocational Training and Service Centre",
+      "acronym": "VETA Mbeya",
+      "type": "government_vocational",
+      "category": "vocational_training",
+      "region": "Mbeya",
+      "established": 1994,
+      "departments": [
+        {
+          "code": "ELEC",
+          "name": "Department of Electrical",
+          "programmes": [
+            {
+              "code": "ELEC-NVA2",
+              "name": "Domestic Electrical Installation Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "ELEC-NVA3",
+              "name": "Electrical Installation Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "INDEL-NVA3",
+              "name": "Industrial Electrical Installation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "ELEC-NTA6",
+              "name": "Ordinary Diploma in Electrical Engineering",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AUTO",
+          "name": "Department of Automotive",
+          "programmes": [
+            {
+              "code": "MVM-NVA2",
+              "name": "Motor Vehicle Mechanics Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MVM-NVA3",
+              "name": "Motor Vehicle Mechanics Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TRUCK-NVA3",
+              "name": "Truck Mechanics",
+              "level": "NVA3",
+              "duration": 3
+            },
+            {
+              "code": "AUTOELEC-NVA3",
+              "name": "Auto-Electrical",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "AUTOBODY-NVA3",
+              "name": "Auto Body Repair and Spray Painting",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CIVIL",
+          "name": "Department of Civil and Building",
+          "programmes": [
+            {
+              "code": "MAS-NVA2",
+              "name": "Masonry and Bricklaying Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MAS-NVA3",
+              "name": "Masonry and Bricklaying Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CARP-NVA2",
+              "name": "Carpentry and Joinery Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "CARP-NVA3",
+              "name": "Carpentry and Joinery Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PLUMB-NVA2",
+              "name": "Plumbing and Pipe Fitting Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "PLUMB-NVA3",
+              "name": "Plumbing and Pipe Fitting Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CIVDRAFT-NVA3",
+              "name": "Civil Draughting",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PAINT-NVA2",
+              "name": "Painting and Decorating",
+              "level": "NVA2",
+              "duration": 1
+            }
+          ]
+        },
+        {
+          "code": "AGRI",
+          "name": "Department of Agriculture",
+          "programmes": [
+            {
+              "code": "AGRI-NVA2",
+              "name": "General Agriculture Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "AGRI-NVA3",
+              "name": "General Agriculture Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "FOODPROC-NVA3",
+              "name": "Food Processing",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "VETA-DODOMA",
+      "name": "Dodoma Regional Vocational Training and Service Centre",
+      "acronym": "VETA Dodoma",
+      "type": "government_vocational",
+      "category": "vocational_training",
+      "region": "Dodoma",
+      "established": 1994,
+      "departments": [
+        {
+          "code": "ELEC",
+          "name": "Department of Electrical",
+          "programmes": [
+            {
+              "code": "ELEC-NVA2",
+              "name": "Domestic Electrical Installation Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "ELEC-NVA3",
+              "name": "Electrical Installation Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "INDEL-NVA3",
+              "name": "Industrial Electrical Installation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "ELEC-NTA6",
+              "name": "Ordinary Diploma in Electrical Engineering",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AUTO",
+          "name": "Department of Automotive",
+          "programmes": [
+            {
+              "code": "MVM-NVA2",
+              "name": "Motor Vehicle Mechanics Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MVM-NVA3",
+              "name": "Motor Vehicle Mechanics Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TRUCK-NVA3",
+              "name": "Truck Mechanics",
+              "level": "NVA3",
+              "duration": 3
+            },
+            {
+              "code": "AUTOELEC-NVA3",
+              "name": "Auto-Electrical",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "AUTOBODY-NVA3",
+              "name": "Auto Body Repair and Spray Painting",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CIVIL",
+          "name": "Department of Civil and Building",
+          "programmes": [
+            {
+              "code": "MAS-NVA2",
+              "name": "Masonry and Bricklaying Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MAS-NVA3",
+              "name": "Masonry and Bricklaying Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CARP-NVA2",
+              "name": "Carpentry and Joinery Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "CARP-NVA3",
+              "name": "Carpentry and Joinery Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PLUMB-NVA2",
+              "name": "Plumbing and Pipe Fitting Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "PLUMB-NVA3",
+              "name": "Plumbing and Pipe Fitting Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CIVDRAFT-NVA3",
+              "name": "Civil Draughting",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PAINT-NVA2",
+              "name": "Painting and Decorating",
+              "level": "NVA2",
+              "duration": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "VETA-IRINGA",
+      "name": "Iringa Regional Vocational Training and Service Centre",
+      "acronym": "VETA Iringa",
+      "type": "government_vocational",
+      "category": "vocational_training",
+      "region": "Iringa",
+      "established": 1994,
+      "departments": [
+        {
+          "code": "ELEC",
+          "name": "Department of Electrical",
+          "programmes": [
+            {
+              "code": "ELEC-NVA2",
+              "name": "Domestic Electrical Installation Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "ELEC-NVA3",
+              "name": "Electrical Installation Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "INDEL-NVA3",
+              "name": "Industrial Electrical Installation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "ELEC-NTA6",
+              "name": "Ordinary Diploma in Electrical Engineering",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AUTO",
+          "name": "Department of Automotive",
+          "programmes": [
+            {
+              "code": "MVM-NVA2",
+              "name": "Motor Vehicle Mechanics Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MVM-NVA3",
+              "name": "Motor Vehicle Mechanics Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TRUCK-NVA3",
+              "name": "Truck Mechanics",
+              "level": "NVA3",
+              "duration": 3
+            },
+            {
+              "code": "AUTOELEC-NVA3",
+              "name": "Auto-Electrical",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "AUTOBODY-NVA3",
+              "name": "Auto Body Repair and Spray Painting",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CIVIL",
+          "name": "Department of Civil and Building",
+          "programmes": [
+            {
+              "code": "MAS-NVA2",
+              "name": "Masonry and Bricklaying Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MAS-NVA3",
+              "name": "Masonry and Bricklaying Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CARP-NVA2",
+              "name": "Carpentry and Joinery Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "CARP-NVA3",
+              "name": "Carpentry and Joinery Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PLUMB-NVA2",
+              "name": "Plumbing and Pipe Fitting Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "PLUMB-NVA3",
+              "name": "Plumbing and Pipe Fitting Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CIVDRAFT-NVA3",
+              "name": "Civil Draughting",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PAINT-NVA2",
+              "name": "Painting and Decorating",
+              "level": "NVA2",
+              "duration": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "VETA-TANGA",
+      "name": "Tanga Regional Vocational Training and Service Centre",
+      "acronym": "VETA Tanga",
+      "type": "government_vocational",
+      "category": "vocational_training",
+      "region": "Tanga",
+      "established": 1994,
+      "departments": [
+        {
+          "code": "ELEC",
+          "name": "Department of Electrical",
+          "programmes": [
+            {
+              "code": "ELEC-NVA2",
+              "name": "Domestic Electrical Installation Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "ELEC-NVA3",
+              "name": "Electrical Installation Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "INDEL-NVA3",
+              "name": "Industrial Electrical Installation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "ELEC-NTA6",
+              "name": "Ordinary Diploma in Electrical Engineering",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AUTO",
+          "name": "Department of Automotive",
+          "programmes": [
+            {
+              "code": "MVM-NVA2",
+              "name": "Motor Vehicle Mechanics Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MVM-NVA3",
+              "name": "Motor Vehicle Mechanics Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TRUCK-NVA3",
+              "name": "Truck Mechanics",
+              "level": "NVA3",
+              "duration": 3
+            },
+            {
+              "code": "AUTOELEC-NVA3",
+              "name": "Auto-Electrical",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "AUTOBODY-NVA3",
+              "name": "Auto Body Repair and Spray Painting",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CIVIL",
+          "name": "Department of Civil and Building",
+          "programmes": [
+            {
+              "code": "MAS-NVA2",
+              "name": "Masonry and Bricklaying Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MAS-NVA3",
+              "name": "Masonry and Bricklaying Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CARP-NVA2",
+              "name": "Carpentry and Joinery Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "CARP-NVA3",
+              "name": "Carpentry and Joinery Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PLUMB-NVA2",
+              "name": "Plumbing and Pipe Fitting Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "PLUMB-NVA3",
+              "name": "Plumbing and Pipe Fitting Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CIVDRAFT-NVA3",
+              "name": "Civil Draughting",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PAINT-NVA2",
+              "name": "Painting and Decorating",
+              "level": "NVA2",
+              "duration": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "VETA-MOROGORO",
+      "name": "Morogoro Vocational Teachers Training Centre",
+      "acronym": "VETA Morogoro",
+      "type": "government_vocational",
+      "category": "vocational_training",
+      "region": "Morogoro",
+      "established": 1994,
+      "departments": [
+        {
+          "code": "ELEC",
+          "name": "Department of Electrical",
+          "programmes": [
+            {
+              "code": "ELEC-NVA2",
+              "name": "Domestic Electrical Installation Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "ELEC-NVA3",
+              "name": "Electrical Installation Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "INDEL-NVA3",
+              "name": "Industrial Electrical Installation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "ELEC-NTA6",
+              "name": "Ordinary Diploma in Electrical Engineering",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AUTO",
+          "name": "Department of Automotive",
+          "programmes": [
+            {
+              "code": "MVM-NVA2",
+              "name": "Motor Vehicle Mechanics Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MVM-NVA3",
+              "name": "Motor Vehicle Mechanics Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TRUCK-NVA3",
+              "name": "Truck Mechanics",
+              "level": "NVA3",
+              "duration": 3
+            },
+            {
+              "code": "AUTOELEC-NVA3",
+              "name": "Auto-Electrical",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "AUTOBODY-NVA3",
+              "name": "Auto Body Repair and Spray Painting",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CIVIL",
+          "name": "Department of Civil and Building",
+          "programmes": [
+            {
+              "code": "MAS-NVA2",
+              "name": "Masonry and Bricklaying Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MAS-NVA3",
+              "name": "Masonry and Bricklaying Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CARP-NVA2",
+              "name": "Carpentry and Joinery Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "CARP-NVA3",
+              "name": "Carpentry and Joinery Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PLUMB-NVA2",
+              "name": "Plumbing and Pipe Fitting Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "PLUMB-NVA3",
+              "name": "Plumbing and Pipe Fitting Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CIVDRAFT-NVA3",
+              "name": "Civil Draughting",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PAINT-NVA2",
+              "name": "Painting and Decorating",
+              "level": "NVA2",
+              "duration": 1
+            }
+          ]
+        },
+        {
+          "code": "MECH",
+          "name": "Department of Mechanical",
+          "programmes": [
+            {
+              "code": "FIT-NVA3",
+              "name": "Fitter Mechanics",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "MACH-NVA3",
+              "name": "Machine Tool Operation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "REFRIG-NVA3",
+              "name": "Refrigeration and Air Conditioning",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "VETA-TABORA",
+      "name": "Tabora Regional Vocational Training and Service Centre",
+      "acronym": "VETA Tabora",
+      "type": "government_vocational",
+      "category": "vocational_training",
+      "region": "Tabora",
+      "established": 1994,
+      "departments": [
+        {
+          "code": "ELEC",
+          "name": "Department of Electrical",
+          "programmes": [
+            {
+              "code": "ELEC-NVA2",
+              "name": "Domestic Electrical Installation Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "ELEC-NVA3",
+              "name": "Electrical Installation Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "INDEL-NVA3",
+              "name": "Industrial Electrical Installation",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "ELEC-NTA6",
+              "name": "Ordinary Diploma in Electrical Engineering",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AUTO",
+          "name": "Department of Automotive",
+          "programmes": [
+            {
+              "code": "MVM-NVA2",
+              "name": "Motor Vehicle Mechanics Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MVM-NVA3",
+              "name": "Motor Vehicle Mechanics Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TRUCK-NVA3",
+              "name": "Truck Mechanics",
+              "level": "NVA3",
+              "duration": 3
+            },
+            {
+              "code": "AUTOELEC-NVA3",
+              "name": "Auto-Electrical",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "AUTOBODY-NVA3",
+              "name": "Auto Body Repair and Spray Painting",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CIVIL",
+          "name": "Department of Civil and Building",
+          "programmes": [
+            {
+              "code": "MAS-NVA2",
+              "name": "Masonry and Bricklaying Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "MAS-NVA3",
+              "name": "Masonry and Bricklaying Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CARP-NVA2",
+              "name": "Carpentry and Joinery Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "CARP-NVA3",
+              "name": "Carpentry and Joinery Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PLUMB-NVA2",
+              "name": "Plumbing and Pipe Fitting Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "PLUMB-NVA3",
+              "name": "Plumbing and Pipe Fitting Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "CIVDRAFT-NVA3",
+              "name": "Civil Draughting",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "PAINT-NVA2",
+              "name": "Painting and Decorating",
+              "level": "NVA2",
+              "duration": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "VETA-HOTEL",
+      "name": "VETA Hotel and Tourism Training Institute",
+      "acronym": "VETA Hotel",
+      "type": "government_vocational",
+      "category": "vocational_training",
+      "region": "Dar es Salaam",
+      "established": 2000,
+      "departments": [
+        {
+          "code": "HOSP",
+          "name": "Department of Hospitality",
+          "programmes": [
+            {
+              "code": "HOTEL-NVA2",
+              "name": "Hotel Operations Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "HOTEL-NVA3",
+              "name": "Hotel Operations Level III",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "COOK-NVA3",
+              "name": "Food Production (Cookery)",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "TOUR-NVA3",
+              "name": "Tour Guiding",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "FB-NVA3",
+              "name": "Food and Beverage Service",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "COSM",
+          "name": "Department of Cosmetology",
+          "programmes": [
+            {
+              "code": "HAIR-NVA2",
+              "name": "Hairdressing Level II",
+              "level": "NVA2",
+              "duration": 1
+            },
+            {
+              "code": "BEAUTY-NVA2",
+              "name": "Beauty Therapy Level II",
+              "level": "NVA2",
+              "duration": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "ATC",
+      "name": "Arusha Technical College",
+      "acronym": "ATC",
+      "type": "government_technical",
+      "category": "technical_polytechnic",
+      "region": "Arusha",
+      "established": 1978,
+      "website": "https://www.atc.ac.tz",
+      "campuses": [
+        {
+          "code": "ATC-MAIN",
+          "name": "Main Campus",
+          "location": "Arusha City"
+        },
+        {
+          "code": "ATC-OLJORO",
+          "name": "Oljoro Campus",
+          "location": "Arumeru District"
+        },
+        {
+          "code": "ATC-KIKU",
+          "name": "Kikuletwa Campus",
+          "location": "Hai District"
+        }
+      ],
+      "departments": [
+        {
+          "code": "AUTO",
+          "name": "Department of Automotive Engineering",
+          "programmes": [
+            {
+              "code": "DIP-AUTO",
+              "name": "Diploma in Automotive Engineering",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-AUTOELEC",
+              "name": "Diploma in Auto-electrical & Electronic Engineering",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "NVA-MVM",
+              "name": "Motor Vehicle Mechanics (NVA)",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "NVA-AUTOELEC",
+              "name": "Auto Electrical (NVA)",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CIVIL",
+          "name": "Department of Civil Engineering",
+          "programmes": [
+            {
+              "code": "BSC-CIVIL",
+              "name": "BSc in Civil and Irrigation Engineering",
+              "level": "NTA8",
+              "duration": 3
+            },
+            {
+              "code": "DIP-CIVIL",
+              "name": "Diploma in Civil Engineering",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-HIGHWAY",
+              "name": "Diploma in Civil and Highway Engineering",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-IRRIG",
+              "name": "Diploma in Civil & Irrigation Engineering",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "NVA-MAS",
+              "name": "Masonry (NVA)",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "NVA-PLUMB",
+              "name": "Plumbing (NVA)",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "NVA-CARP",
+              "name": "Carpentry (NVA)",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "ELEC",
+          "name": "Department of Electrical Engineering",
+          "programmes": [
+            {
+              "code": "BSC-ELEC",
+              "name": "BSc in Electrical and Biomedical Engineering",
+              "level": "NTA8",
+              "duration": 3
+            },
+            {
+              "code": "DIP-ELEC",
+              "name": "Diploma in Electrical Engineering",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-BIOMED",
+              "name": "Diploma in Electrical and Biomedical Engineering",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-ELECOM",
+              "name": "Diploma in Electronics & Telecommunication Engineering",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "NVA-ELEC",
+              "name": "Electrical Installation (NVA)",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "NVA-REFRIG",
+              "name": "Refrigeration and Air Conditioning (NVA)",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "NVA-ELECT",
+              "name": "Electronics (NVA)",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "MECH",
+          "name": "Department of Mechanical Engineering",
+          "programmes": [
+            {
+              "code": "DIP-MECH",
+              "name": "Diploma in Mechanical Engineering",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "NVA-FIT",
+              "name": "Fitter and Turner (NVA)",
+              "level": "NVA3",
+              "duration": 2
+            },
+            {
+              "code": "NVA-WELD",
+              "name": "Welding (NVA)",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "ICT",
+          "name": "Department of Information and Communication Technology",
+          "programmes": [
+            {
+              "code": "BSC-IT",
+              "name": "BSc in Information Technology",
+              "level": "NTA8",
+              "duration": 3
+            },
+            {
+              "code": "BSC-CS",
+              "name": "BSc in Computer Science",
+              "level": "NTA8",
+              "duration": 3
+            },
+            {
+              "code": "DIP-CS",
+              "name": "Diploma in Computer Science",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-IT",
+              "name": "Diploma in Information Technology",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "BTC-IT",
+              "name": "Basic Technician Certificate in IT",
+              "level": "NTA4",
+              "duration": 1
+            },
+            {
+              "code": "NVA-COMP",
+              "name": "Computer Applications (NVA)",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "LAB",
+          "name": "Department of Laboratory Sciences and Technology",
+          "programmes": [
+            {
+              "code": "DIP-LAB",
+              "name": "Diploma in Laboratory Sciences and Technology",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "NVA-LAB",
+              "name": "Laboratory Technology (NVA)",
+              "level": "NVA3",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "TRANS",
+          "name": "Department of Transportation Engineering",
+          "programmes": [
+            {
+              "code": "DIP-PIPE",
+              "name": "Diploma in Pipe Works Oil & Gas Engineering",
+              "level": "NTA6",
+              "duration": 3
+            }
+          ]
+        },
+        {
+          "code": "VET",
+          "name": "Department of Vocational Education and Training",
+          "programmes": [
+            {
+              "code": "DIP-LAPID",
+              "name": "Lapidary and Jewelry Technology",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "MIST",
+      "name": "Mbeya Institute of Science and Technology",
+      "acronym": "MIST",
+      "type": "government_technical",
+      "category": "technical_polytechnic",
+      "region": "Mbeya",
+      "established": 2005,
+      "website": "https://www.mist.ac.tz",
+      "departments": [
+        {
+          "code": "ELEC",
+          "name": "Department of Electrical Engineering",
+          "programmes": [
+            {
+              "code": "DIP-ELEC",
+              "name": "Diploma in Electrical Engineering",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-ELECT",
+              "name": "Diploma in Electronics Engineering",
+              "level": "NTA6",
+              "duration": 3
+            }
+          ]
+        },
+        {
+          "code": "CIVIL",
+          "name": "Department of Civil Engineering",
+          "programmes": [
+            {
+              "code": "DIP-CIVIL",
+              "name": "Diploma in Civil Engineering",
+              "level": "NTA6",
+              "duration": 3
+            }
+          ]
+        },
+        {
+          "code": "MECH",
+          "name": "Department of Mechanical Engineering",
+          "programmes": [
+            {
+              "code": "DIP-MECH",
+              "name": "Diploma in Mechanical Engineering",
+              "level": "NTA6",
+              "duration": 3
+            }
+          ]
+        },
+        {
+          "code": "ICT",
+          "name": "Department of Computer Science",
+          "programmes": [
+            {
+              "code": "DIP-CS",
+              "name": "Diploma in Computer Science",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-IT",
+              "name": "Diploma in Information Technology",
+              "level": "NTA6",
+              "duration": 3
+            }
+          ]
+        },
+        {
+          "code": "LAB",
+          "name": "Department of Laboratory Technology",
+          "programmes": [
+            {
+              "code": "DIP-LAB",
+              "name": "Diploma in Laboratory Technology",
+              "level": "NTA6",
+              "duration": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "NIT",
+      "name": "National Institute of Transport",
+      "acronym": "NIT",
+      "type": "government_technical",
+      "category": "technical_polytechnic",
+      "region": "Dar es Salaam",
+      "established": 1975,
+      "website": "https://www.nit.ac.tz",
+      "departments": [
+        {
+          "code": "AUTO",
+          "name": "Department of Automotive Engineering",
+          "programmes": [
+            {
+              "code": "BSC-AUTO",
+              "name": "BSc in Automotive Engineering",
+              "level": "NTA8",
+              "duration": 3
+            },
+            {
+              "code": "DIP-AUTO",
+              "name": "Diploma in Automotive Engineering",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-MARINE",
+              "name": "Diploma in Marine Engineering",
+              "level": "NTA6",
+              "duration": 3
+            }
+          ]
+        },
+        {
+          "code": "LOG",
+          "name": "Department of Logistics and Transport Studies",
+          "programmes": [
+            {
+              "code": "BSC-LOG",
+              "name": "BSc in Logistics and Transport Management",
+              "level": "NTA8",
+              "duration": 3
+            },
+            {
+              "code": "DIP-LOG",
+              "name": "Diploma in Logistics and Transport Management",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-PROC",
+              "name": "Diploma in Procurement and Supplies Management",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-FF",
+              "name": "Diploma in Freight Forwarding",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-CLEAR",
+              "name": "Diploma in Clearing and Forwarding",
+              "level": "NTA6",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "BUS",
+          "name": "Department of Business Studies",
+          "programmes": [
+            {
+              "code": "DIP-BA",
+              "name": "Diploma in Business Administration",
+              "level": "NTA6",
+              "duration": 3
+            },
+            {
+              "code": "DIP-ACCT",
+              "name": "Diploma in Accountancy",
+              "level": "NTA6",
+              "duration": 3
+            }
+          ]
+        },
+        {
+          "code": "ICT",
+          "name": "Department of ICT",
+          "programmes": [
+            {
+              "code": "DIP-IT",
+              "name": "Diploma in Information Technology",
+              "level": "NTA6",
+              "duration": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "TTC-BUTIMBA",
+      "name": "Butimba Teachers College",
+      "acronym": "Butimba TTC",
+      "type": "government_teacher_training",
+      "category": "teacher_training",
+      "region": "Mwanza",
+      "established": 1963,
+      "departments": [
+        {
+          "code": "EDUC",
+          "name": "Department of Education",
+          "programmes": [
+            {
+              "code": "DIP-ED-ARTS",
+              "name": "Diploma in Education (Arts)",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "DIP-ED-SCI",
+              "name": "Diploma in Education (Science)",
+              "level": "DIP",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "TTC-MPWAPWA",
+      "name": "Mpwapwa Teachers College",
+      "acronym": "Mpwapwa TTC",
+      "type": "government_teacher_training",
+      "category": "teacher_training",
+      "region": "Dodoma",
+      "established": 1966,
+      "departments": [
+        {
+          "code": "EDUC",
+          "name": "Department of Education",
+          "programmes": [
+            {
+              "code": "DIP-ED-ARTS",
+              "name": "Diploma in Education (Arts)",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "DIP-ED-SCI",
+              "name": "Diploma in Education (Science)",
+              "level": "DIP",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "TTC-MOROGORO",
+      "name": "Morogoro Teachers College",
+      "acronym": "Morogoro TTC",
+      "type": "government_teacher_training",
+      "category": "teacher_training",
+      "region": "Morogoro",
+      "established": 1962,
+      "departments": [
+        {
+          "code": "PRIM",
+          "name": "Department of Primary Education",
+          "programmes": [
+            {
+              "code": "CERT-ED-PRIM",
+              "name": "Certificate in Primary Education (Grade A)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "TTC-KOROGWE",
+      "name": "Korogwe Teachers College",
+      "acronym": "Korogwe TTC",
+      "type": "government_teacher_training",
+      "category": "teacher_training",
+      "region": "Tanga",
+      "established": 1965,
+      "departments": [
+        {
+          "code": "PRIM",
+          "name": "Department of Primary Education",
+          "programmes": [
+            {
+              "code": "CERT-ED-PRIM",
+              "name": "Certificate in Primary Education (Grade A)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "TTC-MONDULI",
+      "name": "Monduli Teachers College",
+      "acronym": "Monduli TTC",
+      "type": "government_teacher_training",
+      "category": "teacher_training",
+      "region": "Arusha",
+      "established": 1972,
+      "departments": [
+        {
+          "code": "PRIM",
+          "name": "Department of Primary Education",
+          "programmes": [
+            {
+              "code": "CERT-ED-PRIM",
+              "name": "Certificate in Primary Education (Grade A)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "TTC-SHINYANGA",
+      "name": "Shinyanga Teachers College",
+      "acronym": "Shinyanga TTC",
+      "type": "government_teacher_training",
+      "category": "teacher_training",
+      "region": "Shinyanga",
+      "established": 1975,
+      "departments": [
+        {
+          "code": "PRIM",
+          "name": "Department of Primary Education",
+          "programmes": [
+            {
+              "code": "CERT-ED-PRIM",
+              "name": "Certificate in Primary Education (Grade A)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "TTC-TABORA",
+      "name": "Tabora Teachers College",
+      "acronym": "Tabora TTC",
+      "type": "government_teacher_training",
+      "category": "teacher_training",
+      "region": "Tabora",
+      "established": 1962,
+      "departments": [
+        {
+          "code": "EDUC",
+          "name": "Department of Education",
+          "programmes": [
+            {
+              "code": "DIP-ED-ARTS",
+              "name": "Diploma in Education (Arts)",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "DIP-ED-SCI",
+              "name": "Diploma in Education (Science)",
+              "level": "DIP",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "TTC-KLERUU",
+      "name": "Kleruu Teachers College",
+      "acronym": "Kleruu TTC",
+      "type": "government_teacher_training",
+      "category": "teacher_training",
+      "region": "Iringa",
+      "established": 1974,
+      "departments": [
+        {
+          "code": "PRIM",
+          "name": "Department of Primary Education",
+          "programmes": [
+            {
+              "code": "CERT-ED-PRIM",
+              "name": "Certificate in Primary Education (Grade A)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "TTC-PATANDI",
+      "name": "Patandi Teachers College",
+      "acronym": "Patandi TTC",
+      "type": "government_teacher_training",
+      "category": "teacher_training",
+      "region": "Arusha",
+      "established": 1980,
+      "departments": [
+        {
+          "code": "SPED",
+          "name": "Department of Special Needs Education",
+          "programmes": [
+            {
+              "code": "DIP-SPED",
+              "name": "Diploma in Special Needs Education",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "CERT-SPED",
+              "name": "Certificate in Special Needs Education",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "MUHIMBILI-SON",
+      "name": "Muhimbili School of Nursing",
+      "acronym": "Muhimbili SON",
+      "type": "government_health",
+      "category": "health_medical",
+      "region": "Dar es Salaam",
+      "established": 1960,
+      "departments": [
+        {
+          "code": "NURS",
+          "name": "Department of Nursing",
+          "programmes": [
+            {
+              "code": "DIP-RN",
+              "name": "Diploma in Nursing (Registered Nurse)",
+              "level": "DIP",
+              "duration": 3
+            },
+            {
+              "code": "CERT-EN",
+              "name": "Certificate in Nursing (Enrolled Nurse)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "MIDW",
+          "name": "Department of Midwifery",
+          "programmes": [
+            {
+              "code": "DIP-MIDW",
+              "name": "Diploma in Midwifery",
+              "level": "DIP",
+              "duration": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "KCMC-SON",
+      "name": "KCMC School of Nursing",
+      "acronym": "KCMC Nursing",
+      "type": "private_health",
+      "category": "health_medical",
+      "region": "Kilimanjaro",
+      "established": 1971,
+      "departments": [
+        {
+          "code": "NURS",
+          "name": "Department of Nursing",
+          "programmes": [
+            {
+              "code": "DIP-RN",
+              "name": "Diploma in Nursing (Registered Nurse)",
+              "level": "DIP",
+              "duration": 3
+            },
+            {
+              "code": "CERT-EN",
+              "name": "Certificate in Nursing (Enrolled Nurse)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "BUGANDO-SON",
+      "name": "Bugando School of Nursing",
+      "acronym": "Bugando Nursing",
+      "type": "private_health",
+      "category": "health_medical",
+      "region": "Mwanza",
+      "established": 1965,
+      "departments": [
+        {
+          "code": "NURS",
+          "name": "Department of Nursing",
+          "programmes": [
+            {
+              "code": "DIP-RN",
+              "name": "Diploma in Nursing (Registered Nurse)",
+              "level": "DIP",
+              "duration": 3
+            },
+            {
+              "code": "CERT-EN",
+              "name": "Certificate in Nursing (Enrolled Nurse)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "MIDW",
+          "name": "Department of Midwifery",
+          "programmes": [
+            {
+              "code": "DIP-MIDW",
+              "name": "Diploma in Midwifery",
+              "level": "DIP",
+              "duration": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "KOROGWE-SON",
+      "name": "Korogwe School of Nursing",
+      "acronym": "Korogwe Nursing",
+      "type": "government_health",
+      "category": "health_medical",
+      "region": "Tanga",
+      "established": 1970,
+      "departments": [
+        {
+          "code": "NURS",
+          "name": "Department of Nursing",
+          "programmes": [
+            {
+              "code": "CERT-EN",
+              "name": "Certificate in Nursing (Enrolled Nurse)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "TUKUYU-SON",
+      "name": "Tukuyu School of Nursing",
+      "acronym": "Tukuyu Nursing",
+      "type": "government_health",
+      "category": "health_medical",
+      "region": "Mbeya",
+      "established": 1975,
+      "departments": [
+        {
+          "code": "NURS",
+          "name": "Department of Nursing",
+          "programmes": [
+            {
+              "code": "CERT-EN",
+              "name": "Certificate in Nursing (Enrolled Nurse)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "MTWARA-SON",
+      "name": "Mtwara School of Nursing",
+      "acronym": "Mtwara Nursing",
+      "type": "government_health",
+      "category": "health_medical",
+      "region": "Mtwara",
+      "established": 1980,
+      "departments": [
+        {
+          "code": "NURS",
+          "name": "Department of Nursing",
+          "programmes": [
+            {
+              "code": "CERT-EN",
+              "name": "Certificate in Nursing (Enrolled Nurse)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "PHCI-IRINGA",
+      "name": "Primary Health Care Institute Iringa",
+      "acronym": "PHCI Iringa",
+      "type": "government_health",
+      "category": "health_medical",
+      "region": "Iringa",
+      "established": 1985,
+      "departments": [
+        {
+          "code": "CM",
+          "name": "Department of Clinical Medicine",
+          "programmes": [
+            {
+              "code": "DIP-CO",
+              "name": "Diploma in Clinical Medicine (Clinical Officer)",
+              "level": "DIP",
+              "duration": 3
+            },
+            {
+              "code": "CERT-CA",
+              "name": "Certificate in Clinical Medicine (Clinical Assistant)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "PH",
+          "name": "Department of Public Health",
+          "programmes": [
+            {
+              "code": "DIP-PH",
+              "name": "Diploma in Public Health",
+              "level": "DIP",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "ZANZIBAR-SOH",
+      "name": "Zanzibar School of Health",
+      "acronym": "Zanzibar SOH",
+      "type": "government_health",
+      "category": "health_medical",
+      "region": "Zanzibar",
+      "established": 1968,
+      "departments": [
+        {
+          "code": "NURS",
+          "name": "Department of Nursing",
+          "programmes": [
+            {
+              "code": "DIP-RN",
+              "name": "Diploma in Nursing (Registered Nurse)",
+              "level": "DIP",
+              "duration": 3
+            },
+            {
+              "code": "CERT-EN",
+              "name": "Certificate in Nursing (Enrolled Nurse)",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CM",
+          "name": "Department of Clinical Medicine",
+          "programmes": [
+            {
+              "code": "DIP-CO",
+              "name": "Diploma in Clinical Medicine",
+              "level": "DIP",
+              "duration": 3
+            }
+          ]
+        },
+        {
+          "code": "LAB",
+          "name": "Department of Medical Laboratory",
+          "programmes": [
+            {
+              "code": "DIP-MLT",
+              "name": "Diploma in Medical Laboratory Technology",
+              "level": "DIP",
+              "duration": 3
+            },
+            {
+              "code": "CERT-MLT",
+              "name": "Certificate in Medical Laboratory Technology",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "MATI-UYOLE",
+      "name": "Ministry of Agriculture Training Institute - Uyole",
+      "acronym": "MATI Uyole",
+      "type": "government_agricultural",
+      "category": "agricultural",
+      "region": "Mbeya",
+      "established": 1975,
+      "website": "https://www.kilimo.go.tz",
+      "departments": [
+        {
+          "code": "AGRI",
+          "name": "Department of General Agriculture",
+          "programmes": [
+            {
+              "code": "DIP-AGRI",
+              "name": "Diploma in General Agriculture",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "CERT-AGRI",
+              "name": "Certificate in General Agriculture",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "IRRIG",
+          "name": "Department of Irrigation",
+          "programmes": [
+            {
+              "code": "DIP-IRRIG",
+              "name": "Diploma in Irrigation Engineering",
+              "level": "DIP",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "LAND",
+          "name": "Department of Land Use Planning",
+          "programmes": [
+            {
+              "code": "DIP-LUP",
+              "name": "Diploma in Land Use Planning",
+              "level": "DIP",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "MATI-ILONGA",
+      "name": "Ministry of Agriculture Training Institute - Ilonga",
+      "acronym": "MATI Ilonga",
+      "type": "government_agricultural",
+      "category": "agricultural",
+      "region": "Morogoro",
+      "established": 1972,
+      "departments": [
+        {
+          "code": "AGRI",
+          "name": "Department of General Agriculture",
+          "programmes": [
+            {
+              "code": "DIP-AGRI",
+              "name": "Diploma in General Agriculture",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "CERT-AGRI",
+              "name": "Certificate in General Agriculture",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "FOOD",
+          "name": "Department of Food Science",
+          "programmes": [
+            {
+              "code": "DIP-FOOD",
+              "name": "Diploma in Food Production and Nutrition",
+              "level": "DIP",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "MATI-TENGERU",
+      "name": "Ministry of Agriculture Training Institute - Horti Tengeru",
+      "acronym": "MATI Tengeru",
+      "type": "government_agricultural",
+      "category": "agricultural",
+      "region": "Arusha",
+      "established": 1970,
+      "departments": [
+        {
+          "code": "HORT",
+          "name": "Department of Horticulture",
+          "programmes": [
+            {
+              "code": "DIP-HORT",
+              "name": "Diploma in Horticulture",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "CERT-HORT",
+              "name": "Certificate in Horticulture",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AGRI",
+          "name": "Department of General Agriculture",
+          "programmes": [
+            {
+              "code": "CERT-AGRI",
+              "name": "Certificate in General Agriculture",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "MATI-IGURUSI",
+      "name": "Ministry of Agriculture Training Institute - Igurusi",
+      "acronym": "MATI Igurusi",
+      "type": "government_agricultural",
+      "category": "agricultural",
+      "region": "Mbeya",
+      "established": 1980,
+      "departments": [
+        {
+          "code": "IRRIG",
+          "name": "Department of Irrigation",
+          "programmes": [
+            {
+              "code": "DIP-IRRIG",
+              "name": "Diploma in Irrigation and Land Use Planning",
+              "level": "DIP",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AGRI",
+          "name": "Department of General Agriculture",
+          "programmes": [
+            {
+              "code": "CERT-AGRI",
+              "name": "Certificate in Agriculture and Livestock Production",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "MATI-UKIRIGURU",
+      "name": "Ministry of Agriculture Training Institute - Ukiriguru",
+      "acronym": "MATI Ukiriguru",
+      "type": "government_agricultural",
+      "category": "agricultural",
+      "region": "Mwanza",
+      "established": 1978,
+      "departments": [
+        {
+          "code": "AGRI",
+          "name": "Department of General Agriculture",
+          "programmes": [
+            {
+              "code": "CERT-AGRI",
+              "name": "Certificate in General Agriculture",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "MATI-TUMBI",
+      "name": "Ministry of Agriculture Training Institute - Tumbi",
+      "acronym": "MATI Tumbi",
+      "type": "government_agricultural",
+      "category": "agricultural",
+      "region": "Tabora",
+      "established": 1985,
+      "departments": [
+        {
+          "code": "AGRI",
+          "name": "Department of General Agriculture",
+          "programmes": [
+            {
+              "code": "DIP-AGRI",
+              "name": "Diploma in General Agriculture",
+              "level": "DIP",
+              "duration": 1
+            },
+            {
+              "code": "CERT-AGRI",
+              "name": "Certificate in General Agriculture",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "LITA-MOROGORO",
+      "name": "Livestock Training Agency - Morogoro",
+      "acronym": "LITA Morogoro",
+      "type": "government_agricultural",
+      "category": "agricultural",
+      "region": "Morogoro",
+      "established": 1972,
+      "departments": [
+        {
+          "code": "ANIM",
+          "name": "Department of Animal Production",
+          "programmes": [
+            {
+              "code": "DIP-ANIM",
+              "name": "Diploma in Animal Production",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "CERT-ANIM",
+              "name": "Certificate in Animal Production",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "VET",
+          "name": "Department of Veterinary Science",
+          "programmes": [
+            {
+              "code": "CERT-VET",
+              "name": "Certificate in Veterinary Science",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "LITA-TENGERU",
+      "name": "Livestock Training Agency - Tengeru",
+      "acronym": "LITA Tengeru",
+      "type": "government_agricultural",
+      "category": "agricultural",
+      "region": "Arusha",
+      "established": 1975,
+      "departments": [
+        {
+          "code": "DAIRY",
+          "name": "Department of Dairy Production",
+          "programmes": [
+            {
+              "code": "DIP-DAIRY",
+              "name": "Diploma in Dairy Production",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "CERT-DAIRY",
+              "name": "Certificate in Dairy Production",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "ANIM",
+          "name": "Department of Animal Production",
+          "programmes": [
+            {
+              "code": "CERT-ANIM",
+              "name": "Certificate in Animal Production",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "LITA-MPWAPWA",
+      "name": "Livestock Training Agency - Mpwapwa",
+      "acronym": "LITA Mpwapwa",
+      "type": "government_agricultural",
+      "category": "agricultural",
+      "region": "Dodoma",
+      "established": 1978,
+      "departments": [
+        {
+          "code": "ANIM",
+          "name": "Department of Animal Production",
+          "programmes": [
+            {
+              "code": "CERT-ANIM",
+              "name": "Certificate in Animal Production",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "RANGE",
+          "name": "Department of Range Management",
+          "programmes": [
+            {
+              "code": "CERT-RANGE",
+              "name": "Certificate in Range Management",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "FDC-KARUMO",
+      "name": "Karumo Folk Development College",
+      "acronym": "FDC Karumo",
+      "type": "government_fdc",
+      "category": "folk_development",
+      "region": "Mwanza",
+      "established": 1975,
+      "departments": [
+        {
+          "code": "COMM",
+          "name": "Department of Community Development",
+          "programmes": [
+            {
+              "code": "CERT-CD",
+              "name": "Certificate in Community Development",
+              "level": "CERT",
+              "duration": 2
+            },
+            {
+              "code": "CERT-HE",
+              "name": "Certificate in Home Economics",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "AGRI",
+          "name": "Department of Agriculture",
+          "programmes": [
+            {
+              "code": "CERT-AGRI",
+              "name": "Certificate in Agriculture",
+              "level": "CERT",
+              "duration": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "FDC-RUNGEMBA",
+      "name": "Rungemba Folk Development College",
+      "acronym": "FDC Rungemba",
+      "type": "government_fdc",
+      "category": "folk_development",
+      "region": "Iringa",
+      "established": 1978,
+      "departments": [
+        {
+          "code": "COMM",
+          "name": "Department of Community Development",
+          "programmes": [
+            {
+              "code": "CERT-CD",
+              "name": "Certificate in Community Development",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "FDC-KISANGARA",
+      "name": "Kisangara Folk Development College",
+      "acronym": "FDC Kisangara",
+      "type": "government_fdc",
+      "category": "folk_development",
+      "region": "Kilimanjaro",
+      "established": 1980,
+      "departments": [
+        {
+          "code": "COMM",
+          "name": "Department of Community Development",
+          "programmes": [
+            {
+              "code": "CERT-CD",
+              "name": "Certificate in Community Development",
+              "level": "CERT",
+              "duration": 2
+            },
+            {
+              "code": "CERT-HE",
+              "name": "Certificate in Home Economics",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "NCT-DSM",
+      "name": "National College of Tourism - Dar es Salaam",
+      "acronym": "NCT Dar",
+      "type": "government_business",
+      "category": "business_professional",
+      "region": "Dar es Salaam",
+      "established": 1990,
+      "departments": [
+        {
+          "code": "TOUR",
+          "name": "Department of Tourism",
+          "programmes": [
+            {
+              "code": "DIP-TOUR",
+              "name": "Diploma in Tourism Management",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "CERT-TOUR",
+              "name": "Certificate in Tourism",
+              "level": "CERT",
+              "duration": 1
+            }
+          ]
+        },
+        {
+          "code": "HOSP",
+          "name": "Department of Hospitality",
+          "programmes": [
+            {
+              "code": "DIP-HOSP",
+              "name": "Diploma in Hospitality Management",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "CERT-HOSP",
+              "name": "Certificate in Hospitality",
+              "level": "CERT",
+              "duration": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "NCT-ARUSHA",
+      "name": "National College of Tourism - Arusha",
+      "acronym": "NCT Arusha",
+      "type": "government_business",
+      "category": "business_professional",
+      "region": "Arusha",
+      "established": 1995,
+      "departments": [
+        {
+          "code": "TOUR",
+          "name": "Department of Tourism",
+          "programmes": [
+            {
+              "code": "DIP-TOUR",
+              "name": "Diploma in Tourism Management",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "DIP-WILD",
+              "name": "Diploma in Wildlife Management",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "CERT-GUIDE",
+              "name": "Certificate in Tour Guiding",
+              "level": "CERT",
+              "duration": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "ISW",
+      "name": "Institute of Social Work",
+      "acronym": "ISW",
+      "type": "government_business",
+      "category": "business_professional",
+      "region": "Dar es Salaam",
+      "established": 1974,
+      "departments": [
+        {
+          "code": "SW",
+          "name": "Department of Social Work",
+          "programmes": [
+            {
+              "code": "DIP-SW",
+              "name": "Diploma in Social Work",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "CERT-SW",
+              "name": "Certificate in Social Work",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "CD",
+          "name": "Department of Community Development",
+          "programmes": [
+            {
+              "code": "DIP-CD",
+              "name": "Diploma in Community Development",
+              "level": "DIP",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "LST",
+      "name": "Law School of Tanzania",
+      "acronym": "LST",
+      "type": "government_business",
+      "category": "business_professional",
+      "region": "Dar es Salaam",
+      "established": 2007,
+      "departments": [
+        {
+          "code": "LAW",
+          "name": "Department of Legal Practice",
+          "programmes": [
+            {
+              "code": "PG-LP",
+              "name": "Postgraduate Diploma in Legal Practice",
+              "level": "ADV_DIP",
+              "duration": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "CDTI-TENGERU",
+      "name": "Community Development Training Institute - Tengeru",
+      "acronym": "CDTI Tengeru",
+      "type": "government_business",
+      "category": "business_professional",
+      "region": "Arusha",
+      "established": 1980,
+      "departments": [
+        {
+          "code": "CD",
+          "name": "Department of Community Development",
+          "programmes": [
+            {
+              "code": "DIP-CD",
+              "name": "Diploma in Community Development",
+              "level": "DIP",
+              "duration": 2
+            },
+            {
+              "code": "CERT-CD",
+              "name": "Certificate in Community Development",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        },
+        {
+          "code": "GEN",
+          "name": "Department of Gender Studies",
+          "programmes": [
+            {
+              "code": "DIP-GEN",
+              "name": "Diploma in Gender and Development",
+              "level": "DIP",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "TPS-MOSHI",
+      "name": "Tanzania Police School - Moshi",
+      "acronym": "TPS Moshi",
+      "type": "government_security",
+      "category": "police_military",
+      "region": "Kilimanjaro",
+      "established": 1965,
+      "departments": [
+        {
+          "code": "POLICE",
+          "name": "Department of Police Training",
+          "programmes": [
+            {
+              "code": "CERT-POLICE",
+              "name": "Certificate in Police Training",
+              "level": "CERT",
+              "duration": 1
+            },
+            {
+              "code": "ADV-POLICE",
+              "name": "Advanced Police Training",
+              "level": "CERT",
+              "duration": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "TMA-MONDULI",
+      "name": "Tanzania Military Academy - Monduli",
+      "acronym": "TMA Monduli",
+      "type": "government_security",
+      "category": "police_military",
+      "region": "Arusha",
+      "established": 1963,
+      "departments": [
+        {
+          "code": "MIL",
+          "name": "Department of Military Training",
+          "programmes": [
+            {
+              "code": "CERT-MIL",
+              "name": "Certificate in Military Science",
+              "level": "CERT",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "NDC",
+      "name": "National Defence College",
+      "acronym": "NDC",
+      "type": "government_security",
+      "category": "police_military",
+      "region": "Dar es Salaam",
+      "established": 1990,
+      "departments": [
+        {
+          "code": "DEF",
+          "name": "Department of Defence Studies",
+          "programmes": [
+            {
+              "code": "DIP-DEF",
+              "name": "Diploma in Defence and Security Studies",
+              "level": "DIP",
+              "duration": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "FRF-DSM",
+      "name": "Fire and Rescue Force Training School",
+      "acronym": "FRF Training",
+      "type": "government_security",
+      "category": "police_military",
+      "region": "Dar es Salaam",
+      "established": 2007,
+      "departments": [
+        {
+          "code": "FIRE",
+          "name": "Department of Fire and Rescue",
+          "programmes": [
+            {
+              "code": "CERT-FIRE",
+              "name": "Certificate in Fire and Rescue",
+              "level": "CERT",
+              "duration": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
