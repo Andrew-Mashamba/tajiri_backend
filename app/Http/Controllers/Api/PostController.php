@@ -12,6 +12,7 @@ use App\Models\Hashtag;
 use App\Models\UserProfile;
 use App\Models\Friend;
 use App\Services\VideoProcessingService;
+use App\Services\AudioProcessingService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -76,7 +77,7 @@ class PostController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:user_profiles,id',
             'content' => 'nullable|string|max:5000',
-            'post_type' => 'in:text,photo,video,poll,shared',
+            'post_type' => 'in:text,photo,video,short_video,audio,audio_text,image_text,poll,shared',
             'privacy' => 'in:public,friends,private',
             'location_name' => 'nullable|string|max:255',
             'latitude' => 'nullable|numeric|between:-90,90',
@@ -85,9 +86,20 @@ class PostController extends Controller
             'tagged_users' => 'nullable|array',
             'tagged_users.*' => 'exists:user_profiles,id',
             'media' => 'nullable|array|max:10',
-            'media.*' => 'file|mimes:jpg,jpeg,png,gif,mp4,mov,avi,mp3,wav,pdf,doc,docx|max:51200',
+            'media.*' => 'file|mimes:jpg,jpeg,png,gif,mp4,mov,avi,webm,mp3,wav,m4a,aac,ogg,pdf,doc,docx|max:102400',
             'is_draft' => 'nullable|boolean',
             'scheduled_at' => 'nullable|date|after:now',
+            // New fields for enhanced post types
+            'background_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'audio' => 'nullable|file|mimes:mp3,wav,m4a,aac,ogg|max:20480',
+            'cover_image' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
+            'music_track_id' => 'nullable|exists:music_tracks,id',
+            'music_start_time' => 'nullable|integer|min:0',
+            'original_audio_volume' => 'nullable|numeric|between:0,1',
+            'music_volume' => 'nullable|numeric|between:0,1',
+            'video_speed' => 'nullable|numeric|between:0.5,2',
+            'text_overlays' => 'nullable|json',
+            'video_filter' => 'nullable|string|max:50',
         ]);
 
         if ($validator->fails()) {
@@ -118,16 +130,51 @@ class PostController extends Controller
                 'tagged_users' => $request->tagged_users,
                 'is_draft' => $request->is_draft ?? false,
                 'scheduled_at' => $request->scheduled_at,
+                // New fields for enhanced post types
+                'background_color' => $request->background_color,
+                'music_track_id' => $request->music_track_id,
+                'music_start_time' => $request->music_start_time,
+                'original_audio_volume' => $request->original_audio_volume ?? 1.0,
+                'music_volume' => $request->music_volume ?? 1.0,
+                'video_speed' => $request->video_speed ?? 1.0,
+                'text_overlays' => $request->text_overlays ? json_decode($request->text_overlays, true) : null,
+                'video_filter' => $request->video_filter,
             ];
             \Log::info('Creating post with data:', $postData);
 
             $post = Post::create($postData);
             \Log::info('Post created with id: ' . $post->id);
 
+            // Initialize services
+            $videoService = new VideoProcessingService();
+            $audioService = new AudioProcessingService();
+
+            // Handle standalone audio upload (for audio/audio_text posts)
+            if ($request->hasFile('audio')) {
+                \Log::info('Processing standalone audio file');
+                $audioFile = $request->file('audio');
+                $audioData = $audioService->processAudio($audioFile);
+
+                $post->update([
+                    'audio_path' => $audioData['path'],
+                    'audio_duration' => $audioData['duration'] ? (int) ceil($audioData['duration']) : null,
+                    'audio_waveform' => $audioData['waveform'],
+                ]);
+                \Log::info('Audio processed: duration=' . ($audioData['duration'] ?? 'null'));
+            }
+
+            // Handle cover image for audio posts
+            if ($request->hasFile('cover_image')) {
+                \Log::info('Processing cover image');
+                $coverImage = $request->file('cover_image');
+                $coverPath = $coverImage->store('posts/' . $post->id . '/covers', 'public');
+                $post->update(['cover_image_path' => $coverPath]);
+                \Log::info('Cover image saved: ' . $coverPath);
+            }
+
             // Handle media uploads
             $hasVideo = false;
             $videoDuration = 0;
-            $videoService = new VideoProcessingService();
 
             if ($request->hasFile('media')) {
                 $order = 0;
@@ -177,15 +224,31 @@ class PostController extends Controller
                     PostMedia::create($mediaData);
                 }
 
-                // Update post type based on media
+                // Update post type based on media (if not explicitly set)
                 if ($post->post_type === 'text') {
                     $post->update(['post_type' => $hasVideo ? 'video' : 'photo']);
                 }
 
-                // Mark as short video if <= 60 seconds
+                // Handle short video detection
                 if ($hasVideo && $videoDuration > 0 && $videoDuration <= 60) {
-                    $post->update(['is_short_video' => true]);
+                    // If explicitly marked as short_video or detected as short
+                    if ($post->post_type === 'video' || $post->post_type === 'short_video') {
+                        $post->update([
+                            'is_short_video' => true,
+                            'post_type' => 'short_video',
+                        ]);
+                    }
                 }
+            }
+
+            // Handle image_text type detection
+            if ($post->post_type === 'photo' && !empty($post->content)) {
+                $post->update(['post_type' => 'image_text']);
+            }
+
+            // Handle audio_text type detection
+            if ($post->post_type === 'audio' && !empty($post->content)) {
+                $post->update(['post_type' => 'audio_text']);
             }
 
             // Extract and sync hashtags
@@ -200,8 +263,8 @@ class PostController extends Controller
 
             \Log::info('Post created successfully, id: ' . $post->id);
 
-            // Load relationships
-            $post->load(['user:id,first_name,last_name,username,profile_photo_path', 'media', 'hashtags']);
+            // Load relationships (include musicTrack for posts with music)
+            $post->load(['user:id,first_name,last_name,username,profile_photo_path', 'media', 'hashtags', 'musicTrack']);
 
             \Log::info('=== POST STORE END (SUCCESS) ===');
 
@@ -229,7 +292,7 @@ class PostController extends Controller
      */
     public function show(int $id, Request $request): JsonResponse
     {
-        $post = Post::with(['user:id,first_name,last_name,username,profile_photo_path', 'media', 'hashtags'])
+        $post = Post::with(['user:id,first_name,last_name,username,profile_photo_path', 'media', 'hashtags', 'musicTrack'])
             ->withCount(['comments', 'likes'])
             ->find($id);
 
@@ -440,6 +503,46 @@ class PostController extends Controller
         $offset = ($page - 1) * $perPage;
 
         $posts = Post::shortVideosFeed($userId ?? 0, $perPage, $offset);
+
+        if ($userId) {
+            foreach ($posts as $post) {
+                $post->is_liked = $post->isLikedBy($userId);
+                $post->is_saved = $post->isSavedBy($userId);
+                $post->user_reaction = $post->getReactionBy($userId);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $posts,
+            'meta' => [
+                'current_page' => $page,
+                'per_page' => $perPage,
+                'has_more' => $posts->count() === $perPage,
+            ],
+        ]);
+    }
+
+    /**
+     * Get audio posts feed (voice notes, podcasts)
+     */
+    public function audioFeed(Request $request): JsonResponse
+    {
+        $userId = $request->query('user_id');
+        $page = $request->query('page', 1);
+        $perPage = $request->query('per_page', 20);
+        $offset = ($page - 1) * $perPage;
+
+        $posts = Post::query()
+            ->public()
+            ->published()
+            ->audioPosts()
+            ->with(['user:id,first_name,last_name,username,profile_photo_path', 'media', 'musicTrack'])
+            ->orderByRaw('(trending_score * 0.3 + engagement_score * 0.7) DESC')
+            ->orderByDesc('created_at')
+            ->offset($offset)
+            ->limit($perPage)
+            ->get();
 
         if ($userId) {
             foreach ($posts as $post) {

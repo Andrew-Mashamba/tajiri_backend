@@ -49,14 +49,32 @@ class Post extends Model
         'reach_followers',
         'reach_non_followers',
         'is_pinned',
+        'status',
         'scheduled_at',
+        'published_at',
+        'draft_id',
         'is_draft',
         'original_post_id',
+        // New audio/video fields
+        'background_color',
+        'audio_path',
+        'audio_duration',
+        'audio_waveform',
+        'cover_image_path',
+        'music_track_id',
+        'music_start_time',
+        'original_audio_volume',
+        'music_volume',
+        'video_speed',
+        'text_overlays',
+        'video_filter',
     ];
 
     protected $casts = [
         'tagged_users' => 'array',
         'content_tags' => 'array',
+        'audio_waveform' => 'array',
+        'text_overlays' => 'array',
         'is_pinned' => 'boolean',
         'is_short_video' => 'boolean',
         'is_featured' => 'boolean',
@@ -72,12 +90,26 @@ class Post extends Model
         'replies_count' => 'integer',
         'reach_followers' => 'integer',
         'reach_non_followers' => 'integer',
+        'audio_duration' => 'integer',
+        'music_start_time' => 'integer',
         'engagement_score' => 'decimal:4',
         'trending_score' => 'decimal:4',
         'latitude' => 'decimal:8',
         'longitude' => 'decimal:8',
+        'original_audio_volume' => 'decimal:2',
+        'music_volume' => 'decimal:2',
+        'video_speed' => 'decimal:2',
         'scheduled_at' => 'datetime',
+        'published_at' => 'datetime',
     ];
+
+    /**
+     * Post status constants
+     */
+    const STATUS_DRAFT = 'draft';
+    const STATUS_SCHEDULED = 'scheduled';
+    const STATUS_PUBLISHED = 'published';
+    const STATUS_ARCHIVED = 'archived';
 
     /**
      * Post types
@@ -85,8 +117,27 @@ class Post extends Model
     const TYPE_TEXT = 'text';
     const TYPE_PHOTO = 'photo';
     const TYPE_VIDEO = 'video';
+    const TYPE_SHORT_VIDEO = 'short_video';
+    const TYPE_AUDIO = 'audio';
+    const TYPE_AUDIO_TEXT = 'audio_text';
+    const TYPE_IMAGE_TEXT = 'image_text';
     const TYPE_POLL = 'poll';
     const TYPE_SHARED = 'shared';
+
+    /**
+     * All valid post types
+     */
+    const POST_TYPES = [
+        self::TYPE_TEXT,
+        self::TYPE_PHOTO,
+        self::TYPE_VIDEO,
+        self::TYPE_SHORT_VIDEO,
+        self::TYPE_AUDIO,
+        self::TYPE_AUDIO_TEXT,
+        self::TYPE_IMAGE_TEXT,
+        self::TYPE_POLL,
+        self::TYPE_SHARED,
+    ];
 
     /**
      * Privacy levels
@@ -175,6 +226,21 @@ class Post extends Model
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
+    }
+
+    public function musicTrack(): BelongsTo
+    {
+        return $this->belongsTo(MusicTrack::class, 'music_track_id');
+    }
+
+    public function draft(): BelongsTo
+    {
+        return $this->belongsTo(PostDraft::class, 'draft_id');
+    }
+
+    public function taggedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'post_tagged_users')->withTimestamps();
     }
 
     // ==================== ENGAGEMENT CHECKS ====================
@@ -444,11 +510,24 @@ class Post extends Model
 
     public function scopePublished($query)
     {
-        return $query->where('is_draft', false)
-            ->where(function ($q) {
-                $q->whereNull('scheduled_at')
-                    ->orWhere('scheduled_at', '<=', Carbon::now());
-            });
+        return $query->where('status', self::STATUS_PUBLISHED);
+    }
+
+    public function scopeScheduled($query)
+    {
+        return $query->where('status', self::STATUS_SCHEDULED)
+            ->whereNotNull('scheduled_at');
+    }
+
+    public function scopeReadyToPublish($query)
+    {
+        return $query->where('status', self::STATUS_SCHEDULED)
+            ->where('scheduled_at', '<=', Carbon::now());
+    }
+
+    public function scopeDraft($query)
+    {
+        return $query->where('status', self::STATUS_DRAFT);
     }
 
     public function scopeShortVideos($query)
@@ -498,6 +577,74 @@ class Post extends Model
         return $query->whereHas('hashtags', function ($q) use ($normalized) {
             $q->where('name_normalized', $normalized);
         });
+    }
+
+    public function scopeAudioPosts($query)
+    {
+        return $query->whereIn('post_type', [self::TYPE_AUDIO, self::TYPE_AUDIO_TEXT]);
+    }
+
+    public function scopeOfType($query, string $type)
+    {
+        return $query->where('post_type', $type);
+    }
+
+    public function scopeWithMusic($query)
+    {
+        return $query->whereNotNull('music_track_id');
+    }
+
+    // ==================== HELPER METHODS ====================
+
+    /**
+     * Check if post is an audio post
+     */
+    public function isAudioPost(): bool
+    {
+        return in_array($this->post_type, [self::TYPE_AUDIO, self::TYPE_AUDIO_TEXT]);
+    }
+
+    /**
+     * Check if post has background audio/music
+     */
+    public function hasMusic(): bool
+    {
+        return $this->music_track_id !== null;
+    }
+
+    /**
+     * Get audio URL
+     */
+    public function getAudioUrlAttribute(): ?string
+    {
+        if (!$this->audio_path) {
+            return null;
+        }
+        return asset('storage/' . $this->audio_path);
+    }
+
+    /**
+     * Get cover image URL
+     */
+    public function getCoverImageUrlAttribute(): ?string
+    {
+        if (!$this->cover_image_path) {
+            return null;
+        }
+        return asset('storage/' . $this->cover_image_path);
+    }
+
+    /**
+     * Format audio duration for display (mm:ss)
+     */
+    public function getFormattedAudioDurationAttribute(): ?string
+    {
+        if (!$this->audio_duration) {
+            return null;
+        }
+        $minutes = floor($this->audio_duration / 60);
+        $seconds = $this->audio_duration % 60;
+        return sprintf('%d:%02d', $minutes, $seconds);
     }
 
     // ==================== FEED ALGORITHMS ====================

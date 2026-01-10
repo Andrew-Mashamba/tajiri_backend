@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\LiveStreamController;
 use App\Http\Controllers\Api\CallController;
 use App\Http\Controllers\Api\WalletController;
 use App\Http\Controllers\Api\SubscriptionController;
+use App\Http\Controllers\Api\PostDraftController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -199,6 +200,7 @@ Route::prefix('posts')->group(function () {
     Route::get('/feed/for-you', [PostController::class, 'forYouFeed']);
     Route::get('/feed/following', [PostController::class, 'followingFeed']);
     Route::get('/feed/shorts', [PostController::class, 'shortsFeed']);
+    Route::get('/feed/audio', [PostController::class, 'audioFeed']);
     Route::get('/feed/trending', [PostController::class, 'trendingFeed']);
     Route::get('/feed/discover', [PostController::class, 'discoverFeed']);
 
@@ -226,6 +228,22 @@ Route::prefix('posts')->group(function () {
 
     Route::get('/{id}/comments', [CommentController::class, 'index']);
     Route::post('/{id}/comments', [CommentController::class, 'store']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Post Drafts API Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('drafts')->group(function () {
+    Route::get('/', [PostDraftController::class, 'index']);
+    Route::get('/counts', [PostDraftController::class, 'counts']);
+    Route::post('/', [PostDraftController::class, 'store']);
+    Route::get('/{id}', [PostDraftController::class, 'show']);
+    Route::delete('/{id}', [PostDraftController::class, 'destroy']);
+    Route::post('/{id}/publish', [PostDraftController::class, 'publish']);
+    Route::post('/{id}/duplicate', [PostDraftController::class, 'duplicate']);
+    Route::delete('/', [PostDraftController::class, 'destroyAll']);
 });
 
 /*
