@@ -492,6 +492,20 @@ Route::prefix('stories')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
+| Resumable Uploads API Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('uploads')->group(function () {
+    Route::post('/init', [App\Http\Controllers\Api\ChunkUploadController::class, 'initUpload']);
+    Route::get('/resumable', [App\Http\Controllers\Api\ChunkUploadController::class, 'getResumableUploads']);
+    Route::get('/{uploadId}/status', [App\Http\Controllers\Api\ChunkUploadController::class, 'getStatus']);
+    Route::post('/{uploadId}/chunk', [App\Http\Controllers\Api\ChunkUploadController::class, 'uploadChunk']);
+    Route::post('/{uploadId}/complete', [App\Http\Controllers\Api\ChunkUploadController::class, 'completeUpload']);
+    Route::post('/{uploadId}/cancel', [App\Http\Controllers\Api\ChunkUploadController::class, 'cancelUpload']);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Clips API Routes
 |--------------------------------------------------------------------------
 */
