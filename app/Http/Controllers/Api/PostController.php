@@ -26,35 +26,76 @@ class PostController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        \Log::info('=== GET POSTS INDEX START ===');
+        \Log::info('Request URL: ' . $request->fullUrl());
+        \Log::info('Request method: ' . $request->method());
+        \Log::info('Request IP: ' . $request->ip());
+        \Log::info('Request headers: ', $request->headers->all());
+        \Log::info('Query parameters: ', $request->query());
+
         $userId = $request->query('user_id');
         $page = $request->query('page', 1);
         $perPage = $request->query('per_page', 20);
 
+        \Log::info("Parsed params - userId: $userId, page: $page, perPage: $perPage");
+
         if (!$userId) {
+            \Log::warning('GET POSTS INDEX: User ID is required but not provided');
+            \Log::info('=== GET POSTS INDEX END (ERROR: No User ID) ===');
             return response()->json([
                 'success' => false,
                 'message' => 'User ID is required',
             ], 400);
         }
 
-        $posts = Post::where('user_id', $userId)
-            ->published()
-            ->with(['user:id,first_name,last_name,username,profile_photo_path', 'media'])
-            ->withCount(['comments', 'likes'])
-            ->orderBy('is_pinned', 'desc')
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage, ['*'], 'page', $page);
+        try {
+            \Log::info("Querying posts for user_id: $userId");
 
-        return response()->json([
-            'success' => true,
-            'data' => $posts->items(),
-            'meta' => [
-                'current_page' => $posts->currentPage(),
-                'last_page' => $posts->lastPage(),
-                'per_page' => $posts->perPage(),
-                'total' => $posts->total(),
-            ],
-        ]);
+            // Log total posts count for this user
+            $totalUserPosts = Post::where('user_id', $userId)->count();
+            \Log::info("Total posts for user (all statuses): $totalUserPosts");
+
+            // Log published posts count
+            $publishedCount = Post::where('user_id', $userId)->published()->count();
+            \Log::info("Published posts count: $publishedCount");
+
+            $posts = Post::where('user_id', $userId)
+                ->published()
+                ->with(['user:id,first_name,last_name,username,profile_photo_path', 'media'])
+                ->withCount(['comments', 'likes'])
+                ->orderBy('is_pinned', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage, ['*'], 'page', $page);
+
+            \Log::info('Query executed successfully');
+            \Log::info("Results - total: {$posts->total()}, current_page: {$posts->currentPage()}, last_page: {$posts->lastPage()}");
+            \Log::info('Posts IDs returned: ' . $posts->pluck('id')->implode(', '));
+
+            $response = [
+                'success' => true,
+                'data' => $posts->items(),
+                'meta' => [
+                    'current_page' => $posts->currentPage(),
+                    'last_page' => $posts->lastPage(),
+                    'per_page' => $posts->perPage(),
+                    'total' => $posts->total(),
+                ],
+            ];
+
+            \Log::info('=== GET POSTS INDEX END (SUCCESS) ===');
+
+            return response()->json($response);
+
+        } catch (\Exception $e) {
+            \Log::error('GET POSTS INDEX ERROR: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            \Log::info('=== GET POSTS INDEX END (EXCEPTION) ===');
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch posts: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -63,8 +104,10 @@ class PostController extends Controller
     public function store(Request $request): JsonResponse
     {
         \Log::info('=== POST STORE START ===');
-        \Log::info('Request data:', $request->except('media'));
+        \Log::info('Request data:', $request->except('media', 'audio'));
         \Log::info('Has media files: ' . ($request->hasFile('media') ? 'yes' : 'no'));
+        \Log::info('Has audio file: ' . ($request->hasFile('audio') ? 'yes' : 'no'));
+        \Log::info('All files:', array_keys($request->allFiles()));
 
         if ($request->hasFile('media')) {
             $files = $request->file('media');

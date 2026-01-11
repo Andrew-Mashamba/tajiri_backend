@@ -25,6 +25,8 @@ class Photo extends Model
     ];
 
     protected $casts = [
+        'user_id' => 'integer',
+        'album_id' => 'integer',
         'width' => 'integer',
         'height' => 'integer',
         'file_size' => 'integer',

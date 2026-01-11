@@ -27,9 +27,16 @@ class PostDraftController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $user = Auth::user();
+        $userId = $request->query('user_id');
 
-        $query = PostDraft::forUser($user->id)
+        if (!$userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User ID is required',
+            ], 400);
+        }
+
+        $query = PostDraft::forUser((int) $userId)
             ->with('musicTrack')
             ->recent();
 
@@ -60,9 +67,18 @@ class PostDraftController extends Controller
     /**
      * Get a specific draft.
      */
-    public function show(int $id): JsonResponse
+    public function show(Request $request, int $id): JsonResponse
     {
-        $draft = PostDraft::forUser(Auth::id())
+        $userId = $request->query('user_id');
+
+        if (!$userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User ID is required',
+            ], 400);
+        }
+
+        $draft = PostDraft::forUser((int) $userId)
             ->with('musicTrack')
             ->findOrFail($id);
 
@@ -78,6 +94,7 @@ class PostDraftController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
+            'user_id' => 'required|integer|exists:user_profiles,id',
             'draft_id' => 'nullable|integer|exists:post_drafts,id',
             'post_type' => 'required|in:text,photo,video,short_video,audio',
             'content' => 'nullable|string|max:10000',
@@ -109,14 +126,14 @@ class PostDraftController extends Controller
             'video_filter' => 'nullable|string|max:50',
         ]);
 
-        $user = Auth::user();
+        $userId = $validated['user_id'];
 
         // Check if updating existing draft
         if (!empty($validated['draft_id'])) {
-            $draft = PostDraft::forUser($user->id)->findOrFail($validated['draft_id']);
+            $draft = PostDraft::forUser($userId)->findOrFail($validated['draft_id']);
         } else {
             $draft = new PostDraft();
-            $draft->user_id = $user->id;
+            $draft->user_id = $userId;
         }
 
         // Update basic fields
@@ -149,7 +166,7 @@ class PostDraftController extends Controller
             $mediaMetadata = [];
 
             foreach ($request->file('media') as $index => $file) {
-                $path = $file->store('drafts/' . $user->id . '/media', 'public');
+                $path = $file->store('drafts/' . $userId . '/media', 'public');
 
                 $mediaFile = [
                     'path' => $path,
@@ -188,7 +205,7 @@ class PostDraftController extends Controller
             }
 
             $audioFile = $request->file('audio');
-            $audioPath = $audioFile->store('drafts/' . $user->id . '/audio', 'public');
+            $audioPath = $audioFile->store('drafts/' . $userId . '/audio', 'public');
             $draft->audio_path = $audioPath;
 
             // Process audio
@@ -205,7 +222,7 @@ class PostDraftController extends Controller
             }
 
             $coverFile = $request->file('cover_image');
-            $draft->cover_image_path = $coverFile->store('drafts/' . $user->id . '/covers', 'public');
+            $draft->cover_image_path = $coverFile->store('drafts/' . $userId . '/covers', 'public');
         }
 
         // Update metadata
@@ -226,9 +243,18 @@ class PostDraftController extends Controller
     /**
      * Delete a draft.
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(Request $request, int $id): JsonResponse
     {
-        $draft = PostDraft::forUser(Auth::id())->findOrFail($id);
+        $userId = $request->query('user_id') ?? $request->input('user_id');
+
+        if (!$userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User ID is required',
+            ], 400);
+        }
+
+        $draft = PostDraft::forUser((int) $userId)->findOrFail($id);
 
         // Delete associated files
         $this->deleteDraftFiles($draft);
@@ -246,11 +272,18 @@ class PostDraftController extends Controller
      */
     public function publish(Request $request, int $id): JsonResponse
     {
-        $draft = PostDraft::forUser(Auth::id())
+        $userId = $request->input('user_id') ?? $request->query('user_id');
+
+        if (!$userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User ID is required',
+            ], 400);
+        }
+
+        $draft = PostDraft::forUser((int) $userId)
             ->with('musicTrack')
             ->findOrFail($id);
-
-        $user = Auth::user();
 
         // Validate that draft has required content
         if (!$this->isDraftPublishable($draft)) {
@@ -269,7 +302,7 @@ class PostDraftController extends Controller
 
             // Create post
             $post = new Post();
-            $post->user_id = $user->id;
+            $post->user_id = $userId;
             $post->post_type = $draft->post_type;
             $post->content = $draft->content;
             $post->background_color = $draft->background_color;
@@ -375,9 +408,18 @@ class PostDraftController extends Controller
     /**
      * Duplicate a draft.
      */
-    public function duplicate(int $id): JsonResponse
+    public function duplicate(Request $request, int $id): JsonResponse
     {
-        $original = PostDraft::forUser(Auth::id())->findOrFail($id);
+        $userId = $request->query('user_id') ?? $request->input('user_id');
+
+        if (!$userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User ID is required',
+            ], 400);
+        }
+
+        $original = PostDraft::forUser((int) $userId)->findOrFail($id);
 
         $duplicate = $original->replicate();
         $duplicate->title = ($original->title ?? 'Draft') . ' (Copy)';
@@ -396,17 +438,24 @@ class PostDraftController extends Controller
     /**
      * Get draft counts by type.
      */
-    public function counts(): JsonResponse
+    public function counts(Request $request): JsonResponse
     {
-        $userId = Auth::id();
+        $userId = $request->query('user_id');
 
-        $counts = PostDraft::forUser($userId)
+        if (!$userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User ID is required',
+            ], 400);
+        }
+
+        $counts = PostDraft::forUser((int) $userId)
             ->select('post_type', DB::raw('count(*) as count'))
             ->groupBy('post_type')
             ->pluck('count', 'post_type')
             ->toArray();
 
-        $scheduled = PostDraft::forUser($userId)->scheduled()->count();
+        $scheduled = PostDraft::forUser((int) $userId)->scheduled()->count();
 
         return response()->json([
             'success' => true,
@@ -421,9 +470,18 @@ class PostDraftController extends Controller
     /**
      * Delete all drafts for user.
      */
-    public function destroyAll(): JsonResponse
+    public function destroyAll(Request $request): JsonResponse
     {
-        $drafts = PostDraft::forUser(Auth::id())->get();
+        $userId = $request->query('user_id') ?? $request->input('user_id');
+
+        if (!$userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User ID is required',
+            ], 400);
+        }
+
+        $drafts = PostDraft::forUser((int) $userId)->get();
 
         foreach ($drafts as $draft) {
             $this->deleteDraftFiles($draft);
