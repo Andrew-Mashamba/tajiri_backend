@@ -575,11 +575,14 @@ class MusicController extends Controller
      */
     public function extractMetadata(Request $request): JsonResponse
     {
+        // Increase execution time for large files
+        set_time_limit(300); // 5 minutes
+        ini_set('memory_limit', '256M');
+
         \Log::info('=== EXTRACT METADATA START ===');
         \Log::info('Request received', [
             'user_id' => $request->user_id,
             'has_audio_file' => $request->hasFile('audio_file'),
-            'all_params' => $request->except(['audio_file']),
         ]);
 
         if ($request->hasFile('audio_file')) {
@@ -612,7 +615,6 @@ class MusicController extends Controller
             $audioFile = $request->file('audio_file');
 
             \Log::info('Storing audio file...');
-            // Store the audio file permanently
             $audioPath = $audioFile->store('music', 'public');
             \Log::info('Audio file stored', ['path' => $audioPath]);
 
