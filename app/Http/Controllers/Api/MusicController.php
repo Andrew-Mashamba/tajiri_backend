@@ -322,6 +322,24 @@ class MusicController extends Controller
      */
     public function upload(Request $request): JsonResponse
     {
+        \Log::info('=== MUSIC UPLOAD START ===');
+        \Log::info('Request received', [
+            'user_id' => $request->user_id,
+            'title' => $request->title,
+            'has_audio_file' => $request->hasFile('audio_file'),
+            'has_cover_image' => $request->hasFile('cover_image'),
+        ]);
+
+        if ($request->hasFile('audio_file')) {
+            $file = $request->file('audio_file');
+            \Log::info('Audio file details', [
+                'original_name' => $file->getClientOriginalName(),
+                'mime_type' => $file->getMimeType(),
+                'size' => $file->getSize(),
+                'extension' => $file->getClientOriginalExtension(),
+            ]);
+        }
+
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:user_profiles,id',
             'title' => 'required|string|max:200',
@@ -335,6 +353,7 @@ class MusicController extends Controller
         ]);
 
         if ($validator->fails()) {
+            \Log::warning('Validation failed', ['errors' => $validator->errors()->toArray()]);
             return response()->json([
                 'success' => false,
                 'message' => 'Taarifa zilizoingizwa si sahihi',
@@ -342,21 +361,33 @@ class MusicController extends Controller
             ], 422);
         }
 
+        \Log::info('Validation passed');
+
         try {
             DB::beginTransaction();
+            \Log::info('Transaction started');
 
             // Get or create artist profile for the user
             $user = UserProfile::find($request->user_id);
             $artist = $this->getOrCreateArtistForUser($user);
+            \Log::info('Artist resolved', ['artist_id' => $artist->id, 'artist_name' => $artist->name]);
 
             // Store the audio file
+            \Log::info('Storing audio file...');
             $audioFile = $request->file('audio_file');
             $audioPath = $audioFile->store('music', 'public');
+            \Log::info('Audio file stored', ['path' => $audioPath]);
+
             $fullAudioPath = Storage::disk('public')->path($audioPath);
 
             // Extract metadata from audio file
+            \Log::info('Extracting metadata...');
             $metadataService = new AudioMetadataService();
             $metadata = $metadataService->extractMetadata($fullAudioPath);
+            \Log::info('Metadata extracted', [
+                'duration' => $metadata['duration'] ?? null,
+                'bitrate' => $metadata['bitrate'] ?? null,
+            ]);
 
             // Handle cover image - either uploaded or extracted from audio
             $coverPath = null;
@@ -426,6 +457,7 @@ class MusicController extends Controller
             $track->load(['artist', 'categories']);
 
             DB::commit();
+            \Log::info('=== MUSIC UPLOAD SUCCESS ===', ['track_id' => $track->id]);
 
             return response()->json([
                 'success' => true,
@@ -443,6 +475,12 @@ class MusicController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+            \Log::error('=== MUSIC UPLOAD FAILED ===', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+            ]);
 
             // Clean up uploaded files on failure
             if (isset($audioPath)) {
@@ -537,12 +575,30 @@ class MusicController extends Controller
      */
     public function extractMetadata(Request $request): JsonResponse
     {
+        \Log::info('=== EXTRACT METADATA START ===');
+        \Log::info('Request received', [
+            'user_id' => $request->user_id,
+            'has_audio_file' => $request->hasFile('audio_file'),
+            'all_params' => $request->except(['audio_file']),
+        ]);
+
+        if ($request->hasFile('audio_file')) {
+            $file = $request->file('audio_file');
+            \Log::info('Audio file details', [
+                'original_name' => $file->getClientOriginalName(),
+                'mime_type' => $file->getMimeType(),
+                'size' => $file->getSize(),
+                'extension' => $file->getClientOriginalExtension(),
+            ]);
+        }
+
         $validator = Validator::make($request->all(), [
             'audio_file' => 'required|file|mimes:mp3,wav,aac,m4a,ogg,flac|max:51200',
             'user_id' => 'required|exists:user_profiles,id',
         ]);
 
         if ($validator->fails()) {
+            \Log::warning('Validation failed', ['errors' => $validator->errors()->toArray()]);
             return response()->json([
                 'success' => false,
                 'message' => 'Faili si sahihi',
@@ -550,16 +606,29 @@ class MusicController extends Controller
             ], 422);
         }
 
+        \Log::info('Validation passed');
+
         try {
             $audioFile = $request->file('audio_file');
 
+            \Log::info('Storing audio file...');
             // Store the audio file permanently
             $audioPath = $audioFile->store('music', 'public');
+            \Log::info('Audio file stored', ['path' => $audioPath]);
+
             $fullAudioPath = Storage::disk('public')->path($audioPath);
+            \Log::info('Full audio path', ['full_path' => $fullAudioPath]);
 
             // Extract metadata from stored file
+            \Log::info('Extracting metadata...');
             $metadataService = new AudioMetadataService();
             $metadata = $metadataService->extractMetadata($fullAudioPath);
+            \Log::info('Metadata extracted', [
+                'duration' => $metadata['duration'] ?? null,
+                'bitrate' => $metadata['bitrate'] ?? null,
+                'title' => $metadata['title'] ?? null,
+                'has_cover' => !empty($metadata['embedded_cover']),
+            ]);
 
             // Format duration for display
             $durationFormatted = null;
@@ -607,6 +676,8 @@ class MusicController extends Controller
             ];
 
             \Cache::put("music_upload:{$tempUploadId}", $tempData, now()->addHour());
+            \Log::info('Temp upload cached', ['temp_upload_id' => $tempUploadId]);
+            \Log::info('=== EXTRACT METADATA SUCCESS ===');
 
             return response()->json([
                 'success' => true,
@@ -653,6 +724,13 @@ class MusicController extends Controller
             ]);
 
         } catch (\Exception $e) {
+            \Log::error('=== EXTRACT METADATA FAILED ===', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
             // Clean up stored file on failure
             if (isset($audioPath)) {
                 Storage::disk('public')->delete($audioPath);
