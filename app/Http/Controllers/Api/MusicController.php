@@ -511,12 +511,14 @@ class MusicController extends Controller
     /**
      * Get tracks uploaded by a specific user
      */
-    public function userTracks(int $userId): JsonResponse
+    public function userTracks(int $userId, Request $request): JsonResponse
     {
+        $page = $request->query('page', 1);
+
         $tracks = MusicTrack::with(['artist', 'categories'])
             ->where('uploaded_by', $userId)
             ->orderByDesc('created_at')
-            ->paginate(20);
+            ->paginate(20, ['*'], 'page', $page);
 
         return response()->json([
             'success' => true,

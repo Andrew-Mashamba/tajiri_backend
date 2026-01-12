@@ -538,37 +538,40 @@ Route::prefix('clips')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('music')->group(function () {
+    // Browse
     Route::get('/', [MusicController::class, 'index']);
     Route::get('/featured', [MusicController::class, 'featured']);
     Route::get('/trending', [MusicController::class, 'trending']);
     Route::get('/search', [MusicController::class, 'search']);
     Route::get('/categories', [MusicController::class, 'categories']);
     Route::get('/category/{slug}', [MusicController::class, 'byCategory']);
-    Route::get('/saved/{userId}', [MusicController::class, 'savedMusic']);
 
-    // User music upload with automatic metadata extraction (two-step flow)
+    // Artists (must be before /{id} to avoid route conflicts)
+    Route::get('/artists', [MusicController::class, 'artists']);
+    Route::post('/artists', [MusicController::class, 'storeArtist']);
+    Route::get('/artists/{id}', [MusicController::class, 'artist']);
+    Route::get('/artists/{id}/tracks', [MusicController::class, 'artistTracks']);
+
+    // User tracks and saved music
+    Route::get('/saved/{userId}', [MusicController::class, 'savedMusic']);
+    Route::get('/user/{userId}', [MusicController::class, 'userTracks']);
+
+    // Upload (two-step flow)
     Route::post('/extract-metadata', [MusicController::class, 'extractMetadata']);
     Route::post('/finalize-upload', [MusicController::class, 'finalizeUpload']);
     Route::post('/cancel-upload', [MusicController::class, 'cancelUpload']);
 
-    // Legacy single-step upload (still works)
+    // Legacy single-step upload
     Route::post('/upload', [MusicController::class, 'upload']);
 
-    Route::get('/user/{userId}', [MusicController::class, 'userTracks']);
-    Route::delete('/{id}/delete', [MusicController::class, 'deleteTrack']);
+    // Admin create track
+    Route::post('/', [MusicController::class, 'store']);
 
+    // Track operations (keep /{id} routes last to avoid conflicts)
     Route::get('/{id}', [MusicController::class, 'show']);
     Route::post('/{id}/save', [MusicController::class, 'saveTrack']);
     Route::delete('/{id}/save', [MusicController::class, 'unsaveTrack']);
-
-    // Admin
-    Route::post('/', [MusicController::class, 'store']);
-
-    // Artists
-    Route::get('/artists', [MusicController::class, 'artists']);
-    Route::get('/artists/{id}', [MusicController::class, 'artist']);
-    Route::get('/artists/{id}/tracks', [MusicController::class, 'artistTracks']);
-    Route::post('/artists', [MusicController::class, 'storeArtist']);
+    Route::delete('/{id}/delete', [MusicController::class, 'deleteTrack']);
 });
 
 /*
