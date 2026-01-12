@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class MusicController extends Controller
 {
@@ -967,5 +969,232 @@ class MusicController extends Controller
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Failed to delete'], 500);
         }
+    }
+
+    /**
+     * Chunked upload - receives file chunks and assembles them
+     * Supports resumable uploads for large files
+     *
+     * Request headers (from resumable.js or similar):
+     * - resumableChunkNumber: current chunk number
+     * - resumableTotalChunks: total number of chunks
+     * - resumableChunkSize: size of each chunk
+     * - resumableTotalSize: total file size
+     * - resumableIdentifier: unique file identifier
+     * - resumableFilename: original filename
+     */
+    public function uploadChunk(Request $request): JsonResponse
+    {
+        \Log::info('=== CHUNK UPLOAD START ===', [
+            'chunk_number' => $request->input('resumableChunkNumber'),
+            'total_chunks' => $request->input('resumableTotalChunks'),
+            'identifier' => $request->input('resumableIdentifier'),
+            'filename' => $request->input('resumableFilename'),
+            'user_id' => $request->input('user_id'),
+        ]);
+
+        // Increase limits for chunk processing
+        set_time_limit(300);
+        ini_set('memory_limit', '256M');
+
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:user_profiles,id',
+            'file' => 'required|file',
+            'resumableChunkNumber' => 'required|integer|min:1',
+            'resumableTotalChunks' => 'required|integer|min:1',
+            'resumableChunkSize' => 'required|integer',
+            'resumableTotalSize' => 'required|integer',
+            'resumableIdentifier' => 'required|string',
+            'resumableFilename' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            \Log::warning('Chunk validation failed', ['errors' => $validator->errors()->toArray()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid chunk data',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $receiver = new FileReceiver('file', $request, HandlerFactory::classFromRequest($request));
+
+            if (!$receiver->isUploaded()) {
+                \Log::error('Chunk file not uploaded');
+                return response()->json([
+                    'success' => false,
+                    'message' => 'File not uploaded'
+                ], 400);
+            }
+
+            $save = $receiver->receive();
+
+            // Check if all chunks have been uploaded
+            if ($save->isFinished()) {
+                \Log::info('All chunks received, processing complete file...');
+
+                // Get the complete file
+                $file = $save->getFile();
+                $originalName = $request->input('resumableFilename');
+                $userId = $request->input('user_id');
+
+                // Move to permanent storage
+                $audioPath = 'music/' . Str::random(40) . '.' . pathinfo($originalName, PATHINFO_EXTENSION);
+                Storage::disk('public')->put($audioPath, file_get_contents($file->getPathname()));
+
+                // Delete the temp file
+                unlink($file->getPathname());
+
+                $fullAudioPath = Storage::disk('public')->path($audioPath);
+
+                // Extract metadata
+                \Log::info('Extracting metadata from assembled file...');
+                $metadataService = new AudioMetadataService();
+                $metadata = $metadataService->extractMetadata($fullAudioPath);
+
+                \Log::info('Metadata extracted', [
+                    'duration' => $metadata['duration'] ?? null,
+                    'bitrate' => $metadata['bitrate'] ?? null,
+                ]);
+
+                // Format duration
+                $durationFormatted = null;
+                if ($metadata['duration']) {
+                    $minutes = floor($metadata['duration'] / 60);
+                    $seconds = $metadata['duration'] % 60;
+                    $durationFormatted = sprintf('%d:%02d', $minutes, $seconds);
+                }
+
+                // Format file size
+                $fileSizeFormatted = null;
+                if ($metadata['file_size']) {
+                    if ($metadata['file_size'] > 1048576) {
+                        $fileSizeFormatted = round($metadata['file_size'] / 1048576, 1) . ' MB';
+                    } else {
+                        $fileSizeFormatted = round($metadata['file_size'] / 1024) . ' KB';
+                    }
+                }
+
+                // Handle embedded cover
+                $hasEmbeddedCover = !empty($metadata['embedded_cover']);
+                $embeddedCoverBase64 = null;
+                $coverPath = null;
+
+                if ($hasEmbeddedCover) {
+                    $embeddedCoverBase64 = 'data:' . $metadata['embedded_cover']['mime'] . ';base64,' . $metadata['embedded_cover']['data'];
+                    $coverPath = $this->saveEmbeddedCover(
+                        $metadata['embedded_cover'],
+                        $metadata['title'] ?? pathinfo($originalName, PATHINFO_FILENAME)
+                    );
+                }
+
+                // Generate temp upload ID for finalization
+                $tempUploadId = Str::uuid()->toString();
+
+                // Store in cache for finalization
+                $tempData = [
+                    'user_id' => $userId,
+                    'audio_path' => $audioPath,
+                    'cover_path' => $coverPath,
+                    'original_filename' => $originalName,
+                    'metadata' => $metadata,
+                    'created_at' => now()->toISOString(),
+                ];
+
+                \Cache::put("music_upload:{$tempUploadId}", $tempData, now()->addHour());
+
+                \Log::info('=== CHUNK UPLOAD COMPLETE ===', ['temp_upload_id' => $tempUploadId]);
+
+                return response()->json([
+                    'success' => true,
+                    'done' => true,
+                    'message' => 'Faili imepakiwa kikamilifu',
+                    'temp_upload_id' => $tempUploadId,
+                    'audio_url' => Storage::disk('public')->url($audioPath),
+                    'cover_url' => $coverPath ? Storage::disk('public')->url($coverPath) : null,
+                    'data' => [
+                        'title' => $metadata['title'] ?? null,
+                        'artist' => $metadata['artist'] ?? null,
+                        'album' => $metadata['album'] ?? null,
+                        'genre' => $metadata['genre'] ?? null,
+                        'duration' => $metadata['duration'] ?? null,
+                        'duration_formatted' => $durationFormatted,
+                        'bitrate' => $metadata['bitrate'] ?? null,
+                        'bitrate_formatted' => $metadata['bitrate'] ? $metadata['bitrate'] . ' kbps' : null,
+                        'sample_rate' => $metadata['sample_rate'] ?? null,
+                        'sample_rate_formatted' => $metadata['sample_rate'] ? ($metadata['sample_rate'] / 1000) . ' kHz' : null,
+                        'channels' => $metadata['channels'] ?? null,
+                        'channels_formatted' => $metadata['channels'] == 2 ? 'Stereo' : ($metadata['channels'] == 1 ? 'Mono' : null),
+                        'file_size' => $metadata['file_size'] ?? null,
+                        'file_size_formatted' => $fileSizeFormatted,
+                        'codec' => $metadata['codec'] ?? null,
+                        'file_format' => $metadata['file_format'] ?? null,
+                        'release_year' => $metadata['release_year'] ?? null,
+                        'track_number' => $metadata['track_number'] ?? null,
+                        'composer' => $metadata['composer'] ?? null,
+                        'publisher' => $metadata['publisher'] ?? null,
+                        'bpm' => $metadata['bpm'] ?? null,
+                        'lyrics' => $metadata['lyrics'] ?? null,
+                        'has_embedded_cover' => $hasEmbeddedCover,
+                        'embedded_cover_base64' => $embeddedCoverBase64,
+                    ],
+                ]);
+            }
+
+            // Chunk received but more chunks expected
+            $handler = $save->handler();
+            $chunkNumber = $request->input('resumableChunkNumber');
+            $totalChunks = $request->input('resumableTotalChunks');
+            $percentComplete = round(($chunkNumber / $totalChunks) * 100);
+
+            \Log::info('Chunk received', [
+                'chunk' => $chunkNumber,
+                'total' => $totalChunks,
+                'percent' => $percentComplete,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'done' => false,
+                'message' => "Chunk {$chunkNumber}/{$totalChunks} received",
+                'chunk_number' => $chunkNumber,
+                'total_chunks' => $totalChunks,
+                'percent_complete' => $percentComplete,
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('=== CHUNK UPLOAD FAILED ===', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Chunk upload failed: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Check if a chunk already exists (for resume support)
+     * Called with GET request before uploading each chunk
+     */
+    public function checkChunk(Request $request): JsonResponse
+    {
+        $identifier = $request->input('resumableIdentifier');
+        $chunkNumber = $request->input('resumableChunkNumber');
+        $chunkSize = $request->input('resumableChunkSize');
+
+        $chunkPath = storage_path("app/chunks/{$identifier}/chunk_{$chunkNumber}");
+
+        if (file_exists($chunkPath) && filesize($chunkPath) >= $chunkSize) {
+            // Chunk already exists
+            return response()->json(['exists' => true], 200);
+        }
+
+        // Chunk doesn't exist, needs to be uploaded
+        return response()->json(['exists' => false], 204);
     }
 }

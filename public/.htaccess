@@ -5,6 +5,24 @@
     php_value memory_limit 256M
     php_value max_execution_time 300
     php_value max_input_time 300
+    php_value output_buffering 0
+</IfModule>
+
+# Faster uploads - disable output buffering and compression for uploads
+<IfModule mod_deflate.c>
+    SetEnvIfNoCase Request_URI "\.(?:mp3|wav|aac|m4a|ogg|flac)$" no-gzip
+    SetEnvIfNoCase Request_URI "/api/music" no-gzip
+</IfModule>
+
+# Keep connection alive for faster uploads
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+    Header set Keep-Alive "timeout=60, max=1000"
+</IfModule>
+
+# Increase timeout for upload endpoints
+<IfModule mod_reqtimeout.c>
+    RequestReadTimeout header=60 body=300
 </IfModule>
 
 <IfModule mod_rewrite.c>

@@ -561,6 +561,10 @@ Route::prefix('music')->group(function () {
     Route::post('/finalize-upload', [MusicController::class, 'finalizeUpload']);
     Route::post('/cancel-upload', [MusicController::class, 'cancelUpload']);
 
+    // Chunked/Resumable upload (for large files)
+    Route::post('/upload-chunk', [MusicController::class, 'uploadChunk']);
+    Route::get('/upload-chunk', [MusicController::class, 'checkChunk']);
+
     // Legacy single-step upload
     Route::post('/upload', [MusicController::class, 'upload']);
 
