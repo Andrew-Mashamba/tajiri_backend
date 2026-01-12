@@ -537,12 +537,22 @@ class MusicController extends Controller
      */
     public function extractMetadata(Request $request): JsonResponse
     {
+        // Increase execution time for large files
+        set_time_limit(300); // 5 minutes
+        ini_set('memory_limit', '256M');
+
+        \Log::info('🎵 [MusicUpload] extractMetadata called', [
+            'user_id' => $request->user_id,
+            'has_file' => $request->hasFile('audio_file'),
+        ]);
+
         $validator = Validator::make($request->all(), [
             'audio_file' => 'required|file|mimes:mp3,wav,aac,m4a,ogg,flac|max:51200',
             'user_id' => 'required|exists:user_profiles,id',
         ]);
 
         if ($validator->fails()) {
+            \Log::warning('🎵 [MusicUpload] Validation failed', ['errors' => $validator->errors()]);
             return response()->json([
                 'success' => false,
                 'message' => 'Faili si sahihi',
@@ -552,14 +562,23 @@ class MusicController extends Controller
 
         try {
             $audioFile = $request->file('audio_file');
+            \Log::info('🎵 [MusicUpload] File received', [
+                'name' => $audioFile->getClientOriginalName(),
+                'size' => $audioFile->getSize(),
+                'mime' => $audioFile->getMimeType(),
+            ]);
 
             // Store the audio file permanently
+            \Log::info('🎵 [MusicUpload] Storing file...');
             $audioPath = $audioFile->store('music', 'public');
             $fullAudioPath = Storage::disk('public')->path($audioPath);
+            \Log::info('🎵 [MusicUpload] File stored at: ' . $audioPath);
 
             // Extract metadata from stored file
+            \Log::info('🎵 [MusicUpload] Extracting metadata...');
             $metadataService = new AudioMetadataService();
             $metadata = $metadataService->extractMetadata($fullAudioPath);
+            \Log::info('🎵 [MusicUpload] Metadata extracted', ['duration' => $metadata['duration'] ?? null]);
 
             // Format duration for display
             $durationFormatted = null;
@@ -653,6 +672,12 @@ class MusicController extends Controller
             ]);
 
         } catch (\Exception $e) {
+            \Log::error('🎵 [MusicUpload] EXCEPTION', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
+
             // Clean up stored file on failure
             if (isset($audioPath)) {
                 Storage::disk('public')->delete($audioPath);
