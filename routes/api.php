@@ -545,6 +545,18 @@ Route::prefix('music')->group(function () {
     Route::get('/categories', [MusicController::class, 'categories']);
     Route::get('/category/{slug}', [MusicController::class, 'byCategory']);
     Route::get('/saved/{userId}', [MusicController::class, 'savedMusic']);
+
+    // User music upload with automatic metadata extraction (two-step flow)
+    Route::post('/extract-metadata', [MusicController::class, 'extractMetadata']);
+    Route::post('/finalize-upload', [MusicController::class, 'finalizeUpload']);
+    Route::post('/cancel-upload', [MusicController::class, 'cancelUpload']);
+
+    // Legacy single-step upload (still works)
+    Route::post('/upload', [MusicController::class, 'upload']);
+
+    Route::get('/user/{userId}', [MusicController::class, 'userTracks']);
+    Route::delete('/{id}/delete', [MusicController::class, 'deleteTrack']);
+
     Route::get('/{id}', [MusicController::class, 'show']);
     Route::post('/{id}/save', [MusicController::class, 'saveTrack']);
     Route::delete('/{id}/save', [MusicController::class, 'unsaveTrack']);

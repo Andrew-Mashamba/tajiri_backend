@@ -11,12 +11,15 @@ class MusicArtist extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'name',
         'slug',
         'image_path',
         'bio',
         'is_verified',
         'followers_count',
+        'monthly_listeners',
+        'tracks_count',
     ];
 
     protected $casts = [
