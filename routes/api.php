@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\ClipController;
 use App\Http\Controllers\Api\MusicController;
 use App\Http\Controllers\Api\LiveStreamController;
+use App\Http\Controllers\Api\AdvancedStreamController;
 use App\Http\Controllers\Api\CallController;
 use App\Http\Controllers\Api\WalletController;
 use App\Http\Controllers\Api\SubscriptionController;
@@ -619,10 +620,42 @@ Route::prefix('streams')->group(function () {
 
     // Analytics
     Route::get('/{id}/analytics', [LiveStreamController::class, 'analytics']);
+
+    // Advanced: Reactions (with individual tracking)
+    Route::post('/{id}/reactions', [AdvancedStreamController::class, 'storeReaction']);
+
+    // Advanced: Polls
+    Route::get('/{id}/polls/active', [AdvancedStreamController::class, 'getActivePoll']);
+    Route::post('/{id}/polls', [AdvancedStreamController::class, 'createPoll']);
+    Route::post('/{id}/polls/{pollId}/vote', [AdvancedStreamController::class, 'votePoll']);
+    Route::post('/{id}/polls/{pollId}/close', [AdvancedStreamController::class, 'closePoll']);
+
+    // Advanced: Q&A
+    Route::get('/{id}/questions', [AdvancedStreamController::class, 'getQuestions']);
+    Route::post('/{id}/questions', [AdvancedStreamController::class, 'submitQuestion']);
+    Route::post('/{id}/questions/{questionId}/upvote', [AdvancedStreamController::class, 'upvoteQuestion']);
+    Route::post('/{id}/questions/{questionId}/answer', [AdvancedStreamController::class, 'answerQuestion']);
+
+    // Advanced: Super Chat
+    Route::post('/{id}/super-chats', [AdvancedStreamController::class, 'sendSuperChat']);
+
+    // Advanced: Battles
+    Route::post('/{id}/battles/invite', [AdvancedStreamController::class, 'inviteBattle']);
+
+    // Advanced: Health Metrics
+    Route::post('/{id}/health', [AdvancedStreamController::class, 'reportHealth']);
 });
 
 // Stream notifications for users
 Route::get('/users/{userId}/stream-notifications', [LiveStreamController::class, 'streamNotifications']);
+
+// Stream Battles
+Route::prefix('battles')->group(function () {
+    Route::get('/{battleId}', [AdvancedStreamController::class, 'getBattle']);
+    Route::post('/{battleId}/accept', [AdvancedStreamController::class, 'acceptBattle']);
+    Route::post('/{battleId}/decline', [AdvancedStreamController::class, 'declineBattle']);
+    Route::post('/{battleId}/end', [AdvancedStreamController::class, 'endBattle']);
+});
 
 /*
 |--------------------------------------------------------------------------

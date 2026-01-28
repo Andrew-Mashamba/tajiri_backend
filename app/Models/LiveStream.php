@@ -62,6 +62,13 @@ class LiveStream extends Model
         'started_at',
         'ended_at',
         'duration',
+        // Health monitoring
+        'beauty_filter_level',
+        'network_quality',
+        'average_bitrate',
+        'average_fps',
+        'total_dropped_frames',
+        'average_latency',
     ];
 
     protected $casts = [
@@ -126,6 +133,36 @@ class LiveStream extends Model
     public function analytics(): HasMany
     {
         return $this->hasMany(StreamAnalytics::class, 'stream_id');
+    }
+
+    public function reactions(): HasMany
+    {
+        return $this->hasMany(StreamReaction::class, 'stream_id');
+    }
+
+    public function polls(): HasMany
+    {
+        return $this->hasMany(StreamPoll::class, 'stream_id');
+    }
+
+    public function questions(): HasMany
+    {
+        return $this->hasMany(StreamQuestion::class, 'stream_id');
+    }
+
+    public function superChats(): HasMany
+    {
+        return $this->hasMany(StreamSuperChat::class, 'stream_id');
+    }
+
+    public function battlesAsStream1(): HasMany
+    {
+        return $this->hasMany(StreamBattle::class, 'stream_id_1');
+    }
+
+    public function battlesAsStream2(): HasMany
+    {
+        return $this->hasMany(StreamBattle::class, 'stream_id_2');
     }
 
     public function isLive(): bool
