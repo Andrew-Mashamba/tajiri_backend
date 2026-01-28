@@ -87,6 +87,10 @@ class LiveStreamController extends Controller
             ? $request->file('thumbnail')->store('streams/' . $request->user_id, 'public')
             : null;
 
+        // Immediate streams (scheduled_at is null) start in pre_live status
+        // Scheduled streams start in scheduled status
+        $isImmediate = empty($request->scheduled_at);
+
         $stream = LiveStream::create([
             'user_id' => $request->user_id,
             'title' => $request->title,
@@ -95,8 +99,9 @@ class LiveStreamController extends Controller
             'category' => $request->category,
             'tags' => $request->tags,
             'privacy' => $request->privacy ?? 'public',
-            'status' => $request->scheduled_at ? 'scheduled' : 'scheduled',
+            'status' => $isImmediate ? 'pre_live' : 'scheduled',
             'scheduled_at' => $request->scheduled_at,
+            'pre_live_started_at' => $isImmediate ? now() : null,
             'allow_comments' => $request->allow_comments ?? true,
             'allow_gifts' => $request->allow_gifts ?? true,
             'allow_co_hosts' => $request->allow_co_hosts ?? false,
