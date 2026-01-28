@@ -589,6 +589,7 @@ Route::prefix('streams')->group(function () {
     Route::get('/gifts', [LiveStreamController::class, 'gifts']);
     Route::get('/user/{userId}', [LiveStreamController::class, 'userStreams']);
     Route::get('/{id}', [LiveStreamController::class, 'show']);
+    Route::patch('/{id}/status', [LiveStreamController::class, 'updateStatus']);
     Route::post('/{id}/start', [LiveStreamController::class, 'start']);
     Route::post('/{id}/end', [LiveStreamController::class, 'end']);
 
@@ -597,6 +598,7 @@ Route::prefix('streams')->group(function () {
     Route::post('/{id}/leave', [LiveStreamController::class, 'leave']);
     Route::get('/{id}/viewers', [LiveStreamController::class, 'viewers']);
     Route::post('/{id}/like', [LiveStreamController::class, 'like']);
+    Route::post('/{id}/reaction', [LiveStreamController::class, 'reaction']);
 
     // Comments
     Route::get('/{id}/comments', [LiveStreamController::class, 'comments']);
@@ -611,7 +613,16 @@ Route::prefix('streams')->group(function () {
     Route::post('/{id}/cohost/invite', [LiveStreamController::class, 'inviteCohost']);
     Route::post('/{id}/cohost/respond', [LiveStreamController::class, 'respondCohost']);
     Route::post('/{id}/cohost/leave', [LiveStreamController::class, 'leaveCohost']);
+
+    // Notifications
+    Route::post('/{id}/notify-followers', [LiveStreamController::class, 'notifyFollowersEndpoint']);
+
+    // Analytics
+    Route::get('/{id}/analytics', [LiveStreamController::class, 'analytics']);
 });
+
+// Stream notifications for users
+Route::get('/users/{userId}/stream-notifications', [LiveStreamController::class, 'streamNotifications']);
 
 /*
 |--------------------------------------------------------------------------

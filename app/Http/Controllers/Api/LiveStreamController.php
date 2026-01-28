@@ -8,7 +8,17 @@ use App\Models\StreamViewer;
 use App\Models\StreamComment;
 use App\Models\StreamGift;
 use App\Models\StreamCohost;
+use App\Models\StreamNotification;
+use App\Models\StreamAnalytics;
 use App\Models\VirtualGift;
+use App\Events\StreamStatusChanged;
+use App\Events\ViewerCountUpdated;
+use App\Events\NewStreamComment;
+use App\Events\GiftReceived;
+use App\Events\CoHostJoined;
+use App\Events\StreamEnded;
+use App\Jobs\GenerateStreamAnalytics;
+use App\Services\WebSocket\WebSocketBroadcaster;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +35,8 @@ class LiveStreamController extends Controller
 
         if ($status === 'live') {
             $query->live();
+        } elseif ($status === 'pre_live') {
+            $query->preLive();
         } elseif ($status === 'scheduled') {
             $query->scheduled()->where('scheduled_at', '>', now());
         } elseif ($status === 'ended') {
@@ -63,6 +75,7 @@ class LiveStreamController extends Controller
             'scheduled_at' => 'nullable|date|after:now',
             'allow_comments' => 'nullable|boolean',
             'allow_gifts' => 'nullable|boolean',
+            'allow_co_hosts' => 'nullable|boolean',
             'is_recorded' => 'nullable|boolean',
         ]);
 
@@ -82,15 +95,22 @@ class LiveStreamController extends Controller
             'category' => $request->category,
             'tags' => $request->tags,
             'privacy' => $request->privacy ?? 'public',
-            'status' => $request->scheduled_at ? 'scheduled' : 'live',
+            'status' => $request->scheduled_at ? 'scheduled' : 'scheduled',
             'scheduled_at' => $request->scheduled_at,
-            'started_at' => $request->scheduled_at ? null : now(),
             'allow_comments' => $request->allow_comments ?? true,
             'allow_gifts' => $request->allow_gifts ?? true,
+            'allow_co_hosts' => $request->allow_co_hosts ?? false,
             'is_recorded' => $request->is_recorded ?? true,
+            'stream_url' => null, // Set by streaming infrastructure
+            'playback_url' => null,
         ]);
 
         $stream->load('user:id,first_name,last_name,username,profile_photo_path');
+
+        // Notify followers of scheduled stream
+        if ($stream->scheduled_at) {
+            $this->notifyFollowers($stream, 'scheduled');
+        }
 
         return response()->json([
             'success' => true,
@@ -118,6 +138,54 @@ class LiveStreamController extends Controller
         return response()->json(['success' => true, 'data' => $stream]);
     }
 
+    public function updateStatus(int $id, Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:pre_live,live,ending,ended,cancelled',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        }
+
+        $stream = LiveStream::find($id);
+        if (!$stream) {
+            return response()->json(['success' => false, 'message' => 'Stream not found'], 404);
+        }
+
+        $newStatus = $request->status;
+        $oldStatus = $stream->status;
+
+        if (!$stream->canTransitionTo($newStatus)) {
+            return response()->json([
+                'success' => false,
+                'message' => "Cannot transition from '{$oldStatus}' to '{$newStatus}'",
+            ], 422);
+        }
+
+        $stream->transitionTo($newStatus);
+
+        // Pusher/Echo broadcast
+        broadcast(new StreamStatusChanged($stream));
+        // Plain WebSocket broadcast
+        WebSocketBroadcaster::statusChanged($id, $oldStatus, $newStatus);
+
+        // Send notifications based on status
+        if ($newStatus === 'pre_live') {
+            $this->notifyFollowers($stream, 'starting_soon');
+        } elseif ($newStatus === 'live') {
+            $this->notifyFollowers($stream, 'now_live');
+        } elseif ($newStatus === 'ended') {
+            $this->notifyViewers($stream, 'ended');
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Stream moved to {$newStatus} status.",
+            'data' => $stream->fresh(),
+        ]);
+    }
+
     public function start(int $id): JsonResponse
     {
         $stream = LiveStream::find($id);
@@ -125,9 +193,27 @@ class LiveStreamController extends Controller
             return response()->json(['success' => false, 'message' => 'Stream not found'], 404);
         }
 
+        $oldStatus = $stream->status;
+
+        if (!$stream->canTransitionTo('live')) {
+            return response()->json([
+                'success' => false,
+                'message' => "Cannot start stream from '{$oldStatus}' status",
+            ], 422);
+        }
+
         $stream->start();
 
-        return response()->json(['success' => true, 'message' => 'Stream started', 'data' => $stream]);
+        broadcast(new StreamStatusChanged($stream));
+        WebSocketBroadcaster::statusChanged($id, $oldStatus, 'live');
+        $this->notifyFollowers($stream, 'now_live');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Stream started',
+            'data' => $stream,
+            'playback_url' => $stream->playback_url,
+        ]);
     }
 
     public function end(int $id): JsonResponse
@@ -137,9 +223,35 @@ class LiveStreamController extends Controller
             return response()->json(['success' => false, 'message' => 'Stream not found'], 404);
         }
 
-        $stream->end();
+        $oldStatus = $stream->status;
 
-        return response()->json(['success' => true, 'message' => 'Stream ended', 'data' => $stream]);
+        if (!$stream->canTransitionTo('ending')) {
+            return response()->json([
+                'success' => false,
+                'message' => "Cannot end stream from '{$oldStatus}' status",
+            ], 422);
+        }
+
+        $stream->end(); // transitions to 'ending'
+
+        broadcast(new StreamStatusChanged($stream));
+        WebSocketBroadcaster::statusChanged($id, $oldStatus, 'ending');
+
+        // The TransitionToEnded job will finalize after 5 seconds
+        // But also return current analytics
+        $analytics = [
+            'total_viewers' => $stream->total_viewers,
+            'peak_viewers' => $stream->peak_viewers,
+            'total_gifts' => $stream->gifts_count,
+            'revenue' => (float) $stream->gifts_value,
+        ];
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Stream ending',
+            'data' => $stream,
+            'analytics' => $analytics,
+        ]);
     }
 
     public function join(int $id, Request $request): JsonResponse
@@ -157,14 +269,14 @@ class LiveStreamController extends Controller
             return response()->json(['success' => false, 'message' => 'Stream not found'], 404);
         }
 
-        if (!$stream->isLive()) {
-            return response()->json(['success' => false, 'message' => 'Stream not live'], 400);
+        if (!in_array($stream->status, ['live', 'pre_live'])) {
+            return response()->json(['success' => false, 'message' => 'Stream not active'], 400);
         }
 
-        // Check for existing viewer record
+        // Check for existing active viewer record
         $viewer = StreamViewer::where('stream_id', $id)
             ->where('user_id', $request->user_id)
-            ->whereNull('left_at')
+            ->where('is_currently_watching', true)
             ->first();
 
         if (!$viewer) {
@@ -172,6 +284,7 @@ class LiveStreamController extends Controller
                 'stream_id' => $id,
                 'user_id' => $request->user_id,
                 'joined_at' => now(),
+                'is_currently_watching' => true,
             ]);
 
             $stream->increment('total_viewers');
@@ -179,7 +292,15 @@ class LiveStreamController extends Controller
 
         $stream->updateViewerCount();
 
-        return response()->json(['success' => true, 'message' => 'Joined stream']);
+        broadcast(new ViewerCountUpdated($stream));
+        WebSocketBroadcaster::viewerCountUpdated($id, $stream->viewers_count, $stream->peak_viewers);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Joined stream',
+            'playback_url' => $stream->playback_url,
+            'current_viewers' => $stream->viewers_count,
+        ]);
     }
 
     public function leave(int $id, Request $request): JsonResponse
@@ -194,7 +315,7 @@ class LiveStreamController extends Controller
 
         $viewer = StreamViewer::where('stream_id', $id)
             ->where('user_id', $request->user_id)
-            ->whereNull('left_at')
+            ->where('is_currently_watching', true)
             ->first();
 
         if ($viewer) {
@@ -202,10 +323,15 @@ class LiveStreamController extends Controller
             $viewer->update([
                 'left_at' => now(),
                 'watch_duration' => $watchDuration,
+                'is_currently_watching' => false,
             ]);
 
             $stream = LiveStream::find($id);
-            $stream->updateViewerCount();
+            if ($stream) {
+                $stream->updateViewerCount();
+                broadcast(new ViewerCountUpdated($stream));
+                WebSocketBroadcaster::viewerCountUpdated($id, $stream->viewers_count, $stream->peak_viewers);
+            }
         }
 
         return response()->json(['success' => true, 'message' => 'Left stream']);
@@ -226,10 +352,50 @@ class LiveStreamController extends Controller
             return response()->json(['success' => false, 'message' => 'Stream not found'], 404);
         }
 
-        $stream->likes()->syncWithoutDetaching([$request->user_id]);
+        $exists = $stream->likes()->where('user_id', $request->user_id)->exists();
+
+        if ($exists) {
+            $stream->likes()->detach($request->user_id);
+            $liked = false;
+        } else {
+            $stream->likes()->attach($request->user_id);
+            $liked = true;
+        }
+
         $stream->update(['likes_count' => $stream->likes()->count()]);
 
-        return response()->json(['success' => true, 'message' => 'Liked']);
+        return response()->json([
+            'success' => true,
+            'message' => $liked ? 'Liked' : 'Unliked',
+            'liked' => $liked,
+        ]);
+    }
+
+    public function reaction(int $id, Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:user_profiles,id',
+            'reaction_type' => 'required|string|in:heart,fire,love,wow,clap,laugh',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        }
+
+        $stream = LiveStream::find($id);
+        if (!$stream) {
+            return response()->json(['success' => false, 'message' => 'Stream not found'], 404);
+        }
+
+        // Update reaction counts
+        $counts = $stream->reaction_counts ?? [];
+        $counts[$request->reaction_type] = ($counts[$request->reaction_type] ?? 0) + 1;
+        $stream->update(['reaction_counts' => $counts]);
+
+        // Broadcast via plain WebSocket
+        WebSocketBroadcaster::reaction($id, $request->user_id, $request->reaction_type);
+
+        return response()->json(['success' => true, 'message' => 'Reaction sent']);
     }
 
     // Comments
@@ -240,19 +406,18 @@ class LiveStreamController extends Controller
             return response()->json(['success' => false, 'message' => 'Stream not found'], 404);
         }
 
-        $after = $request->query('after'); // timestamp for polling
+        $lastId = $request->query('last_id');
+        $limit = min((int) $request->query('limit', 50), 100);
 
         $query = $stream->comments()
             ->with('user:id,first_name,last_name,username,profile_photo_path')
             ->orderBy('created_at');
 
-        if ($after) {
-            $query->where('created_at', '>', $after);
-        } else {
-            $query->limit(100);
+        if ($lastId) {
+            $query->where('id', '>', $lastId);
         }
 
-        return response()->json(['success' => true, 'data' => $query->get()]);
+        return response()->json(['success' => true, 'data' => $query->limit($limit)->get()]);
     }
 
     public function addComment(int $id, Request $request): JsonResponse
@@ -285,6 +450,24 @@ class LiveStreamController extends Controller
 
         $comment->load('user:id,first_name,last_name,username,profile_photo_path');
 
+        broadcast(new NewStreamComment($comment));
+
+        // Plain WebSocket broadcast
+        $user = $comment->user;
+        WebSocketBroadcaster::newComment($id, [
+            'id' => $comment->id,
+            'user_id' => $comment->user_id,
+            'user' => [
+                'id' => $user->id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'display_name' => trim($user->first_name . ' ' . $user->last_name),
+                'avatar_url' => $user->profile_photo_path,
+            ],
+            'content' => $comment->content,
+            'created_at' => $comment->created_at->toIso8601String(),
+        ]);
+
         return response()->json(['success' => true, 'data' => $comment], 201);
     }
 
@@ -298,7 +481,6 @@ class LiveStreamController extends Controller
 
         // Unpin other comments
         StreamComment::where('stream_id', $id)->update(['is_pinned' => false]);
-
         $comment->update(['is_pinned' => true]);
 
         return response()->json(['success' => true, 'message' => 'Comment pinned']);
@@ -307,7 +489,7 @@ class LiveStreamController extends Controller
     // Gifts
     public function gifts(): JsonResponse
     {
-        $gifts = VirtualGift::active()->get();
+        $gifts = VirtualGift::where('is_active', true)->orderBy('order')->get();
 
         return response()->json(['success' => true, 'data' => $gifts]);
     }
@@ -352,6 +534,28 @@ class LiveStreamController extends Controller
 
         $streamGift->load(['sender:id,first_name,last_name,username,profile_photo_path', 'gift']);
 
+        broadcast(new GiftReceived($streamGift));
+
+        // Plain WebSocket broadcast
+        $sender = $streamGift->sender;
+        WebSocketBroadcaster::giftSent($id, [
+            'sender' => [
+                'id' => $sender->id,
+                'first_name' => $sender->first_name,
+                'last_name' => $sender->last_name,
+                'display_name' => trim($sender->first_name . ' ' . $sender->last_name),
+                'avatar_url' => $sender->profile_photo_path,
+            ],
+            'gift' => [
+                'id' => $gift->id,
+                'name' => $gift->name,
+                'icon_url' => $gift->icon_path,
+                'price' => (float) $gift->price,
+            ],
+            'quantity' => $quantity,
+            'message' => $request->message,
+        ]);
+
         return response()->json(['success' => true, 'data' => $streamGift], 201);
     }
 
@@ -386,6 +590,10 @@ class LiveStreamController extends Controller
             return response()->json(['success' => false, 'message' => 'Stream not found'], 404);
         }
 
+        if (!$stream->allow_co_hosts) {
+            return response()->json(['success' => false, 'message' => 'Co-hosts not allowed'], 400);
+        }
+
         $cohost = StreamCohost::updateOrCreate(
             ['stream_id' => $id, 'user_id' => $request->user_id],
             ['status' => 'invited']
@@ -418,6 +626,10 @@ class LiveStreamController extends Controller
             'joined_at' => $request->accept ? now() : null,
         ]);
 
+        if ($request->accept) {
+            broadcast(new CoHostJoined($cohost));
+        }
+
         return response()->json(['success' => true, 'message' => $request->accept ? 'Joined as cohost' : 'Declined']);
     }
 
@@ -448,7 +660,7 @@ class LiveStreamController extends Controller
     // User streams
     public function userStreams(int $userId, Request $request): JsonResponse
     {
-        $status = $request->query('status'); // live, scheduled, ended, or all
+        $status = $request->query('status');
 
         $query = LiveStream::with('user:id,first_name,last_name,username,profile_photo_path')
             ->where('user_id', $userId);
@@ -478,10 +690,146 @@ class LiveStreamController extends Controller
         }
 
         $viewers = $stream->viewers()
-            ->whereNull('left_at')
+            ->where('is_currently_watching', true)
             ->with('user:id,first_name,last_name,username,profile_photo_path')
             ->get();
 
         return response()->json(['success' => true, 'data' => $viewers]);
+    }
+
+    // Notifications
+    public function notifyFollowersEndpoint(int $id): JsonResponse
+    {
+        $stream = LiveStream::find($id);
+        if (!$stream) {
+            return response()->json(['success' => false, 'message' => 'Stream not found'], 404);
+        }
+
+        $type = $stream->status === 'live' ? 'now_live' : 'scheduled';
+        $count = $this->notifyFollowers($stream, $type);
+
+        return response()->json([
+            'success' => true,
+            'message' => "Notifications sent to {$count} followers",
+        ]);
+    }
+
+    public function streamNotifications(int $userId): JsonResponse
+    {
+        $notifications = StreamNotification::where('user_id', $userId)
+            ->with(['stream.user:id,first_name,last_name,username,profile_photo_path'])
+            ->orderByDesc('sent_at')
+            ->paginate(20);
+
+        return response()->json([
+            'success' => true,
+            'data' => $notifications->items(),
+            'meta' => [
+                'current_page' => $notifications->currentPage(),
+                'last_page' => $notifications->lastPage(),
+                'total' => $notifications->total(),
+            ],
+        ]);
+    }
+
+    // Analytics
+    public function analytics(int $id): JsonResponse
+    {
+        $stream = LiveStream::find($id);
+        if (!$stream) {
+            return response()->json(['success' => false, 'message' => 'Stream not found'], 404);
+        }
+
+        $uniqueViewers = $stream->viewers()->distinct('user_id')->count('user_id');
+        $avgWatchTime = $stream->viewers()->avg('watch_duration') ?? 0;
+
+        // Get retention data from analytics snapshots
+        $retentionData = $stream->analytics()
+            ->orderBy('timestamp')
+            ->get()
+            ->map(fn ($a) => [
+                'timestamp' => $a->timestamp->diffInSeconds($stream->started_at ?? $stream->created_at),
+                'viewers' => $a->viewers_count,
+            ]);
+
+        // Top viewers by watch time
+        $topViewers = $stream->viewers()
+            ->with('user:id,first_name,last_name,username,profile_photo_path')
+            ->orderByDesc('watch_duration')
+            ->limit(10)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'stream_id' => $stream->id,
+                'total_viewers' => $stream->total_viewers,
+                'unique_viewers' => $uniqueViewers,
+                'peak_viewers' => $stream->peak_viewers,
+                'average_watch_time' => round($avgWatchTime),
+                'total_likes' => $stream->likes_count,
+                'total_comments' => $stream->comments_count,
+                'total_shares' => $stream->shares_count,
+                'total_gifts' => $stream->gifts_count,
+                'total_revenue' => (float) $stream->gifts_value,
+                'duration' => $stream->duration,
+                'retention_data' => $retentionData,
+                'top_viewers' => $topViewers,
+            ],
+        ]);
+    }
+
+    // Helper: notify followers
+    private function notifyFollowers(LiveStream $stream, string $type): int
+    {
+        $subscriberIds = DB::table('stream_subscriptions')
+            ->where('streamer_id', $stream->user_id)
+            ->where('notify_live', true)
+            ->pluck('subscriber_id');
+
+        if ($subscriberIds->isEmpty()) {
+            return 0;
+        }
+
+        // Avoid duplicate notifications
+        $alreadyNotified = StreamNotification::where('stream_id', $stream->id)
+            ->where('type', $type)
+            ->pluck('user_id');
+
+        $toNotify = $subscriberIds->diff($alreadyNotified);
+
+        $notifications = $toNotify->map(fn ($userId) => [
+            'stream_id' => $stream->id,
+            'user_id' => $userId,
+            'type' => $type,
+            'sent_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ])->toArray();
+
+        if (!empty($notifications)) {
+            StreamNotification::insert($notifications);
+        }
+
+        return count($notifications);
+    }
+
+    // Helper: notify viewers of ended stream
+    private function notifyViewers(LiveStream $stream, string $type): void
+    {
+        $viewerIds = $stream->viewers()->distinct('user_id')->pluck('user_id');
+
+        $notifications = $viewerIds->map(fn ($userId) => [
+            'stream_id' => $stream->id,
+            'user_id' => $userId,
+            'type' => $type,
+            'sent_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ])->toArray();
+
+        if (!empty($notifications)) {
+            StreamNotification::insert($notifications);
+        }
     }
 }

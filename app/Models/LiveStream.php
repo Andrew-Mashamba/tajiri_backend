@@ -14,6 +14,22 @@ class LiveStream extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const STATUS_SCHEDULED = 'scheduled';
+    const STATUS_PRE_LIVE = 'pre_live';
+    const STATUS_LIVE = 'live';
+    const STATUS_ENDING = 'ending';
+    const STATUS_ENDED = 'ended';
+    const STATUS_CANCELLED = 'cancelled';
+
+    const VALID_TRANSITIONS = [
+        'scheduled' => ['pre_live', 'cancelled'],
+        'pre_live' => ['live', 'cancelled'],
+        'live' => ['ending', 'cancelled'],
+        'ending' => ['ended'],
+        'ended' => [],
+        'cancelled' => [],
+    ];
+
     protected $fillable = [
         'stream_key',
         'user_id',
@@ -30,15 +46,19 @@ class LiveStream extends Model
         'is_recorded',
         'allow_comments',
         'allow_gifts',
+        'allow_co_hosts',
         'viewers_count',
         'peak_viewers',
         'total_viewers',
+        'unique_viewers',
         'likes_count',
         'comments_count',
         'gifts_count',
         'shares_count',
         'gifts_value',
+        'reaction_counts',
         'scheduled_at',
+        'pre_live_started_at',
         'started_at',
         'ended_at',
         'duration',
@@ -46,11 +66,14 @@ class LiveStream extends Model
 
     protected $casts = [
         'tags' => 'array',
+        'reaction_counts' => 'array',
         'is_recorded' => 'boolean',
         'allow_comments' => 'boolean',
         'allow_gifts' => 'boolean',
+        'allow_co_hosts' => 'boolean',
         'gifts_value' => 'decimal:2',
         'scheduled_at' => 'datetime',
+        'pre_live_started_at' => 'datetime',
         'started_at' => 'datetime',
         'ended_at' => 'datetime',
     ];
@@ -60,7 +83,7 @@ class LiveStream extends Model
         parent::boot();
         static::creating(function ($stream) {
             if (!$stream->stream_key) {
-                $stream->stream_key = Str::uuid()->toString();
+                $stream->stream_key = Str::random(32);
             }
         });
     }
@@ -95,32 +118,71 @@ class LiveStream extends Model
         return $this->hasMany(StreamCohost::class, 'stream_id');
     }
 
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(StreamNotification::class, 'stream_id');
+    }
+
+    public function analytics(): HasMany
+    {
+        return $this->hasMany(StreamAnalytics::class, 'stream_id');
+    }
+
     public function isLive(): bool
     {
-        return $this->status === 'live';
+        return $this->status === self::STATUS_LIVE;
+    }
+
+    public function canTransitionTo(string $newStatus): bool
+    {
+        return in_array($newStatus, self::VALID_TRANSITIONS[$this->status] ?? []);
+    }
+
+    public function transitionTo(string $newStatus): bool
+    {
+        if (!$this->canTransitionTo($newStatus)) {
+            return false;
+        }
+
+        $updates = ['status' => $newStatus];
+
+        switch ($newStatus) {
+            case self::STATUS_PRE_LIVE:
+                $updates['pre_live_started_at'] = now();
+                break;
+            case self::STATUS_LIVE:
+                $updates['started_at'] = now();
+                break;
+            case self::STATUS_ENDING:
+                // Duration will be finalized when transitioning to ended
+                break;
+            case self::STATUS_ENDED:
+                $updates['ended_at'] = now();
+                $updates['duration'] = $this->started_at
+                    ? now()->diffInSeconds($this->started_at)
+                    : 0;
+                break;
+            case self::STATUS_CANCELLED:
+                $updates['ended_at'] = now();
+                break;
+        }
+
+        return $this->update($updates);
     }
 
     public function start(): void
     {
-        $this->update([
-            'status' => 'live',
-            'started_at' => now(),
-        ]);
+        $this->transitionTo(self::STATUS_LIVE);
     }
 
     public function end(): void
     {
-        $duration = $this->started_at ? now()->diffInSeconds($this->started_at) : 0;
-        $this->update([
-            'status' => 'ended',
-            'ended_at' => now(),
-            'duration' => $duration,
-        ]);
+        $this->transitionTo(self::STATUS_ENDING);
     }
 
     public function updateViewerCount(): void
     {
-        $count = $this->viewers()->whereNull('left_at')->count();
+        $count = $this->viewers()->where('is_currently_watching', true)->count();
         $this->update([
             'viewers_count' => $count,
             'peak_viewers' => max($this->peak_viewers, $count),
@@ -129,16 +191,31 @@ class LiveStream extends Model
 
     public function scopeLive($query)
     {
-        return $query->where('status', 'live');
+        return $query->where('status', self::STATUS_LIVE);
     }
 
     public function scopeScheduled($query)
     {
-        return $query->where('status', 'scheduled');
+        return $query->where('status', self::STATUS_SCHEDULED);
+    }
+
+    public function scopePreLive($query)
+    {
+        return $query->where('status', self::STATUS_PRE_LIVE);
+    }
+
+    public function scopeEnding($query)
+    {
+        return $query->where('status', self::STATUS_ENDING);
     }
 
     public function scopeEnded($query)
     {
-        return $query->where('status', 'ended');
+        return $query->where('status', self::STATUS_ENDED);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->whereIn('status', [self::STATUS_PRE_LIVE, self::STATUS_LIVE]);
     }
 }

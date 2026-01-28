@@ -27,6 +27,21 @@ Schedule::command('posts:publish-scheduled')
     ->runInBackground()
     ->appendOutputTo(storage_path('logs/scheduled-posts.log'));
 
+// Livestream: Transition scheduled streams to pre_live (15-30 min before)
+Schedule::job(new \App\Jobs\TransitionToPreLive)
+    ->everyMinute()
+    ->withoutOverlapping();
+
+// Livestream: Finalize ending streams after 5 seconds
+Schedule::job(new \App\Jobs\TransitionToEnded)
+    ->everyTenSeconds()
+    ->withoutOverlapping();
+
+// Livestream: Update viewer counts for live streams
+Schedule::job(new \App\Jobs\UpdateViewerCount)
+    ->everyFiveSeconds()
+    ->withoutOverlapping();
+
 // Clean up old draft files (weekly, Sunday at 3 AM)
 Schedule::command('model:prune', ['--model' => 'App\Models\PostDraft'])
     ->weekly()
