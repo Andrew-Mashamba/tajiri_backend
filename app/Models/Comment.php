@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Comment extends Model
 {
@@ -18,63 +20,61 @@ class Comment extends Model
         'parent_id',
         'content',
         'likes_count',
+        'is_pinned',
+        'edited_at',
     ];
 
     protected $casts = [
         'likes_count' => 'integer',
+        'is_pinned' => 'boolean',
+        'edited_at' => 'datetime',
     ];
 
-    /**
-     * Get the post this comment belongs to.
-     */
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
     }
 
-    /**
-     * Get the user who wrote the comment.
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(UserProfile::class, 'user_id');
     }
 
-    /**
-     * Get the parent comment if this is a reply.
-     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Comment::class, 'parent_id');
     }
 
-    /**
-     * Get replies to this comment.
-     */
     public function replies(): HasMany
     {
         return $this->hasMany(Comment::class, 'parent_id')->orderBy('created_at', 'asc');
     }
 
-    /**
-     * Check if this is a reply.
-     */
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany(UserProfile::class, 'comment_likes', 'comment_id', 'user_id')->withTimestamps();
+    }
+
+    public function reports(): MorphMany
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
+
     public function isReply(): bool
     {
         return $this->parent_id !== null;
     }
 
-    /**
-     * Increment likes count.
-     */
+    public function isLikedBy(int $userId): bool
+    {
+        return $this->likes()->where('user_id', $userId)->exists();
+    }
+
     public function incrementLikes(): void
     {
         $this->increment('likes_count');
     }
 
-    /**
-     * Decrement likes count.
-     */
     public function decrementLikes(): void
     {
         $this->decrement('likes_count');

@@ -86,7 +86,7 @@ class Call extends Model
     {
         $endedAt = now();
         $duration = $this->answered_at
-            ? $endedAt->diffInSeconds($this->answered_at)
+            ? max(0, (int) $this->answered_at->diffInSeconds($endedAt))
             : 0;
 
         $this->update([

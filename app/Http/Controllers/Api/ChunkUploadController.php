@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ChunkUpload;
 use App\Models\Clip;
 use App\Models\ClipHashtag;
+use App\Support\FormCast;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
@@ -42,7 +43,7 @@ class ChunkUploadController extends Controller
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'privacy' => 'nullable|in:public,friends,private',
-            'allow_comments' => 'nullable|boolean',
+            'allow_comments' => FormCast::allowCommentsRule(),
             'allow_duet' => 'nullable|boolean',
             'allow_stitch' => 'nullable|boolean',
             'allow_download' => 'nullable|boolean',
@@ -87,7 +88,7 @@ class ChunkUploadController extends Controller
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
                 'privacy' => $request->privacy ?? 'public',
-                'allow_comments' => $request->allow_comments ?? true,
+                'allow_comments' => FormCast::toBoolean($request->allow_comments, true),
                 'allow_duet' => $request->allow_duet ?? true,
                 'allow_stitch' => $request->allow_stitch ?? true,
                 'allow_download' => $request->allow_download ?? true,

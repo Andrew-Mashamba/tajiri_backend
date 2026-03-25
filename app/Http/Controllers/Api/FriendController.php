@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Friendship;
 use App\Models\UserProfile;
+use App\Services\Firebase\FirebaseLiveUpdateService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,12 @@ use Illuminate\Support\Facades\Validator;
 
 class FriendController extends Controller
 {
+    protected FirebaseLiveUpdateService $firebaseLiveUpdate;
+
+    public function __construct(FirebaseLiveUpdateService $firebaseLiveUpdate)
+    {
+        $this->firebaseLiveUpdate = $firebaseLiveUpdate;
+    }
     /**
      * Get user's friends list.
      */
@@ -114,6 +121,9 @@ class FriendController extends Controller
             'status' => Friendship::STATUS_PENDING,
         ]);
 
+        // Firebase: notify recipient of friend request
+        $this->firebaseLiveUpdate->notifyUser((int) $friendId, 'profile_updated');
+
         return response()->json([
             'success' => true,
             'message' => 'Friend request sent',
@@ -162,6 +172,12 @@ class FriendController extends Controller
 
             DB::commit();
 
+            // Firebase: notify both users with profile_updated and feed_updated
+            $this->firebaseLiveUpdate->notifyUser((int) $userId, 'profile_updated');
+            $this->firebaseLiveUpdate->notifyUser((int) $userId, 'feed_updated');
+            $this->firebaseLiveUpdate->notifyUser((int) $requesterId, 'profile_updated');
+            $this->firebaseLiveUpdate->notifyUser((int) $requesterId, 'feed_updated');
+
             return response()->json([
                 'success' => true,
                 'message' => 'Friend request accepted',
@@ -209,6 +225,9 @@ class FriendController extends Controller
 
         $friendship->delete();
 
+        // Firebase: notify requester that request was declined
+        $this->firebaseLiveUpdate->notifyUser((int) $requesterId, 'profile_updated');
+
         return response()->json([
             'success' => true,
             'message' => 'Friend request declined',
@@ -247,6 +266,9 @@ class FriendController extends Controller
         }
 
         $friendship->delete();
+
+        // Firebase: notify recipient that request was cancelled
+        $this->firebaseLiveUpdate->notifyUser((int) $friendId, 'profile_updated');
 
         return response()->json([
             'success' => true,
@@ -292,6 +314,10 @@ class FriendController extends Controller
             UserProfile::find($friendId)->decrementFriends();
 
             DB::commit();
+
+            // Firebase: notify the other user with profile_updated and feed_updated
+            $this->firebaseLiveUpdate->notifyUser((int) $friendId, 'profile_updated');
+            $this->firebaseLiveUpdate->notifyUser((int) $friendId, 'feed_updated');
 
             return response()->json([
                 'success' => true,

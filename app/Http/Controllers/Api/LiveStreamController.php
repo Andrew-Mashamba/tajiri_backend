@@ -17,8 +17,13 @@ use App\Events\NewStreamComment;
 use App\Events\GiftReceived;
 use App\Events\CoHostJoined;
 use App\Events\StreamEnded;
+use App\Events\GlobalViewerCountUpdated;
+use App\Events\GlobalStreamStatusChanged;
+use App\Events\NewStreamStarted;
 use App\Jobs\GenerateStreamAnalytics;
 use App\Services\WebSocket\WebSocketBroadcaster;
+use App\Services\StreamCacheService;
+use App\Support\FormCast;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -73,7 +78,7 @@ class LiveStreamController extends Controller
             'tags' => 'nullable|array',
             'privacy' => 'nullable|in:public,friends,private',
             'scheduled_at' => 'nullable|date|after:now',
-            'allow_comments' => 'nullable|boolean',
+            'allow_comments' => FormCast::allowCommentsRule(),
             'allow_gifts' => 'nullable|boolean',
             'allow_co_hosts' => 'nullable|boolean',
             'is_recorded' => 'nullable|boolean',
@@ -102,7 +107,7 @@ class LiveStreamController extends Controller
             'status' => $isImmediate ? 'pre_live' : 'scheduled',
             'scheduled_at' => $request->scheduled_at,
             'pre_live_started_at' => $isImmediate ? now() : null,
-            'allow_comments' => $request->allow_comments ?? true,
+            'allow_comments' => FormCast::toBoolean($request->allow_comments, true),
             'allow_gifts' => $request->allow_gifts ?? true,
             'allow_co_hosts' => $request->allow_co_hosts ?? false,
             'is_recorded' => $request->is_recorded ?? true,
@@ -140,7 +145,33 @@ class LiveStreamController extends Controller
             $stream->is_liked = $stream->likes()->where('user_id', $currentUserId)->exists();
         }
 
-        return response()->json(['success' => true, 'data' => $stream]);
+        $response = [
+            'success' => true,
+            'data' => $stream,
+            'stream_status_info' => $this->getStreamStatusInfo($stream),
+        ];
+
+        // Include WebSocket connection info for active streams
+        if (in_array($stream->status, [LiveStream::STATUS_PRE_LIVE, LiveStream::STATUS_LIVE])) {
+            $response['websocket'] = $this->getWebSocketInfo($stream->id);
+            $response['playback_url'] = $stream->playback_url
+                ? $this->buildAbsolutePlaybackUrl($stream->playback_url)
+                : null;
+        }
+
+        // Include summary analytics for ended streams
+        if (in_array($stream->status, [LiveStream::STATUS_ENDED, LiveStream::STATUS_CANCELLED])) {
+            $response['ended_summary'] = [
+                'ended_at' => $stream->ended_at?->toIso8601String(),
+                'duration' => $stream->duration,
+                'total_viewers' => $stream->total_viewers,
+                'peak_viewers' => $stream->peak_viewers,
+                'likes_count' => $stream->likes_count,
+                'comments_count' => $stream->comments_count,
+            ];
+        }
+
+        return response()->json($response);
     }
 
     public function updateStatus(int $id, Request $request): JsonResponse
@@ -208,9 +239,22 @@ class LiveStreamController extends Controller
         }
 
         $stream->start();
+        $stream->load('user:id,first_name,last_name,username,profile_photo_path');
 
-        broadcast(new StreamStatusChanged($stream));
-        WebSocketBroadcaster::statusChanged($id, $oldStatus, 'live');
+        // Broadcast to stream-specific channel (for viewers of this stream)
+        broadcast(new StreamStatusChanged($stream, $oldStatus));
+
+        // Broadcast to global channel (for ALL users on Live tab)
+        broadcast(new GlobalStreamStatusChanged($stream, $oldStatus, 'live'));
+        broadcast(new NewStreamStarted($stream));
+
+        // Plain WebSocket broadcast (for non-Laravel clients)
+        WebSocketBroadcaster::statusChanged($id, $oldStatus, 'live', $stream->toArray());
+        WebSocketBroadcaster::newStreamStarted($stream->toArray());
+
+        // Add to active streams cache
+        app(StreamCacheService::class)->addActiveStream($stream->id);
+
         $this->notifyFollowers($stream, 'now_live');
 
         return response()->json([
@@ -238,9 +282,19 @@ class LiveStreamController extends Controller
         }
 
         $stream->end(); // transitions to 'ending'
+        $stream->load('user:id,first_name,last_name,username,profile_photo_path');
 
-        broadcast(new StreamStatusChanged($stream));
-        WebSocketBroadcaster::statusChanged($id, $oldStatus, 'ending');
+        // Broadcast to stream-specific channel
+        broadcast(new StreamStatusChanged($stream, $oldStatus));
+
+        // Broadcast to global channel (stream will be removed from Live tab)
+        broadcast(new GlobalStreamStatusChanged($stream, $oldStatus, 'ending'));
+
+        // Plain WebSocket broadcast
+        WebSocketBroadcaster::statusChanged($id, $oldStatus, 'ending', $stream->toArray());
+
+        // Remove from active streams cache
+        app(StreamCacheService::class)->removeActiveStream($stream->id);
 
         // The TransitionToEnded job will finalize after 5 seconds
         // But also return current analytics
@@ -274,9 +328,11 @@ class LiveStreamController extends Controller
             return response()->json(['success' => false, 'message' => 'Stream not found'], 404);
         }
 
-        if (!in_array($stream->status, ['live', 'pre_live'])) {
-            return response()->json(['success' => false, 'message' => 'Stream not active'], 400);
+        if (!in_array($stream->status, [LiveStream::STATUS_LIVE, LiveStream::STATUS_PRE_LIVE])) {
+            return $this->buildInactiveStreamResponse($stream);
         }
+
+        $cacheService = app(StreamCacheService::class);
 
         // Check for existing active viewer record
         $viewer = StreamViewer::where('stream_id', $id)
@@ -293,18 +349,44 @@ class LiveStreamController extends Controller
             ]);
 
             $stream->increment('total_viewers');
+
+            // Track unique viewer in Redis (HyperLogLog for memory efficiency)
+            $cacheService->trackUniqueViewer($stream->id, $request->user_id);
         }
 
+        // Update viewer count (uses Redis for speed)
+        $cacheService->incrementViewerCount($stream->id);
         $stream->updateViewerCount();
 
+        // Update peak viewers if needed
+        $cacheService->updatePeakViewers($stream->id, $stream->viewers_count);
+
+        // Get unique viewer count
+        $uniqueViewers = $cacheService->getUniqueViewerCount($stream->id);
+
+        // Broadcast to stream-specific channel
         broadcast(new ViewerCountUpdated($stream));
-        WebSocketBroadcaster::viewerCountUpdated($id, $stream->viewers_count, $stream->peak_viewers);
+
+        // Broadcast to global channel (for Live tab grid)
+        broadcast(new GlobalViewerCountUpdated(
+            $stream->id,
+            $stream->viewers_count,
+            $stream->peak_viewers,
+            $uniqueViewers
+        ));
+
+        // Plain WebSocket broadcast
+        WebSocketBroadcaster::viewerCountUpdated($id, $stream->viewers_count, $stream->peak_viewers, $uniqueViewers);
 
         return response()->json([
             'success' => true,
             'message' => 'Joined stream',
-            'playback_url' => $stream->playback_url,
+            'playback_url' => $stream->playback_url
+                ? $this->buildAbsolutePlaybackUrl($stream->playback_url)
+                : null,
             'current_viewers' => $stream->viewers_count,
+            'stream_status' => $stream->status,
+            'websocket' => $this->getWebSocketInfo($stream->id),
         ]);
     }
 
@@ -333,9 +415,27 @@ class LiveStreamController extends Controller
 
             $stream = LiveStream::find($id);
             if ($stream) {
+                $cacheService = app(StreamCacheService::class);
+
+                // Decrement viewer count in Redis
+                $cacheService->decrementViewerCount($stream->id);
                 $stream->updateViewerCount();
+
+                $uniqueViewers = $cacheService->getUniqueViewerCount($stream->id);
+
+                // Broadcast to stream-specific channel
                 broadcast(new ViewerCountUpdated($stream));
-                WebSocketBroadcaster::viewerCountUpdated($id, $stream->viewers_count, $stream->peak_viewers);
+
+                // Broadcast to global channel (for Live tab grid)
+                broadcast(new GlobalViewerCountUpdated(
+                    $stream->id,
+                    $stream->viewers_count,
+                    $stream->peak_viewers,
+                    $uniqueViewers
+                ));
+
+                // Plain WebSocket broadcast
+                WebSocketBroadcaster::viewerCountUpdated($id, $stream->viewers_count, $stream->peak_viewers, $uniqueViewers);
             }
         }
 
@@ -782,6 +882,157 @@ class LiveStreamController extends Controller
                 'top_viewers' => $topViewers,
             ],
         ]);
+    }
+
+    /**
+     * Lightweight stream status check for reconnection logic.
+     * GET /api/streams/{id}/check
+     */
+    public function streamCheck(int $id): JsonResponse
+    {
+        $stream = LiveStream::select('id', 'status', 'playback_url', 'started_at', 'ended_at', 'duration', 'viewers_count', 'peak_viewers', 'total_viewers')
+            ->find($id);
+
+        if (!$stream) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Stream not found',
+                'is_active' => false,
+                'stream_ended' => false,
+                'exists' => false,
+            ], 404);
+        }
+
+        $isActive = in_array($stream->status, [LiveStream::STATUS_PRE_LIVE, LiveStream::STATUS_LIVE]);
+        $isEnded = in_array($stream->status, [LiveStream::STATUS_ENDED, LiveStream::STATUS_CANCELLED, LiveStream::STATUS_ENDING]);
+
+        $response = [
+            'success' => true,
+            'stream_id' => $stream->id,
+            'status' => $stream->status,
+            'is_active' => $isActive,
+            'stream_ended' => $isEnded,
+            'exists' => true,
+        ];
+
+        if ($isActive) {
+            $response['playback_url'] = $stream->playback_url
+                ? $this->buildAbsolutePlaybackUrl($stream->playback_url)
+                : null;
+            $response['current_viewers'] = $stream->viewers_count;
+            $response['websocket'] = $this->getWebSocketInfo($stream->id);
+        }
+
+        if ($isEnded) {
+            $response['ended_at'] = $stream->ended_at?->toIso8601String();
+            $response['duration'] = $stream->duration;
+            $response['total_viewers'] = $stream->total_viewers;
+            $response['peak_viewers'] = $stream->peak_viewers;
+        }
+
+        return response()->json($response);
+    }
+
+    /**
+     * Build proper response when a viewer tries to join an inactive stream.
+     */
+    private function buildInactiveStreamResponse(LiveStream $stream): JsonResponse
+    {
+        $statusMessages = [
+            LiveStream::STATUS_ENDED => 'This stream has ended',
+            LiveStream::STATUS_CANCELLED => 'This stream was cancelled',
+            LiveStream::STATUS_ENDING => 'This stream is ending',
+            LiveStream::STATUS_SCHEDULED => 'This stream has not started yet',
+        ];
+
+        $message = $statusMessages[$stream->status] ?? 'Stream is not active';
+        $httpCode = match ($stream->status) {
+            LiveStream::STATUS_ENDED, LiveStream::STATUS_CANCELLED => 410,
+            LiveStream::STATUS_ENDING => 410,
+            LiveStream::STATUS_SCHEDULED => 409,
+            default => 400,
+        };
+
+        $response = [
+            'success' => false,
+            'message' => $message,
+            'stream_status' => $stream->status,
+            'stream_ended' => in_array($stream->status, [LiveStream::STATUS_ENDED, LiveStream::STATUS_CANCELLED]),
+        ];
+
+        // Include summary for ended streams so the app can show a recap
+        if (in_array($stream->status, [LiveStream::STATUS_ENDED, LiveStream::STATUS_CANCELLED, LiveStream::STATUS_ENDING])) {
+            $response['ended_at'] = $stream->ended_at?->toIso8601String();
+            $response['duration'] = $stream->duration;
+            $response['total_viewers'] = $stream->total_viewers;
+            $response['peak_viewers'] = $stream->peak_viewers;
+        }
+
+        // Include scheduled time for upcoming streams
+        if ($stream->status === LiveStream::STATUS_SCHEDULED) {
+            $response['scheduled_at'] = $stream->scheduled_at?->toIso8601String();
+        }
+
+        return response()->json($response, $httpCode);
+    }
+
+    /**
+     * Get WebSocket connection info for the Flutter app.
+     * Uses the public-facing host from APP_URL, not internal Reverb host.
+     */
+    private function getWebSocketInfo(int $streamId): array
+    {
+        // Extract external host from APP_URL (e.g., "zima-uat.site" from "https://zima-uat.site:8003")
+        $appUrl = config('app.url', 'https://zima-uat.site:8003');
+        $parsedUrl = parse_url($appUrl);
+        $host = $parsedUrl['host'] ?? 'zima-uat.site';
+
+        // Use port 8003 (same as API) since it has /app proxy to Reverb
+        $port = $parsedUrl['port'] ?? 8003;
+        $scheme = ($parsedUrl['scheme'] ?? 'https') === 'https' ? 'wss' : 'ws';
+        $key = config('reverb.apps.apps.0.key', env('REVERB_APP_KEY', 'tajiri-reverb-key-2026'));
+
+        return [
+            'url' => "{$scheme}://{$host}:{$port}/app/{$key}",
+            'channel' => "stream.{$streamId}",
+            'global_channel' => 'live-streams',
+            'protocol' => 'pusher',
+        ];
+    }
+
+    /**
+     * Build stream status info for API responses.
+     */
+    private function getStreamStatusInfo(LiveStream $stream): array
+    {
+        $isActive = in_array($stream->status, [LiveStream::STATUS_PRE_LIVE, LiveStream::STATUS_LIVE]);
+
+        return [
+            'status' => $stream->status,
+            'is_active' => $isActive,
+            'is_live' => $stream->status === LiveStream::STATUS_LIVE,
+            'is_ended' => in_array($stream->status, [LiveStream::STATUS_ENDED, LiveStream::STATUS_CANCELLED]),
+            'is_scheduled' => $stream->status === LiveStream::STATUS_SCHEDULED,
+            'started_at' => $stream->started_at?->toIso8601String(),
+            'ended_at' => $stream->ended_at?->toIso8601String(),
+            'can_join' => $isActive,
+        ];
+    }
+
+    /**
+     * Convert a relative playback URL to an absolute URL.
+     */
+    private function buildAbsolutePlaybackUrl(string $playbackUrl): string
+    {
+        // Already absolute
+        if (str_starts_with($playbackUrl, 'http://') || str_starts_with($playbackUrl, 'https://')) {
+            return $playbackUrl;
+        }
+
+        // Build from app config
+        $appUrl = rtrim(config('app.url', 'https://zima-uat.site:8003'), '/');
+
+        return $appUrl . '/' . ltrim($playbackUrl, '/');
     }
 
     // Helper: notify followers

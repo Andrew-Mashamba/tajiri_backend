@@ -1197,4 +1197,90 @@ class MusicController extends Controller
         // Chunk doesn't exist, needs to be uploaded
         return response()->json(['exists' => false], 204);
     }
+
+    public function followArtist(int $artistId, Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer|exists:user_profiles,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $artist = MusicArtist::find($artistId);
+        if (!$artist) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Artist not found',
+            ], 404);
+        }
+
+        $userId = $request->input('user_id');
+
+        if ($artist->isFollowedBy($userId)) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Already following this artist',
+            ]);
+        }
+
+        $artist->followers()->attach($userId);
+        $artist->increment('followers_count');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Artist followed successfully',
+            'data' => [
+                'followers_count' => $artist->fresh()->followers_count,
+            ],
+        ]);
+    }
+
+    public function unfollowArtist(int $artistId, Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer|exists:user_profiles,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $artist = MusicArtist::find($artistId);
+        if (!$artist) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Artist not found',
+            ], 404);
+        }
+
+        $userId = $request->input('user_id');
+
+        if (!$artist->isFollowedBy($userId)) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Not following this artist',
+            ]);
+        }
+
+        $artist->followers()->detach($userId);
+        $artist->decrement('followers_count');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Artist unfollowed successfully',
+            'data' => [
+                'followers_count' => $artist->fresh()->followers_count,
+            ],
+        ]);
+    }
 }

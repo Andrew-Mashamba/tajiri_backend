@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\UniversityDetailedController;
 use App\Http\Controllers\Api\BusinessController;
 use App\Http\Controllers\Api\UserProfileController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\PostEarningsController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\AlbumController;
@@ -25,10 +26,25 @@ use App\Http\Controllers\Api\ClipController;
 use App\Http\Controllers\Api\MusicController;
 use App\Http\Controllers\Api\LiveStreamController;
 use App\Http\Controllers\Api\AdvancedStreamController;
+use App\Http\Controllers\Api\BlockController;
 use App\Http\Controllers\Api\CallController;
+use App\Http\Controllers\Api\PresenceController;
 use App\Http\Controllers\Api\WalletController;
 use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\Api\PostDraftController;
+use App\Http\Controllers\Api\CampaignController;
+use App\Http\Controllers\Api\ScheduledCallController;
+use App\Http\Controllers\Api\PeopleController;
+use App\Http\Controllers\Api\FollowController;
+use App\Http\Controllers\Api\RtmpController;
+use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\V1\Shop\ProductController as ShopProductController;
+use App\Http\Controllers\Api\V1\Shop\CategoryController as ShopCategoryController;
+use App\Http\Controllers\Api\V1\Shop\CartController as ShopCartController;
+use App\Http\Controllers\Api\V1\Shop\OrderController as ShopOrderController;
+use App\Http\Controllers\Api\V1\Shop\ReviewController as ShopReviewController;
+use App\Http\Controllers\Api\V1\Shop\FavoriteController as ShopFavoriteController;
+use App\Http\Controllers\Api\V1\Shop\SellerDashboardController as ShopSellerDashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -182,6 +198,34 @@ Route::prefix('users')->group(function () {
     Route::put('/{id}/bio', [UserProfileController::class, 'updateBio']);
     Route::put('/{id}/username', [UserProfileController::class, 'updateUsername']);
 
+    // Privacy settings
+    Route::get('/{userId}/privacy-settings', [UserProfileController::class, 'getPrivacySettings']);
+    Route::put('/{userId}/privacy-settings', [UserProfileController::class, 'updatePrivacySettings']);
+
+    // Recent searches
+    Route::get('/{userId}/recent-searches', [UserProfileController::class, 'getRecentSearches']);
+    Route::post('/{userId}/recent-searches', [UserProfileController::class, 'saveRecentSearch']);
+    Route::delete('/{userId}/recent-searches', [UserProfileController::class, 'clearRecentSearches']);
+
+    // User campaigns
+    Route::get('/{userId}/campaigns', [CampaignController::class, 'userCampaigns']);
+    Route::get('/{userId}/campaigns/stats', [CampaignController::class, 'userCampaignStats']);
+    Route::get('/{userId}/withdrawals', [CampaignController::class, 'userWithdrawals']);
+
+    // Block users
+    Route::post('/block', [BlockController::class, 'block']);
+    Route::post('/unblock', [BlockController::class, 'unblock']);
+    Route::get('/blocked', [BlockController::class, 'index']);
+    Route::get('/blocked/{otherUserId}/check', [BlockController::class, 'checkBlocked']);
+
+    // Presence
+    Route::post('/presence/heartbeat', [PresenceController::class, 'heartbeat']);
+    Route::post('/presence/offline', [PresenceController::class, 'offline']);
+
+    // FCM tokens
+    Route::post('/fcm-token', [PresenceController::class, 'storeFcmToken']);
+    Route::delete('/fcm-token', [PresenceController::class, 'removeFcmToken']);
+
     // User content endpoints
     Route::get('/{id}/posts', [PostController::class, 'getUserWall']);
     Route::get('/{id}/photos', [PhotoController::class, 'getUserPhotos']);
@@ -219,9 +263,13 @@ Route::prefix('posts')->group(function () {
     Route::delete('/{id}/like', [PostController::class, 'unlike']);
     Route::get('/{id}/likes', [PostController::class, 'getLikes']);
     Route::post('/{id}/share', [PostController::class, 'share']);
+    Route::post('/{id}/report', [PostController::class, 'report']);
 
     // View tracking & engagement
     Route::post('/{id}/view', [PostController::class, 'recordView']);
+
+    // Earnings estimation for creators (post monetization)
+    Route::get('/{postId}/earnings', [PostEarningsController::class, 'earnings']);
 
     // Save/Bookmark
     Route::post('/{id}/save', [PostController::class, 'savePost']);
@@ -229,6 +277,22 @@ Route::prefix('posts')->group(function () {
 
     Route::get('/{id}/comments', [CommentController::class, 'index']);
     Route::post('/{id}/comments', [CommentController::class, 'store']);
+
+    // Comment pinning (post author only)
+    Route::post('/{postId}/comments/{commentId}/pin', [CommentController::class, 'pin']);
+    Route::delete('/{postId}/comments/pin', [CommentController::class, 'unpin']);
+
+    // Archive
+    Route::get("/archived", [PostController::class, "archivedPosts"]);
+    Route::post("/{id}/archive", [PostController::class, "archive"]);
+    Route::post("/{id}/unarchive", [PostController::class, "unarchive"]);
+
+    // Pin/Unpin
+    Route::post("/{id}/pin", [PostController::class, "pin"]);
+    Route::post("/{id}/unpin", [PostController::class, "unpin"]);
+
+    // Grid thumbnails
+    Route::get("/media/{mediaId}/grid-thumbnail", [PostController::class, "gridThumbnail"]);
 });
 
 /*
@@ -264,8 +328,16 @@ Route::prefix('hashtags')->group(function () {
 */
 Route::prefix('comments')->group(function () {
     Route::put('/{id}', [CommentController::class, 'update']);
+    Route::patch('/{id}', [CommentController::class, 'update']);
     Route::delete('/{id}', [CommentController::class, 'destroy']);
     Route::get('/{id}/replies', [CommentController::class, 'getReplies']);
+
+    // Comment likes
+    Route::post('/{id}/like', [CommentController::class, 'like']);
+    Route::delete('/{id}/like', [CommentController::class, 'unlike']);
+
+    // Comment reporting
+    Route::post('/{id}/report', [CommentController::class, 'report']);
 });
 
 /*
@@ -292,6 +364,28 @@ Route::prefix('albums')->group(function () {
     Route::get('/{id}', [AlbumController::class, 'show']);
     Route::put('/{id}', [AlbumController::class, 'update']);
     Route::delete('/{id}', [AlbumController::class, 'destroy']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| People Search API Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('people')->group(function () {
+    Route::get('/search', [PeopleController::class, 'search']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Follows API Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('follows')->group(function () {
+    Route::post('/', [FollowController::class, 'follow']);
+    Route::delete('/', [FollowController::class, 'unfollow']);
+    Route::get('/{userId}/followers', [FollowController::class, 'followers']);
+    Route::get('/{userId}/following', [FollowController::class, 'following']);
+    Route::get('/status/{otherUserId}', [FollowController::class, 'checkStatus']);
 });
 
 /*
@@ -324,14 +418,46 @@ Route::prefix('conversations')->group(function () {
     Route::get('/private/{otherUserId}', [ConversationController::class, 'getPrivate']);
     Route::get('/{id}', [ConversationController::class, 'show']);
     Route::delete('/{id}', [ConversationController::class, 'destroy']);
-    Route::get('/{id}/messages', [ConversationController::class, 'getMessages']);
-    Route::post('/{id}/messages', [ConversationController::class, 'sendMessage']);
     Route::put('/{id}/read', [ConversationController::class, 'markAsRead']);
+    Route::post('/{id}/mute', [ConversationController::class, 'toggleMute']);
+    Route::put('/{id}/mute', [ConversationController::class, 'toggleMute']);
+    Route::post('/{id}/pin', [ConversationController::class, 'togglePin']);
+    Route::post('/{id}/favorite', [ConversationController::class, 'toggleFavorite']);
+    Route::post('/{id}/archive', [ConversationController::class, 'toggleArchive']);
+    Route::post('/{id}/folder', [ConversationController::class, 'setFolder']);
+
+    // Participant management (group conversations)
+    Route::post('/{id}/participants', [ConversationController::class, 'addParticipant']);
+    Route::delete('/{id}/participants/{participantUserId}', [ConversationController::class, 'removeParticipant']);
+    Route::post('/{id}/participants/{participantUserId}/promote', [ConversationController::class, 'promoteAdmin']);
+    Route::post('/{id}/participants/{participantUserId}/demote', [ConversationController::class, 'demoteAdmin']);
+
+    // Messages
+    Route::get('/{id}/messages', [ConversationController::class, 'getMessages']);
+    Route::get('/{id}/messages/search', [ConversationController::class, 'searchMessages']);
+    Route::post('/{id}/messages', [ConversationController::class, 'sendMessage']);
+    Route::patch('/{id}/messages/{messageId}', [ConversationController::class, 'editMessage']);
+    Route::delete('/{id}/messages/{messageId}', [ConversationController::class, 'deleteMessage']);
+
+    // Message reactions
+    Route::post('/{id}/messages/{messageId}/reactions', [ConversationController::class, 'addReaction']);
+    Route::delete('/{id}/messages/{messageId}/reactions', [ConversationController::class, 'removeReaction']);
+
+    // Message/conversation reports
+    Route::post('/{id}/report', [ConversationController::class, 'reportConversation']);
+    Route::post('/{id}/messages/{messageId}/report', [ConversationController::class, 'reportMessage']);
 
     // Typing indicators
     Route::post('/{id}/typing/start', [ConversationController::class, 'startTyping']);
     Route::post('/{id}/typing/stop', [ConversationController::class, 'stopTyping']);
     Route::get('/{id}/typing', [ConversationController::class, 'getTypingStatus']);
+
+    // Recording indicators
+    Route::post('/{id}/recording/start', [ConversationController::class, 'startRecording']);
+    Route::post('/{id}/recording/stop', [ConversationController::class, 'stopRecording']);
+
+    // Online status
+    Route::get('/{id}/online', [ConversationController::class, 'getOnlineParticipants']);
 });
 
 /*
@@ -513,6 +639,8 @@ Route::prefix('uploads')->group(function () {
 Route::prefix('clips')->group(function () {
     Route::get('/', [ClipController::class, 'index']);
     Route::post('/', [ClipController::class, 'store']);
+    Route::get('/search', [ClipController::class, 'search']);
+    Route::get('/search/suggestions', [ClipController::class, 'searchSuggestions']);
     Route::get('/trending', [ClipController::class, 'trending']);
     Route::get('/hashtag/{tag}', [ClipController::class, 'byHashtag']);
     Route::get('/music/{musicId}', [ClipController::class, 'byMusic']);
@@ -552,6 +680,8 @@ Route::prefix('music')->group(function () {
     Route::post('/artists', [MusicController::class, 'storeArtist']);
     Route::get('/artists/{id}', [MusicController::class, 'artist']);
     Route::get('/artists/{id}/tracks', [MusicController::class, 'artistTracks']);
+    Route::post('/artists/{artistId}/follow', [MusicController::class, 'followArtist']);
+    Route::delete('/artists/{artistId}/follow', [MusicController::class, 'unfollowArtist']);
 
     // User tracks and saved music
     Route::get('/saved/{userId}', [MusicController::class, 'savedMusic']);
@@ -593,6 +723,9 @@ Route::prefix('streams')->group(function () {
     Route::patch('/{id}/status', [LiveStreamController::class, 'updateStatus']);
     Route::post('/{id}/start', [LiveStreamController::class, 'start']);
     Route::post('/{id}/end', [LiveStreamController::class, 'end']);
+
+    // Stream status check (lightweight, for reconnection logic)
+    Route::get('/{id}/check', [LiveStreamController::class, 'streamCheck']);
 
     // Viewers
     Route::post('/{id}/join', [LiveStreamController::class, 'join']);
@@ -659,28 +792,87 @@ Route::prefix('battles')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
+| RTMP Callbacks (nginx-rtmp-module)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('rtmp')->group(function () {
+    // Legacy routes
+    Route::post('/auth', [RtmpController::class, 'auth']);
+    Route::post('/publish', [RtmpController::class, 'onPublish']);
+    Route::post('/done', [RtmpController::class, 'done']);
+    Route::get('/status/{streamKey}', [RtmpController::class, 'status']);
+
+    // nginx-rtmp callback routes (matches rtmp.conf)
+    Route::post('/on-publish', [RtmpController::class, 'onPublish']);
+    Route::post('/on-publish-done', [RtmpController::class, 'done']);
+    Route::post('/on-play', [RtmpController::class, 'onPlay']);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Calls API Routes
+| Section 1: New unified API (CallSignalingService – Bearer auth)
+| Section 2: Legacy 1:1 (CallService – user_id in body)
+| Section 3: Legacy group (CallService group calls)
+| Section 4: Alternate group (GroupCallService)
 |--------------------------------------------------------------------------
 */
 Route::prefix('calls')->group(function () {
-    Route::post('/', [CallController::class, 'initiate']);
-    Route::get('/incoming/{userId}', [CallController::class, 'incoming']);
-    Route::get('/history/{userId}', [CallController::class, 'history']);
-    Route::get('/{id}', [CallController::class, 'show']);
-    Route::post('/{id}/answer', [CallController::class, 'answer']);
-    Route::post('/{id}/decline', [CallController::class, 'decline']);
-    Route::post('/{id}/end', [CallController::class, 'end']);
-    Route::post('/{id}/missed', [CallController::class, 'markMissed']);
+    // ── Section 1: New API (unified 1:1 + group) ──────────────────
+    Route::post('/', [CallController::class, 'create'])->middleware('throttle:calls-create');
+    Route::get('/', [CallController::class, 'callLog']);
+    Route::get('/turn-credentials', [CallController::class, 'turnCredentials'])->middleware('throttle:calls-turn');
+    Route::get('/incoming', [CallController::class, 'incoming']);
 
-    // Group calls
-    Route::post('/group', [CallController::class, 'startGroupCall']);
+    // ── Section 2: Legacy 1:1 named routes ─────────────────────────
+    Route::post('/initiate', [CallController::class, 'initiate']);
+    Route::get('/history', [CallController::class, 'history']);
+
+    // ── Sections 3 & 4: Group call routes (exact paths before wildcards) ──
     Route::get('/group/active/{conversationId}', [CallController::class, 'getActiveGroupCall']);
-    Route::post('/group/{id}/join', [CallController::class, 'joinGroupCall']);
-    Route::post('/group/{id}/leave', [CallController::class, 'leaveGroupCall']);
-    Route::post('/group/{id}/decline', [CallController::class, 'declineGroupCall']);
-    Route::post('/group/{id}/end', [CallController::class, 'endGroupCall']);
-    Route::post('/group/{id}/mute', [CallController::class, 'toggleMute']);
-    Route::post('/group/{id}/video', [CallController::class, 'toggleVideo']);
+    Route::post('/group/start', [CallController::class, 'groupStart']);          // Section 3
+    Route::post('/group/leave', [CallController::class, 'altGroupLeave']);       // Section 4
+    Route::patch('/group/state', [CallController::class, 'altGroupState']);      // Section 4
+    Route::post('/group', [CallController::class, 'altGroupCreate']);            // Section 4
+
+    // Section 3: Group call routes with {callId}
+    Route::post('/group/{callId}/join', [CallController::class, 'groupJoin']);
+    Route::post('/group/{callId}/leave', [CallController::class, 'groupLeaveById']);
+    Route::post('/group/{callId}/end', [CallController::class, 'groupEndById']);
+    Route::post('/group/{callId}/toggle-mute', [CallController::class, 'groupToggleMuteById']);
+    Route::post('/group/{callId}/toggle-video', [CallController::class, 'groupToggleVideoById']);
+
+    // ── Per-call operations (unified, works for both 1:1 and group) ──
+    Route::get('/{id}', [CallController::class, 'show']);
+    Route::post('/{id}/accept', [CallController::class, 'accept'])->middleware('throttle:calls-actions');
+    Route::post('/{id}/reject', [CallController::class, 'reject'])->middleware('throttle:calls-actions');
+    Route::post('/{id}/answer', [CallController::class, 'legacyAnswer']);        // Section 2 legacy
+    Route::post('/{id}/decline', [CallController::class, 'legacyDecline']);      // Section 2 legacy
+    Route::post('/{id}/end', [CallController::class, 'end'])->middleware('throttle:calls-actions');
+    Route::get('/{id}/status', [CallController::class, 'status']);               // Section 2 legacy
+    Route::post('/{id}/missed', [CallController::class, 'markMissed'])->middleware('throttle:calls-actions');
+    Route::post('/{id}/signaling', [CallController::class, 'signaling'])->middleware('throttle:calls-signaling');
+    Route::post('/{id}/reactions', [CallController::class, 'reactions'])->middleware('throttle:calls-reactions');
+    Route::post('/{id}/raise-hand', [CallController::class, 'raiseHand'])->middleware('throttle:calls-raise-hand');
+    Route::post('/{id}/missed-call-voice-message', [CallController::class, 'missedCallVoiceMessage'])->middleware('throttle:calls-voice-message');
+    Route::post('/{id}/participants', [CallController::class, 'addParticipant'])->middleware('throttle:calls-group');
+    Route::get('/{id}/participants', [CallController::class, 'getParticipants']);
+    Route::post('/{id}/leave', [CallController::class, 'leave'])->middleware('throttle:calls-actions');
+    Route::post('/{id}/mute', [CallController::class, 'toggleMute'])->middleware('throttle:calls-group');
+    Route::post('/{id}/video', [CallController::class, 'toggleVideo'])->middleware('throttle:calls-group');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Scheduled Calls API Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('scheduled-calls')->group(function () {
+    Route::get('/', [ScheduledCallController::class, 'index']);
+    Route::post('/', [ScheduledCallController::class, 'store'])->middleware('throttle:scheduled-calls-create');
+    Route::get('/{id}', [ScheduledCallController::class, 'show']);
+    Route::delete('/{id}', [ScheduledCallController::class, 'destroy']);
+    Route::post('/{id}/start', [ScheduledCallController::class, 'start'])->middleware('throttle:scheduled-calls-start');
 });
 
 /*
@@ -737,4 +929,184 @@ Route::prefix('subscriptions')->group(function () {
     // Payouts
     Route::get('/payouts/{creatorId}', [SubscriptionController::class, 'getPayouts']);
     Route::post('/payouts', [SubscriptionController::class, 'requestPayout']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Campaigns (Michango) API Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('campaigns')->group(function () {
+    Route::get('/', [CampaignController::class, 'index']);
+    Route::post('/', [CampaignController::class, 'store']);
+    Route::get('/{id}', [CampaignController::class, 'show']);
+    Route::delete('/{id}', [CampaignController::class, 'destroy']);
+    Route::post('/{id}/publish', [CampaignController::class, 'publish']);
+    Route::post('/{id}/pause', [CampaignController::class, 'pause']);
+    Route::post('/{id}/resume', [CampaignController::class, 'resume']);
+    Route::post('/{id}/complete', [CampaignController::class, 'complete']);
+    Route::post('/{id}/donate', [CampaignController::class, 'donate']);
+    Route::get('/{id}/withdrawals', [CampaignController::class, 'listWithdrawals']);
+    Route::post('/{id}/withdrawals', [CampaignController::class, 'requestWithdrawal']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Shop (C2C Marketplace) API Routes — frontend-facing (/api/shop/...)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('shop')->group(function () {
+
+    // Categories
+    Route::get('/categories', [ShopCategoryController::class, 'index']);
+    Route::get('/categories/{id}', [ShopCategoryController::class, 'show']);
+    Route::get('/categories/{id}/products', [ShopCategoryController::class, 'products']);
+
+    // Products
+    Route::get('/products', [ShopProductController::class, 'index']);
+    Route::get('/products/featured', [ShopProductController::class, 'featured']);
+    Route::get('/products/trending', [ShopProductController::class, 'trending']);
+    Route::get('/products/nearby', [ShopProductController::class, 'nearby']);
+    Route::get('/products/recommended', [ShopProductController::class, 'recommended']);
+    Route::get('/products/seller', [ShopProductController::class, 'sellerProducts']);
+    Route::get('/products/{id}', [ShopProductController::class, 'show']);
+    Route::post('/products/{id}/view', [ShopProductController::class, 'incrementView']);
+    Route::get('/products/{id}/reviews', [ShopReviewController::class, 'index']);
+    Route::post('/products', [ShopProductController::class, 'store']);
+    Route::put('/products/{id}', [ShopProductController::class, 'update']);
+    Route::delete('/products/{id}', [ShopProductController::class, 'destroy']);
+
+    // Favorites
+    Route::get('/favorites', [ShopFavoriteController::class, 'index']);
+    Route::post('/products/{id}/favorite', [ShopFavoriteController::class, 'toggle']);
+
+    // Cart
+    Route::get('/cart', [ShopCartController::class, 'show']);
+    Route::post('/cart/items', [ShopCartController::class, 'addItem']);
+    Route::put('/cart/items/{productId}', [ShopCartController::class, 'updateItem']);
+    Route::delete('/cart/items/{productId}', [ShopCartController::class, 'removeItem']);
+    Route::delete('/cart', [ShopCartController::class, 'clear']);
+
+    // Orders
+    Route::post('/orders', [ShopOrderController::class, 'store']);
+    Route::get('/orders/buyer', [ShopOrderController::class, 'buyerOrders']);
+    Route::get('/orders/seller', [ShopOrderController::class, 'sellerOrders']);
+    Route::get('/orders/{id}', [ShopOrderController::class, 'show']);
+    Route::put('/orders/{id}/status', [ShopOrderController::class, 'updateStatus']);
+    Route::post('/orders/{id}/cancel', [ShopOrderController::class, 'cancel']);
+
+    // Reviews
+    Route::post('/products/{id}/reviews', [ShopReviewController::class, 'store']);
+    Route::put('/reviews/{id}', [ShopReviewController::class, 'update']);
+    Route::delete('/reviews/{id}', [ShopReviewController::class, 'destroy']);
+    Route::post('/reviews/{id}/helpful', [ShopReviewController::class, 'markHelpful']);
+
+    // Seller Dashboard
+    Route::get('/seller/{userId}/stats', [ShopSellerDashboardController::class, 'stats']);
+    Route::get('/seller/stats', [ShopSellerDashboardController::class, 'stats']);
+    Route::get('/seller/products', [ShopSellerDashboardController::class, 'products']);
+    Route::get('/seller/orders', [ShopSellerDashboardController::class, 'orders']);
+
+    // Seller products by user
+    Route::get('/sellers/{userId}/products', [ShopProductController::class, 'sellerProducts']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Shop (C2C Marketplace) API Routes — versioned alias (/api/v1/shop/...)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('v1/shop')->group(function () {
+
+    // Categories (public)
+    Route::get('/categories', [ShopCategoryController::class, 'index']);
+    Route::get('/categories/{id}', [ShopCategoryController::class, 'show']);
+    Route::get('/categories/{id}/products', [ShopCategoryController::class, 'products']);
+
+    // Products (public browsing)
+    Route::get('/products', [ShopProductController::class, 'index']);
+    Route::get('/products/featured', [ShopProductController::class, 'featured']);
+    Route::get('/products/trending', [ShopProductController::class, 'trending']);
+    Route::get('/products/nearby', [ShopProductController::class, 'nearby']);
+    Route::get('/products/{id}', [ShopProductController::class, 'show']);
+    Route::post('/products/{id}/view', [ShopProductController::class, 'incrementView']);
+    Route::get('/products/{id}/reviews', [ShopReviewController::class, 'index']);
+    Route::get('/sellers/{userId}/products', [ShopProductController::class, 'sellerProducts']);
+
+    // Products (authenticated)
+    Route::get('/products/recommended', [ShopProductController::class, 'recommended']);
+    Route::post('/products', [ShopProductController::class, 'store']);
+    Route::put('/products/{id}', [ShopProductController::class, 'update']);
+    Route::delete('/products/{id}', [ShopProductController::class, 'destroy']);
+
+    // Favorites
+    Route::get('/favorites', [ShopFavoriteController::class, 'index']);
+    Route::post('/products/{id}/favorite', [ShopFavoriteController::class, 'toggle']);
+
+    // Cart
+    Route::get('/cart', [ShopCartController::class, 'show']);
+    Route::post('/cart/items', [ShopCartController::class, 'addItem']);
+    Route::put('/cart/items/{productId}', [ShopCartController::class, 'updateItem']);
+    Route::delete('/cart/items/{productId}', [ShopCartController::class, 'removeItem']);
+    Route::delete('/cart', [ShopCartController::class, 'clear']);
+
+    // Orders
+    Route::post('/orders', [ShopOrderController::class, 'store']);
+    Route::get('/orders/buyer', [ShopOrderController::class, 'buyerOrders']);
+    Route::get('/orders/seller', [ShopOrderController::class, 'sellerOrders']);
+    Route::get('/orders/{id}', [ShopOrderController::class, 'show']);
+    Route::put('/orders/{id}/status', [ShopOrderController::class, 'updateStatus']);
+    Route::post('/orders/{id}/cancel', [ShopOrderController::class, 'cancel']);
+
+    // Reviews
+    Route::post('/products/{id}/reviews', [ShopReviewController::class, 'store']);
+    Route::put('/reviews/{id}', [ShopReviewController::class, 'update']);
+    Route::delete('/reviews/{id}', [ShopReviewController::class, 'destroy']);
+    Route::post('/reviews/{id}/helpful', [ShopReviewController::class, 'markHelpful']);
+
+    // Seller Dashboard
+    Route::get('/seller/stats', [ShopSellerDashboardController::class, 'stats']);
+    Route::get('/seller/products', [ShopSellerDashboardController::class, 'products']);
+    Route::get('/seller/orders', [ShopSellerDashboardController::class, 'orders']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| File Management API Routes (Nyaraka Zangu / My Files)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('files')->group(function () {
+    // Listing & search
+    Route::get('/', [FileController::class, 'index']);
+    Route::get('/recent', [FileController::class, 'recent']);
+    Route::get('/quota', [FileController::class, 'quota']);
+
+    // Public share access (no auth required)
+    Route::get('/shared/{token}', [FileController::class, 'accessSharedFile']);
+
+    // Single file details
+    Route::get('/{id}', [FileController::class, 'show'])->where('id', '[0-9]+');
+
+    // Upload
+    Route::post('/', [FileController::class, 'store']);
+    Route::post('/batch', [FileController::class, 'storeBatch']);
+
+    // Folders
+    Route::post('/folders', [FileController::class, 'createFolder']);
+
+    // Actions
+    Route::patch('/{id}/rename', [FileController::class, 'rename'])->where('id', '[0-9]+');
+    Route::patch('/{id}/move', [FileController::class, 'move'])->where('id', '[0-9]+');
+    Route::post('/{id}/copy', [FileController::class, 'copy'])->where('id', '[0-9]+');
+    Route::delete('/batch', [FileController::class, 'destroyBatch']);
+    Route::delete('/{id}', [FileController::class, 'destroy'])->where('id', '[0-9]+');
+    Route::patch('/{id}/star', [FileController::class, 'toggleStar'])->where('id', '[0-9]+');
+    Route::patch('/{id}/offline', [FileController::class, 'toggleOffline'])->where('id', '[0-9]+');
+
+    // Sharing
+    Route::post('/{id}/share', [FileController::class, 'share'])->where('id', '[0-9]+');
+    Route::delete('/{id}/share', [FileController::class, 'revokeShare'])->where('id', '[0-9]+');
+
+    // Download
+    Route::get('/{id}/download', [FileController::class, 'download'])->where('id', '[0-9]+');
 });

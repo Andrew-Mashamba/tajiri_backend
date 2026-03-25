@@ -49,6 +49,7 @@ class Post extends Model
         'reach_followers',
         'reach_non_followers',
         'is_pinned',
+        'allow_comments',
         'status',
         'scheduled_at',
         'published_at',
@@ -76,6 +77,7 @@ class Post extends Model
         'audio_waveform' => 'array',
         'text_overlays' => 'array',
         'is_pinned' => 'boolean',
+        'allow_comments' => 'boolean',
         'is_short_video' => 'boolean',
         'is_featured' => 'boolean',
         'is_viral' => 'boolean',
@@ -352,16 +354,18 @@ class Post extends Model
         $rawScore *= $mediaBoost;
 
         // Apply time decay (Twitter-style freshness)
-        $hoursOld = Carbon::now()->diffInHours($this->created_at);
+        // abs() required: Carbon 3 returns signed diffs by default
+        $hoursOld = abs(Carbon::now()->diffInHours($this->created_at));
         $decayFactor = pow(0.5, $hoursOld / self::DECAY_HALF_LIFE_HOURS);
         $decayedScore = $rawScore * $decayFactor;
 
         // Calculate trending score (recent engagement weighted higher)
         $trendingScore = $this->calculateTrendingScore();
 
+        // Clamp to decimal(10,4) max of 999999.9999
         $this->update([
-            'engagement_score' => round($decayedScore, 4),
-            'trending_score' => round($trendingScore, 4),
+            'engagement_score' => min(round($decayedScore, 4), 999999.9999),
+            'trending_score' => min(round($trendingScore, 4), 999999.9999),
             'is_viral' => $this->checkViralThreshold($rawScore),
         ]);
     }
@@ -407,7 +411,7 @@ class Post extends Model
             + ($recentViews * self::WEIGHT_VIEW);
 
         // Normalize by post age (newer posts get slight advantage)
-        $hoursOld = max(Carbon::now()->diffInHours($this->created_at), 1);
+        $hoursOld = max(abs(Carbon::now()->diffInHours($this->created_at)), 1);
         $ageNormalizer = min(24 / $hoursOld, 2.0); // Cap at 2x for very new posts
 
         return $recentScore * $ageNormalizer;

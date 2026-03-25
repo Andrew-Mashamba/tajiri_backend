@@ -8,11 +8,15 @@ use App\Models\PostLike;
 use App\Models\PostMedia;
 use App\Models\PostSave;
 use App\Models\PostView;
+use App\Models\Report;
 use App\Models\Hashtag;
 use App\Models\UserProfile;
 use App\Models\Friend;
 use App\Services\VideoProcessingService;
 use App\Services\AudioProcessingService;
+use App\Services\ImageProcessingService;
+use App\Services\Firebase\FirebaseLiveUpdateService;
+use App\Support\FormCast;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +25,12 @@ use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
+    protected FirebaseLiveUpdateService $firebaseLiveUpdate;
+
+    public function __construct(FirebaseLiveUpdateService $firebaseLiveUpdate)
+    {
+        $this->firebaseLiveUpdate = $firebaseLiveUpdate;
+    }
     /**
      * Get posts for a user's wall.
      */
@@ -49,18 +59,22 @@ class PostController extends Controller
         }
 
         try {
-            \Log::info("Querying posts for user_id: $userId");
+            \Log::info("Querying global feed for requesting user_id: $userId");
 
-            // Log total posts count for this user
-            $totalUserPosts = Post::where('user_id', $userId)->count();
-            \Log::info("Total posts for user (all statuses): $totalUserPosts");
+            // Check if a specific profile's posts are requested
+            $profileUserId = $request->query('profile_user_id');
 
-            // Log published posts count
-            $publishedCount = Post::where('user_id', $userId)->published()->count();
-            \Log::info("Published posts count: $publishedCount");
+            if ($profileUserId) {
+                // Return only that profile's posts
+                \Log::info("Fetching posts for profile user_id: $profileUserId");
+                $query = Post::where('user_id', $profileUserId);
+            } else {
+                // Return global timeline (all public posts)
+                \Log::info("Fetching global timeline");
+                $query = Post::where('privacy', 'public');
+            }
 
-            $posts = Post::where('user_id', $userId)
-                ->published()
+            $posts = $query->published()
                 ->with(['user:id,first_name,last_name,username,profile_photo_path', 'media'])
                 ->withCount(['comments', 'likes'])
                 ->orderBy('is_pinned', 'desc')
@@ -131,6 +145,7 @@ class PostController extends Controller
             'media' => 'nullable|array|max:10',
             'media.*' => 'file|mimes:jpg,jpeg,png,gif,mp4,mov,avi,webm,mp3,wav,m4a,aac,ogg,pdf,doc,docx|max:102400',
             'is_draft' => 'nullable|boolean',
+            'allow_comments' => FormCast::allowCommentsRule(),
             'scheduled_at' => 'nullable|date|after:now',
             // New fields for enhanced post types
             'background_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
@@ -172,6 +187,7 @@ class PostController extends Controller
                 'region_id' => $request->region_id,
                 'tagged_users' => $request->tagged_users,
                 'is_draft' => $request->is_draft ?? false,
+                'allow_comments' => FormCast::toBoolean($request->allow_comments, true),
                 'scheduled_at' => $request->scheduled_at,
                 // New fields for enhanced post types
                 'background_color' => $request->background_color,
@@ -264,7 +280,29 @@ class PostController extends Controller
                         }
                     }
 
+                    // Process audio sent via media[] field
+                    if ($mediaType === 'audio' && !$post->audio_path) {
+                        $audioData = $audioService->processAudio($file);
+                        $post->update([
+                            'audio_path' => $audioData['path'],
+                            'audio_duration' => $audioData['duration'] ? (int) ceil($audioData['duration']) : null,
+                            'audio_waveform' => $audioData['waveform'],
+                            'post_type' => 'audio',
+                        ]);
+                        $mediaData['duration'] = $audioData['duration'] ? (int) ceil($audioData['duration']) : null;
+                    }
+
                     PostMedia::create($mediaData);
+
+                    // Process grid thumbnail + dominant color extraction
+                    $createdMedia = PostMedia::where("post_id", $post->id)->where("order", $mediaData["order"])->first();
+                    if ($createdMedia && in_array($mediaType, ["image", "video"])) {
+                        try {
+                            app(ImageProcessingService::class)->processForGrid($createdMedia);
+                        } catch (\Throwable $e) {
+                            \Log::warning("Grid thumbnail generation failed: " . $e->getMessage());
+                        }
+                    }
                 }
 
                 // Update post type based on media (if not explicitly set)
@@ -305,6 +343,11 @@ class PostController extends Controller
             DB::commit();
 
             \Log::info('Post created successfully, id: ' . $post->id);
+
+            // Firebase: notify author and friends that feed updated
+            if (!$post->is_draft) {
+                $this->firebaseLiveUpdate->notifyUserAndFriends((int) $request->user_id, 'feed_updated');
+            }
 
             // Load relationships (include musicTrack for posts with music)
             $post->load(['user:id,first_name,last_name,username,profile_photo_path', 'media', 'hashtags', 'musicTrack']);
@@ -378,6 +421,7 @@ class PostController extends Controller
             'privacy' => 'in:public,friends,private',
             'location_name' => 'nullable|string|max:255',
             'is_pinned' => 'boolean',
+            'allow_comments' => FormCast::allowCommentsRule(),
         ]);
 
         if ($validator->fails()) {
@@ -388,12 +432,19 @@ class PostController extends Controller
             ], 422);
         }
 
-        $post->update($request->only(['content', 'privacy', 'location_name', 'is_pinned']));
+        $updateData = $request->only(['content', 'privacy', 'location_name', 'is_pinned']);
+        if ($request->has('allow_comments')) {
+            $updateData['allow_comments'] = FormCast::toBoolean($request->allow_comments, true);
+        }
+        $post->update($updateData);
 
         // Re-extract hashtags if content changed
         if ($request->has('content')) {
             $post->extractAndSyncHashtags();
         }
+
+        // Firebase: notify author that post updated
+        $this->firebaseLiveUpdate->notifyUser((int) $post->user_id, 'post_updated', ['post_id' => $post->id]);
 
         return response()->json([
             'success' => true,
@@ -405,7 +456,7 @@ class PostController extends Controller
     /**
      * Delete a post.
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(Request $request, int $id): JsonResponse
     {
         $post = Post::find($id);
 
@@ -414,6 +465,15 @@ class PostController extends Controller
                 'success' => false,
                 'message' => 'Post not found',
             ], 404);
+        }
+
+        // Only the post author can delete
+        $userId = $request->input('user_id') ?? $request->query('user_id');
+        if ($userId && (int) $userId !== (int) $post->user_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You are not authorized to delete this post',
+            ], 403);
         }
 
         try {
@@ -435,10 +495,17 @@ class PostController extends Controller
             // Decrement user's posts count
             $post->user->decrementPosts();
 
+            $postAuthorId = (int) $post->user_id;
+            $postId = $post->id;
+
             // Delete post (soft delete)
             $post->delete();
 
             DB::commit();
+
+            // Firebase: notify author with post_updated and friends with feed_updated
+            $this->firebaseLiveUpdate->notifyUser($postAuthorId, 'post_updated', ['post_id' => $postId]);
+            $this->firebaseLiveUpdate->notifyUserAndFriends($postAuthorId, 'feed_updated');
 
             return response()->json([
                 'success' => true,
@@ -784,6 +851,9 @@ class PostController extends Controller
 
         $post->incrementLikes();
 
+        // Firebase: notify post author that post updated
+        $this->firebaseLiveUpdate->notifyUser((int) $post->user_id, 'post_updated', ['post_id' => $id]);
+
         return response()->json([
             'success' => true,
             'message' => 'Post liked',
@@ -825,14 +895,19 @@ class PostController extends Controller
             ->first();
 
         if (!$like) {
+            // Idempotent: unliking when not liked is a no-op
             return response()->json([
-                'success' => false,
+                'success' => true,
                 'message' => 'Post not liked',
-            ], 400);
+                'data' => ['likes_count' => $post->likes_count],
+            ]);
         }
 
         $like->delete();
         $post->decrementLikes();
+
+        // Firebase: notify post author that post updated
+        $this->firebaseLiveUpdate->notifyUser((int) $post->user_id, 'post_updated', ['post_id' => $id]);
 
         return response()->json([
             'success' => true,
@@ -1079,6 +1154,10 @@ class PostController extends Controller
 
             DB::commit();
 
+            // Firebase: notify sharer's friends with feed_updated, and original author with post_updated
+            $this->firebaseLiveUpdate->notifyUserAndFriends((int) $request->user_id, 'feed_updated');
+            $this->firebaseLiveUpdate->notifyUser((int) $originalPost->user_id, 'post_updated', ['post_id' => $originalPost->id]);
+
             $sharedPost->load(['user:id,first_name,last_name,username,profile_photo_path', 'originalPost.user', 'originalPost.media']);
 
             return response()->json([
@@ -1244,5 +1323,303 @@ class PostController extends Controller
         }
 
         return null;
+    }
+
+    // ==================== INSTAGRAM-STYLE PROFILE GRID ENDPOINTS ====================
+
+    /**
+     * Archive a post (hide from grid, keep privately).
+     * POST /api/posts/{id}/archive
+     */
+    public function archive(Request $request, int $id): JsonResponse
+    {
+        $userId = $request->query('user_id') ?? $request->input('user_id');
+        if (!$userId) {
+            return response()->json(['success' => false, 'message' => 'User ID is required'], 400);
+        }
+
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['success' => false, 'message' => 'Post not found'], 404);
+        }
+
+        if ($post->user_id != $userId) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        $post->update(['status' => Post::STATUS_ARCHIVED]);
+
+        // Fire live update
+        try {
+            $this->firebaseLiveUpdate->notifyProfileUpdate($post->user_id, 'post_archived');
+        } catch (\Throwable $e) {
+            \Log::warning('Firebase notification failed for archive: ' . $e->getMessage());
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Post archived successfully',
+        ]);
+    }
+
+    /**
+     * Unarchive a post (restore to grid at original position).
+     * POST /api/posts/{id}/unarchive
+     */
+    public function unarchive(Request $request, int $id): JsonResponse
+    {
+        $userId = $request->query('user_id') ?? $request->input('user_id');
+        if (!$userId) {
+            return response()->json(['success' => false, 'message' => 'User ID is required'], 400);
+        }
+
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['success' => false, 'message' => 'Post not found'], 404);
+        }
+
+        if ($post->user_id != $userId) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        if ($post->status !== Post::STATUS_ARCHIVED) {
+            return response()->json(['success' => false, 'message' => 'Post is not archived'], 422);
+        }
+
+        $post->update(['status' => Post::STATUS_PUBLISHED]);
+
+        try {
+            $this->firebaseLiveUpdate->notifyProfileUpdate($post->user_id, 'post_unarchived');
+        } catch (\Throwable $e) {
+            \Log::warning('Firebase notification failed for unarchive: ' . $e->getMessage());
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Post restored successfully',
+        ]);
+    }
+
+    /**
+     * Get archived posts for the current user.
+     * GET /api/posts/archived
+     */
+    public function archivedPosts(Request $request): JsonResponse
+    {
+        $userId = $request->query('user_id');
+        if (!$userId) {
+            return response()->json(['success' => false, 'message' => 'User ID is required'], 400);
+        }
+
+        $page = $request->query('page', 1);
+        $perPage = $request->query('per_page', 24);
+
+        $posts = Post::where('user_id', $userId)
+            ->where('status', Post::STATUS_ARCHIVED)
+            ->with(['media', 'user:id,first_name,last_name,username,profile_photo_path'])
+            ->orderByDesc('created_at')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json([
+            'success' => true,
+            'data' => $posts->items(),
+            'meta' => [
+                'current_page' => $posts->currentPage(),
+                'last_page' => $posts->lastPage(),
+                'per_page' => $posts->perPage(),
+                'total' => $posts->total(),
+            ],
+        ]);
+    }
+
+    /**
+     * Pin a post to profile grid (max 3 pinned posts).
+     * POST /api/posts/{id}/pin
+     */
+    public function pin(Request $request, int $id): JsonResponse
+    {
+        $userId = $request->query('user_id') ?? $request->input('user_id');
+        if (!$userId) {
+            return response()->json(['success' => false, 'message' => 'User ID is required'], 400);
+        }
+
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['success' => false, 'message' => 'Post not found'], 404);
+        }
+
+        if ($post->user_id != $userId) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        if ($post->is_pinned) {
+            return response()->json(['success' => true, 'message' => 'Post is already pinned']);
+        }
+
+        // Check max 3 pinned posts
+        $pinnedCount = Post::where('user_id', $userId)
+            ->where('is_pinned', true)
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->count();
+
+        if ($pinnedCount >= 3) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Maximum 3 posts can be pinned. Unpin one first.',
+            ], 422);
+        }
+
+        $post->update(['is_pinned' => true]);
+
+        try {
+            $this->firebaseLiveUpdate->notifyProfileUpdate($post->user_id, 'post_pinned');
+        } catch (\Throwable $e) {
+            \Log::warning('Firebase notification failed for pin: ' . $e->getMessage());
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Post pinned to profile',
+        ]);
+    }
+
+    /**
+     * Unpin a post from profile grid.
+     * POST /api/posts/{id}/unpin
+     */
+    public function unpin(Request $request, int $id): JsonResponse
+    {
+        $userId = $request->query('user_id') ?? $request->input('user_id');
+        if (!$userId) {
+            return response()->json(['success' => false, 'message' => 'User ID is required'], 400);
+        }
+
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['success' => false, 'message' => 'Post not found'], 404);
+        }
+
+        if ($post->user_id != $userId) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        $post->update(['is_pinned' => false]);
+
+        try {
+            $this->firebaseLiveUpdate->notifyProfileUpdate($post->user_id, 'post_unpinned');
+        } catch (\Throwable $e) {
+            \Log::warning('Firebase notification failed for unpin: ' . $e->getMessage());
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Post unpinned',
+        ]);
+    }
+
+    /**
+     * Report a post.
+     */
+    public function report(Request $request, int $id): JsonResponse
+    {
+        $post = Post::find($id);
+
+        if (!$post) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Post not found',
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer|exists:user_profiles,id',
+            'reason' => 'nullable|string|max:500',
+            'category' => 'nullable|string|max:100',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $userId = (int) $request->input('user_id');
+        $reason = $request->input('reason');
+
+        // reports.reason is non-nullable in the database schema, so ensure we always write a value.
+        if ($reason === null || $reason === '') {
+            $reason = 'No reason provided';
+        }
+
+        // Check for duplicate report
+        $existing = Report::where('reportable_type', Post::class)
+            ->where('reportable_id', $id)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($existing) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Report already submitted',
+            ]);
+        }
+
+        try {
+            Report::create([
+                'reportable_type' => Post::class,
+                'reportable_id' => $id,
+                'user_id' => $userId,
+                'reason' => $reason,
+                'category' => $request->input('category'),
+            ]);
+        } catch (\Throwable $e) {
+            // Unique constraint on (reportable_type, reportable_id, user_id) protects duplicates.
+            if (str_contains(strtolower($e->getMessage()), 'unique')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Report already submitted',
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to submit report',
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Report submitted',
+        ]);
+    }
+
+    /**
+     * Get grid thumbnail URL for a media item.
+     * Generates on-demand if not yet processed.
+     * GET /api/posts/media/{mediaId}/grid-thumbnail
+     */
+    public function gridThumbnail(int $mediaId): JsonResponse
+    {
+        $media = PostMedia::find($mediaId);
+        if (!$media) {
+            return response()->json(['success' => false, 'message' => 'Media not found'], 404);
+        }
+
+        // Generate on-demand if missing
+        if (!$media->grid_thumbnail_path || !$media->dominant_color) {
+            $processor = app(\App\Services\ImageProcessingService::class);
+            $processor->processForGrid($media);
+            $media->refresh();
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'grid_thumbnail_url' => $media->grid_thumbnail_url,
+                'dominant_color' => $media->dominant_color,
+            ],
+        ]);
     }
 }

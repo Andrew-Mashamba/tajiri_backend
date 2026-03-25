@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Conversation;
+use App\Models\ConversationParticipant;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\GroupPost;
@@ -65,6 +67,11 @@ class GroupController extends Controller
 
     /**
      * Get user's groups.
+     *
+     * Query params:
+     *   user_id              – required
+     *   include_system_groups – 1 to include system groups (default: 0)
+     *   type                 – filter: "community" | "system" | omit for both
      */
     public function userGroups(Request $request): JsonResponse
     {
@@ -73,15 +80,43 @@ class GroupController extends Controller
             return response()->json(['success' => false, 'message' => 'User ID required'], 400);
         }
 
-        $groups = Group::whereHas('members', function ($q) use ($userId) {
+        $includeSystem = $request->query('include_system_groups', '0') === '1';
+        $type = $request->query('type'); // "community", "system", or null
+
+        // Base query: groups the user belongs to with approved status
+        $baseQuery = Group::whereHas('members', function ($q) use ($userId) {
             $q->where('user_id', $userId)->where('status', 'approved');
         })
         ->with(['creator:id,first_name,last_name,username,profile_photo_path'])
-        ->withCount(['approvedMembers'])
-        ->get();
+        ->withCount(['approvedMembers']);
+
+        // If explicit type filter is given, honour it
+        if ($type === 'system') {
+            $baseQuery->system();
+        } elseif ($type === 'community') {
+            $baseQuery->userCreated();
+        } elseif (!$includeSystem) {
+            // Default: only community groups unless include_system_groups=1
+            $baseQuery->userCreated();
+        }
+
+        $groups = $baseQuery->orderBy('name')->get();
 
         foreach ($groups as $group) {
             $group->user_role = $group->getUserRole($userId);
+        }
+
+        // When include_system_groups=1 and no explicit type filter,
+        // split into community data + separate system_groups array
+        if ($includeSystem && !$type) {
+            $communityGroups = $groups->where('is_system', false)->values();
+            $systemGroups = $groups->where('is_system', true)->values();
+
+            return response()->json([
+                'success' => true,
+                'data' => $communityGroups,
+                'system_groups' => $systemGroups,
+            ]);
         }
 
         return response()->json([
@@ -140,6 +175,21 @@ class GroupController extends Controller
                 'role' => Group::ROLE_ADMIN,
                 'status' => 'approved',
                 'joined_at' => now(),
+            ]);
+
+            // Auto-create linked conversation for group chat
+            $conversation = Conversation::create([
+                'type' => Conversation::TYPE_GROUP,
+                'group_id' => $group->id,
+                'name' => $group->name,
+                'avatar_path' => $group->cover_photo_path,
+                'created_by' => $request->creator_id,
+            ]);
+
+            ConversationParticipant::create([
+                'conversation_id' => $conversation->id,
+                'user_id' => $request->creator_id,
+                'is_admin' => true,
             ]);
 
             DB::commit();
@@ -309,6 +359,16 @@ class GroupController extends Controller
 
         if ($status === 'approved') {
             $group->incrementMembers();
+
+            // Sync: add to group's conversation
+            $conversation = Conversation::where('group_id', $id)->first();
+            if ($conversation && !$conversation->hasParticipant((int) $request->user_id)) {
+                ConversationParticipant::create([
+                    'conversation_id' => $conversation->id,
+                    'user_id' => $request->user_id,
+                    'is_admin' => false,
+                ]);
+            }
         }
 
         return response()->json([
@@ -354,6 +414,14 @@ class GroupController extends Controller
 
         if ($wasApproved) {
             $group->decrementMembers();
+
+            // Sync: remove from group's conversation
+            $conversation = Conversation::where('group_id', $id)->first();
+            if ($conversation) {
+                ConversationParticipant::where('conversation_id', $conversation->id)
+                    ->where('user_id', $request->user_id)
+                    ->delete();
+            }
         }
 
         return response()->json([
@@ -424,6 +492,17 @@ class GroupController extends Controller
                 'joined_at' => now(),
             ]);
             $group->incrementMembers();
+
+            // Sync: add to group's conversation
+            $conversation = Conversation::where('group_id', $groupId)->first();
+            if ($conversation && !$conversation->hasParticipant($userId)) {
+                ConversationParticipant::create([
+                    'conversation_id' => $conversation->id,
+                    'user_id' => $userId,
+                    'is_admin' => false,
+                ]);
+            }
+
             $message = 'Member approved';
         } else {
             $member->delete();
@@ -493,6 +572,14 @@ class GroupController extends Controller
 
         if ($wasApproved) {
             $group->decrementMembers();
+
+            // Sync: remove from group's conversation
+            $conversation = Conversation::where('group_id', $groupId)->first();
+            if ($conversation) {
+                ConversationParticipant::where('conversation_id', $conversation->id)
+                    ->where('user_id', $userId)
+                    ->delete();
+            }
         }
 
         return response()->json([
@@ -528,6 +615,14 @@ class GroupController extends Controller
 
         if ($wasApproved) {
             $group->decrementMembers();
+
+            // Sync: remove from group's conversation
+            $conversation = Conversation::where('group_id', $groupId)->first();
+            if ($conversation) {
+                ConversationParticipant::where('conversation_id', $conversation->id)
+                    ->where('user_id', $userId)
+                    ->delete();
+            }
         }
 
         return response()->json([
@@ -726,6 +821,16 @@ class GroupController extends Controller
             ]);
 
             $invitation->group->incrementMembers();
+
+            // Sync: add to group's conversation
+            $conversation = Conversation::where('group_id', $invitation->group_id)->first();
+            if ($conversation && !$conversation->hasParticipant($invitation->invitee_id)) {
+                ConversationParticipant::create([
+                    'conversation_id' => $conversation->id,
+                    'user_id' => $invitation->invitee_id,
+                    'is_admin' => false,
+                ]);
+            }
         }
 
         return response()->json([

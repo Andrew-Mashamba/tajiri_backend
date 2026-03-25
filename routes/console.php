@@ -42,6 +42,16 @@ Schedule::job(new \App\Jobs\UpdateViewerCount)
     ->everyFiveSeconds()
     ->withoutOverlapping();
 
+// Messages: Mark stale users as offline (no heartbeat in 5 minutes)
+Schedule::command('presence:cleanup')
+    ->everyMinute()
+    ->withoutOverlapping();
+
+// Calls: Send reminders for scheduled calls within 5 minutes
+Schedule::command('calls:send-reminders')
+    ->everyMinute()
+    ->withoutOverlapping();
+
 // Clean up old draft files (weekly, Sunday at 3 AM)
 Schedule::command('model:prune', ['--model' => 'App\Models\PostDraft'])
     ->weekly()

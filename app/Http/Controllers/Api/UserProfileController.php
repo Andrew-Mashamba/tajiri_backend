@@ -7,12 +7,24 @@ use App\Models\UserProfile;
 use App\Models\Post;
 use App\Models\Photo;
 use App\Models\Friendship;
+use App\Models\Subscription;
+use App\Models\UserFollow;
+use App\Models\SearchHistory;
+use App\Jobs\AssignUserToDefaultGroups;
+use App\Services\Firebase\FirebaseLiveUpdateService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class UserProfileController extends Controller
 {
+    protected FirebaseLiveUpdateService $firebaseLiveUpdate;
+
+    public function __construct(FirebaseLiveUpdateService $firebaseLiveUpdate)
+    {
+        $this->firebaseLiveUpdate = $firebaseLiveUpdate;
+    }
     /**
      * Register a new user profile
      */
@@ -63,6 +75,7 @@ class UserProfileController extends Controller
             'primary_school_code' => $request->input('primary_school.school_code'),
             'primary_school_name' => $request->input('primary_school.school_name'),
             'primary_school_type' => $request->input('primary_school.school_type'),
+            'primary_start_year' => $request->input('primary_school.start_year'),
             'primary_graduation_year' => $request->input('primary_school.graduation_year'),
 
             // Secondary School
@@ -70,6 +83,7 @@ class UserProfileController extends Controller
             'secondary_school_code' => $request->input('secondary_school.school_code'),
             'secondary_school_name' => $request->input('secondary_school.school_name'),
             'secondary_school_type' => $request->input('secondary_school.school_type'),
+            'secondary_start_year' => $request->input('secondary_school.start_year'),
             'secondary_graduation_year' => $request->input('secondary_school.graduation_year'),
 
             // A-Level
@@ -77,6 +91,7 @@ class UserProfileController extends Controller
             'alevel_school_code' => $request->input('alevel_education.school_code'),
             'alevel_school_name' => $request->input('alevel_education.school_name'),
             'alevel_school_type' => $request->input('alevel_education.school_type'),
+            'alevel_start_year' => $request->input('alevel_education.start_year'),
             'alevel_graduation_year' => $request->input('alevel_education.graduation_year'),
             'alevel_combination_code' => $request->input('alevel_education.combination_code'),
             'alevel_combination_name' => $request->input('alevel_education.combination_name'),
@@ -87,6 +102,7 @@ class UserProfileController extends Controller
             'postsecondary_code' => $request->input('postsecondary_education.school_code'),
             'postsecondary_name' => $request->input('postsecondary_education.school_name'),
             'postsecondary_type' => $request->input('postsecondary_education.school_type'),
+            'postsecondary_start_year' => $request->input('postsecondary_education.start_year'),
             'postsecondary_graduation_year' => $request->input('postsecondary_education.graduation_year'),
 
             // University
@@ -96,6 +112,7 @@ class UserProfileController extends Controller
             'programme_id' => $request->input('university_education.programme_id'),
             'programme_name' => $request->input('university_education.programme_name'),
             'degree_level' => $request->input('university_education.degree_level'),
+            'university_start_year' => $request->input('university_education.start_year'),
             'university_graduation_year' => $request->input('university_education.graduation_year'),
             'is_current_student' => $request->input('university_education.is_current_student', false),
 
@@ -109,6 +126,9 @@ class UserProfileController extends Controller
         ];
 
         $profile = UserProfile::create($data);
+
+        // Auto-assign to system groups based on profile (school, location, etc.)
+        AssignUserToDefaultGroups::dispatch($profile->id);
 
         \Log::info('Registration successful', ['user_id' => $profile->id, 'phone' => $profile->phone_number]);
 
@@ -167,7 +187,40 @@ class UserProfileController extends Controller
             ], 404);
         }
 
+        // Snapshot profile before update (for auto-group diff)
+        $oldProfile = $profile->only([
+            'primary_school_id', 'primary_school_name', 'primary_start_year', 'primary_graduation_year',
+            'secondary_school_id', 'secondary_school_name', 'secondary_start_year', 'secondary_graduation_year',
+            'alevel_school_id', 'alevel_school_name', 'alevel_start_year', 'alevel_graduation_year',
+            'alevel_combination_code', 'alevel_combination_name',
+            'postsecondary_id', 'postsecondary_name', 'postsecondary_start_year', 'postsecondary_graduation_year',
+            'university_id', 'university_name', 'programme_id', 'programme_name',
+            'university_start_year', 'university_graduation_year', 'is_current_student',
+            'region_id', 'region_name', 'district_id', 'district_name',
+            'ward_id', 'ward_name', 'street_id', 'street_name',
+            'employer_id', 'employer_name',
+        ]);
+
         $profile->update($request->all());
+
+        // Re-assign system groups if any group-relevant fields changed
+        $groupFields = [
+            'primary_school_id', 'primary_start_year', 'primary_graduation_year',
+            'secondary_school_id', 'secondary_start_year', 'secondary_graduation_year',
+            'alevel_school_id', 'alevel_start_year', 'alevel_graduation_year', 'alevel_combination_code',
+            'postsecondary_id', 'postsecondary_start_year', 'postsecondary_graduation_year',
+            'university_id', 'programme_id', 'university_start_year', 'university_graduation_year', 'is_current_student',
+            'region_id', 'district_id', 'ward_id', 'street_id',
+            'employer_id', 'employer_name',
+        ];
+
+        $changed = collect($groupFields)->contains(fn($field) => $request->has($field));
+        if ($changed) {
+            AssignUserToDefaultGroups::dispatch($profile->id, $oldProfile);
+        }
+
+        // Firebase: notify user that profile updated
+        $this->firebaseLiveUpdate->notifyUser((int) $profile->id, 'profile_updated');
 
         return response()->json([
             'success' => true,
@@ -187,7 +240,7 @@ class UserProfileController extends Controller
 
         return response()->json([
             'success' => true,
-            'exists' => $exists,
+            'available' => !$exists,
         ]);
     }
 
@@ -278,6 +331,12 @@ class UserProfileController extends Controller
                 // Stats
                 'posts_count' => $profile->posts_count ?? Post::where('user_id', $id)->count(),
                 'friends_count' => $profile->friends_count ?? 0,
+                'followers_count' => $profile->followers_count ?? 0,
+                'following_count' => $profile->following_count ?? 0,
+                'subscribers_count' => Subscription::where('creator_id', $id)
+                    ->where('status', Subscription::STATUS_ACTIVE)
+                    ->where('expires_at', '>', now())
+                    ->count(),
                 'photos_count' => $profile->photos_count ?? Photo::where('user_id', $id)->count(),
 
                 // Location
@@ -346,6 +405,12 @@ class UserProfileController extends Controller
                 // Social
                 'friendship_status' => $friendshipStatus,
                 'is_friend' => $isFriend,
+                'is_following' => $currentUserId && $currentUserId != $id
+                    ? $this->safeIsFollowing((int) $currentUserId, $id)
+                    : false,
+                'is_followed_by' => $currentUserId && $currentUserId != $id
+                    ? $this->safeIsFollowing($id, (int) $currentUserId)
+                    : false,
                 'mutual_friends_count' => $mutualFriendsCount,
 
                 // Recent content
@@ -394,6 +459,9 @@ class UserProfileController extends Controller
         $path = $request->file('photo')->store('profile-photos', 'public');
         $profile->update(['profile_photo_path' => $path]);
 
+        // Firebase: notify user and friends that profile updated
+        $this->firebaseLiveUpdate->notifyUserAndFriends((int) $id, 'profile_updated');
+
         return response()->json([
             'success' => true,
             'message' => 'Profile photo updated',
@@ -438,6 +506,9 @@ class UserProfileController extends Controller
         $path = $request->file('photo')->store('cover-photos', 'public');
         $profile->update(['cover_photo_path' => $path]);
 
+        // Firebase: notify user that profile updated
+        $this->firebaseLiveUpdate->notifyUser((int) $id, 'profile_updated');
+
         return response()->json([
             'success' => true,
             'message' => 'Cover photo updated',
@@ -478,6 +549,9 @@ class UserProfileController extends Controller
 
         $profile->update($request->only(['bio', 'interests', 'relationship_status']));
 
+        // Firebase: notify user that profile updated
+        $this->firebaseLiveUpdate->notifyUser((int) $id, 'profile_updated');
+
         return response()->json([
             'success' => true,
             'message' => 'Profile updated',
@@ -517,6 +591,9 @@ class UserProfileController extends Controller
 
         $profile->update(['username' => strtolower($request->username)]);
 
+        // Firebase: notify user that profile updated
+        $this->firebaseLiveUpdate->notifyUser((int) $id, 'profile_updated');
+
         return response()->json([
             'success' => true,
             'message' => 'Username updated',
@@ -524,5 +601,158 @@ class UserProfileController extends Controller
                 'username' => $profile->username,
             ],
         ]);
+    }
+
+    /**
+     * Get user privacy settings
+     */
+    public function getPrivacySettings(int $userId): JsonResponse
+    {
+        $profile = UserProfile::find($userId);
+        if (!$profile) {
+            return response()->json(['success' => false, 'message' => 'User not found'], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'profile_visibility' => $profile->profile_visibility ?? 'everyone',
+                'who_can_message' => $profile->who_can_message ?? 'everyone',
+                'who_can_see_posts' => $profile->who_can_see_posts ?? 'everyone',
+                'last_seen_visibility' => $profile->last_seen_visibility ?? 'everyone',
+                'read_receipts_visibility' => $profile->read_receipts_visibility ?? 'everyone',
+                'online_status_visibility' => $profile->online_status_visibility ?? 'everyone',
+                'profile_photo_visibility' => $profile->profile_photo_visibility ?? 'everyone',
+                'about_visibility' => $profile->about_visibility ?? 'everyone',
+                'status_visibility' => $profile->status_visibility ?? 'everyone',
+            ],
+        ]);
+    }
+
+    /**
+     * Update user privacy settings
+     */
+    public function updatePrivacySettings(Request $request, int $userId): JsonResponse
+    {
+        $profile = UserProfile::find($userId);
+        if (!$profile) {
+            return response()->json(['success' => false, 'message' => 'User not found'], 404);
+        }
+
+        $visibilityRule = 'sometimes|in:everyone,friends,nobody,only_me';
+
+        $validator = Validator::make($request->all(), [
+            'profile_visibility' => $visibilityRule,
+            'who_can_message' => 'sometimes|in:everyone,friends,nobody',
+            'who_can_see_posts' => $visibilityRule,
+            'last_seen_visibility' => 'sometimes|in:everyone,friends,nobody',
+            'read_receipts_visibility' => $visibilityRule,
+            'online_status_visibility' => $visibilityRule,
+            'profile_photo_visibility' => $visibilityRule,
+            'about_visibility' => $visibilityRule,
+            'status_visibility' => $visibilityRule,
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $fields = [
+            'profile_visibility', 'who_can_message', 'who_can_see_posts',
+            'last_seen_visibility', 'read_receipts_visibility', 'online_status_visibility',
+            'profile_photo_visibility', 'about_visibility', 'status_visibility',
+        ];
+
+        $profile->update($request->only($fields));
+
+        $data = [];
+        foreach ($fields as $field) {
+            $data[$field] = $profile->$field;
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Privacy settings updated',
+            'data' => $data,
+        ]);
+    }
+
+    /**
+     * Get recent searches for a user
+     */
+    public function getRecentSearches(int $userId, Request $request): JsonResponse
+    {
+        $type = $request->query('type', 'general');
+
+        $searches = SearchHistory::where('user_id', $userId)
+            ->where('search_type', $type)
+            ->orderByDesc('created_at')
+            ->limit(20)
+            ->pluck('query');
+
+        return response()->json(['success' => true, 'data' => $searches]);
+    }
+
+    /**
+     * Save a recent search
+     */
+    public function saveRecentSearch(int $userId, Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'query' => 'required|string|max:200',
+            'search_type' => 'sometimes|in:clips,users,posts,general',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        }
+
+        $searchType = $request->input('search_type', 'general');
+        $query = $request->input('query');
+
+        // Remove existing duplicate
+        SearchHistory::where('user_id', $userId)
+            ->where('query', $query)
+            ->where('search_type', $searchType)
+            ->delete();
+
+        SearchHistory::create([
+            'user_id' => $userId,
+            'query' => $query,
+            'search_type' => $searchType,
+            'created_at' => now(),
+        ]);
+
+        return response()->json(['success' => true], 201);
+    }
+
+    /**
+     * Clear recent searches
+     */
+    public function clearRecentSearches(int $userId, Request $request): JsonResponse
+    {
+        $type = $request->query('type', 'general');
+
+        SearchHistory::where('user_id', $userId)
+            ->where('search_type', $type)
+            ->delete();
+
+        return response()->json(['success' => true, 'message' => 'Search history cleared']);
+    }
+
+    /**
+     * Safely check follow status — returns false if user_follows table is missing.
+     */
+    private function safeIsFollowing(int $followerId, int $followingId): bool
+    {
+        try {
+            return UserFollow::isFollowing($followerId, $followingId);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return false;
+        }
     }
 }

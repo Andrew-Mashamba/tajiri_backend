@@ -26,10 +26,15 @@ class EventController extends Controller
         $perPage = $request->query('per_page', 20);
         $type = $request->query('type', 'upcoming'); // upcoming, past, all
         $category = $request->query('category');
+        $groupId = $request->query('group_id');
         $currentUserId = $request->query('current_user_id');
 
-        $query = Event::public()
-            ->with(['creator:id,first_name,last_name,username,profile_photo_path']);
+        $query = Event::with(['creator:id,first_name,last_name,username,profile_photo_path']);
+
+        // When filtering by group, show all group events (not just public)
+        if (!$groupId) {
+            $query->public();
+        }
 
         if ($type === 'upcoming') {
             $query->upcoming();
@@ -39,6 +44,10 @@ class EventController extends Controller
 
         if ($category) {
             $query->where('category', $category);
+        }
+
+        if ($groupId) {
+            $query->where('group_id', $groupId);
         }
 
         $events = $query->paginate($perPage, ['*'], 'page', $page);

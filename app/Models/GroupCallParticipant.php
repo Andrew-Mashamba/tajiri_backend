@@ -13,18 +13,23 @@ class GroupCallParticipant extends Model
     protected $fillable = [
         'group_call_id',
         'user_id',
+        'role',
         'status',
         'joined_at',
         'left_at',
+        'invited_at',
         'is_muted',
         'is_video_off',
+        'hand_raised_at',
     ];
 
     protected $casts = [
         'joined_at' => 'datetime',
         'left_at' => 'datetime',
+        'invited_at' => 'datetime',
         'is_muted' => 'boolean',
         'is_video_off' => 'boolean',
+        'hand_raised_at' => 'datetime',
     ];
 
     const STATUS_INVITED = 'invited';

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class UserProfile extends Model
@@ -26,6 +27,8 @@ class UserProfile extends Model
         'interests',
         'relationship_status',
         'friends_count',
+        'followers_count',
+        'following_count',
         'posts_count',
         'photos_count',
         'last_active_at',
@@ -45,6 +48,7 @@ class UserProfile extends Model
         'primary_school_code',
         'primary_school_name',
         'primary_school_type',
+        'primary_start_year',
         'primary_graduation_year',
 
         // Secondary School
@@ -52,6 +56,7 @@ class UserProfile extends Model
         'secondary_school_code',
         'secondary_school_name',
         'secondary_school_type',
+        'secondary_start_year',
         'secondary_graduation_year',
 
         // A-Level
@@ -59,6 +64,7 @@ class UserProfile extends Model
         'alevel_school_code',
         'alevel_school_name',
         'alevel_school_type',
+        'alevel_start_year',
         'alevel_graduation_year',
         'alevel_combination_code',
         'alevel_combination_name',
@@ -69,6 +75,7 @@ class UserProfile extends Model
         'postsecondary_code',
         'postsecondary_name',
         'postsecondary_type',
+        'postsecondary_start_year',
         'postsecondary_graduation_year',
 
         // University
@@ -78,6 +85,7 @@ class UserProfile extends Model
         'programme_id',
         'programme_name',
         'degree_level',
+        'university_start_year',
         'university_graduation_year',
         'is_current_student',
 
@@ -88,6 +96,18 @@ class UserProfile extends Model
         'employer_sector',
         'employer_ownership',
         'is_custom_employer',
+        'is_verified',
+
+        // Privacy Settings
+        'profile_visibility',
+        'who_can_message',
+        'who_can_see_posts',
+        'last_seen_visibility',
+        'read_receipts_visibility',
+        'online_status_visibility',
+        'profile_photo_visibility',
+        'about_visibility',
+        'status_visibility',
     ];
 
     protected $casts = [
@@ -95,9 +115,12 @@ class UserProfile extends Model
         'is_phone_verified' => 'boolean',
         'is_current_student' => 'boolean',
         'is_custom_employer' => 'boolean',
+        'is_verified' => 'boolean',
         'alevel_subjects' => 'array',
         'interests' => 'array',
         'friends_count' => 'integer',
+        'followers_count' => 'integer',
+        'following_count' => 'integer',
         'posts_count' => 'integer',
         'photos_count' => 'integer',
         'last_active_at' => 'datetime',
@@ -232,6 +255,66 @@ class UserProfile extends Model
     }
 
     /**
+     * Get user's presence info.
+     */
+    public function presence(): HasOne
+    {
+        return $this->hasOne(UserPresence::class, 'user_id');
+    }
+
+    /**
+     * Get users blocked by this user.
+     */
+    public function blockedUsers(): HasMany
+    {
+        return $this->hasMany(BlockedUser::class, 'user_id');
+    }
+
+    /**
+     * Get users who have blocked this user.
+     */
+    public function blockedByUsers(): HasMany
+    {
+        return $this->hasMany(BlockedUser::class, 'blocked_user_id');
+    }
+
+    /**
+     * Check if this user has blocked another user.
+     */
+    public function hasBlocked(int $userId): bool
+    {
+        return BlockedUser::isBlocked($this->id, $userId);
+    }
+
+    /**
+     * Check if this user is blocked by another user.
+     */
+    public function isBlockedBy(int $userId): bool
+    {
+        return BlockedUser::isBlocked($userId, $this->id);
+    }
+
+    /**
+     * Check if messaging is allowed to this user by another user.
+     */
+    public function canBeMessagedBy(int $senderId): bool
+    {
+        // Check blocking first
+        if (BlockedUser::isEitherBlocked($this->id, $senderId)) {
+            return false;
+        }
+
+        $setting = $this->who_can_message ?? 'everyone';
+
+        return match ($setting) {
+            'everyone' => true,
+            'friends' => Friendship::areFriends($this->id, $senderId),
+            'nobody' => false,
+            default => true,
+        };
+    }
+
+    /**
      * Check if user is friends with another user.
      */
     public function isFriendsWith(int $userId): bool
@@ -305,5 +388,53 @@ class UserProfile extends Model
             ->toArray();
 
         return array_merge($initiated, $received);
+    }
+
+    /**
+     * Get users who follow this user.
+     */
+    public function followers(): HasMany
+    {
+        return $this->hasMany(UserFollow::class, 'following_id');
+    }
+
+    /**
+     * Get users this user follows.
+     */
+    public function following(): HasMany
+    {
+        return $this->hasMany(UserFollow::class, 'follower_id');
+    }
+
+    /**
+     * Increment followers count.
+     */
+    public function incrementFollowers(): void
+    {
+        $this->increment('followers_count');
+    }
+
+    /**
+     * Decrement followers count.
+     */
+    public function decrementFollowers(): void
+    {
+        $this->decrement('followers_count');
+    }
+
+    /**
+     * Increment following count.
+     */
+    public function incrementFollowing(): void
+    {
+        $this->increment('following_count');
+    }
+
+    /**
+     * Decrement following count.
+     */
+    public function decrementFollowing(): void
+    {
+        $this->decrement('following_count');
     }
 }

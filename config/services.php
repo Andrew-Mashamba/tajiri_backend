@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'turn' => [
+        'secret' => env('TURN_SECRET'),
+        'ttl' => (int) env('TURN_TTL', 86400),
+        'urls' => array_filter([
+            env('TURN_URL_1', 'turn:turn.example.com:3478'),
+            env('TURN_URL_2'),
+        ]),
+    ],
+
 ];

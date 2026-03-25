@@ -17,6 +17,8 @@ class PostMedia extends Model
         'media_type',
         'file_path',
         'thumbnail_path',
+        'dominant_color',
+        'grid_thumbnail_path',
         'original_filename',
         'file_size',
         'width',
@@ -63,6 +65,14 @@ class PostMedia extends Model
     public function getThumbnailUrlAttribute(): ?string
     {
         return $this->thumbnail_path ? asset('storage/' . $this->thumbnail_path) : null;
+    }
+
+    /**
+     * Get full URL for grid thumbnail (small ~300px square).
+     */
+    public function getGridThumbnailUrlAttribute(): ?string
+    {
+        return $this->grid_thumbnail_path ? asset('storage/' . $this->grid_thumbnail_path) : null;
     }
 
     /**

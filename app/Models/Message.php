@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Message extends Model
 {
@@ -19,14 +20,20 @@ class Message extends Model
         'media_path',
         'media_type',
         'reply_to_id',
+        'forward_message_id',
+        'call_session_id',
         'is_read',
         'read_at',
+        'edited_at',
     ];
 
     protected $casts = [
         'is_read' => 'boolean',
         'read_at' => 'datetime',
+        'edited_at' => 'datetime',
     ];
+
+    protected $appends = ['reactions_grouped'];
 
     /**
      * Message types
@@ -38,6 +45,7 @@ class Message extends Model
     const TYPE_DOCUMENT = 'document';
     const TYPE_LOCATION = 'location';
     const TYPE_CONTACT = 'contact';
+    const TYPE_MISSED_CALL_VOICE = 'missed_call_voice';
 
     /**
      * Get the conversation.
@@ -61,6 +69,51 @@ class Message extends Model
     public function replyTo(): BelongsTo
     {
         return $this->belongsTo(Message::class, 'reply_to_id');
+    }
+
+    /**
+     * Get the original message when this is a forwarded message.
+     */
+    public function forwardedFrom(): BelongsTo
+    {
+        return $this->belongsTo(Message::class, 'forward_message_id');
+    }
+
+    /**
+     * Get the associated call session (for missed_call_voice messages).
+     */
+    public function callSession(): BelongsTo
+    {
+        return $this->belongsTo(Call::class, 'call_session_id');
+    }
+
+    /**
+     * Get reactions on this message.
+     */
+    public function reactions(): HasMany
+    {
+        return $this->hasMany(MessageReaction::class);
+    }
+
+    /**
+     * Get reactions grouped by emoji for API response.
+     */
+    public function getReactionsGroupedAttribute(): array
+    {
+        if (!$this->relationLoaded('reactions')) {
+            return [];
+        }
+
+        return $this->reactions
+            ->groupBy('emoji')
+            ->map(function ($reactions, $emoji) {
+                return [
+                    'emoji' => $emoji,
+                    'user_ids' => $reactions->pluck('user_id')->values()->toArray(),
+                ];
+            })
+            ->values()
+            ->toArray();
     }
 
     /**

@@ -1,6 +1,6 @@
 # TAJIRI Livestreaming - Backend Specification
 
-**Version**: 2.0
+**Version**: 2.1
 **Last Updated**: 2026-01-28
 
 ## Implementation Status
@@ -20,6 +20,12 @@
 - Super chat (tiered donations)
 - Battle mode (PK battles)
 - Stream health monitoring
+
+### Performance Optimizations (Completed)
+- Redis-based caching service (StreamCacheService)
+- RTMP controller for nginx-rtmp callbacks
+- Database indexes for query optimization
+- Infrastructure configuration files
 
 ## Database Tables
 
@@ -172,6 +178,40 @@ Connection: `wss://zima-uat.site/streams/{stream_id}?user_id={user_id}`
 - `2026_01_28_100000_upgrade_livestream_tables.php` (status upgrade)
 - `2026_01_28_151050_update_live_streams_status_constraint.php` (PostgreSQL fix)
 - `2026_01_28_160000_create_advanced_streaming_tables.php` (advanced features)
+- `2026_01_28_180000_add_livestream_performance_indexes.php` (performance indexes)
+
+### Performance Services
+- `app/Services/StreamCacheService.php` - Redis caching for stream data
+- `app/Http/Controllers/Api/RtmpController.php` - nginx-rtmp callbacks
+
+### Infrastructure Configs
+- `config/infrastructure/nginx-rtmp.conf` - RTMP server configuration
+- `config/infrastructure/supervisor.conf` - Process management
+- `config/infrastructure/redis.conf` - Redis optimization
+- `scripts/transcode.sh` - FFmpeg HLS transcoding script
+
+## RTMP Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/rtmp/auth | Authenticate stream key |
+| POST | /api/rtmp/publish | Stream publish started |
+| POST | /api/rtmp/done | Stream ended |
+| GET | /api/rtmp/status/{key} | Get stream status |
+
+## Redis Cache Keys
+
+| Key Pattern | TTL | Description |
+|-------------|-----|-------------|
+| `stream:meta:{id}` | 5 min | Stream metadata |
+| `stream:viewers:{id}` | 1 min | Current viewer count |
+| `stream:peak:{id}` | 24 hrs | Peak viewers |
+| `stream:comments:{id}` | 1 hr | Recent comments (last 100) |
+| `stream:health:{id}` | 1 min | Health metrics |
+| `streams:active` | 24 hrs | Set of active stream IDs |
+| `session:{uid}:{sid}` | 1 hr | User viewing session |
+| `rate:{action}:{uid}` | 1 min | Rate limiting counter |
+| `battle:{id}:score:{sid}` | 1 hr | Battle scores |
 
 ## External Requirements
 
@@ -182,7 +222,7 @@ Connection: `wss://zima-uat.site/streams/{stream_id}?user_id={user_id}`
 
 ## Route Summary
 
-Total routes: 40+
+Total routes: 45+
 - Stream management: 6
 - Viewers/engagement: 8
 - Comments: 3
@@ -195,3 +235,4 @@ Total routes: 40+
 - Super chat: 1
 - Battles: 5
 - Health: 1
+- RTMP callbacks: 4

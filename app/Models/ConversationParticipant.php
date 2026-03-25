@@ -17,6 +17,10 @@ class ConversationParticipant extends Model
         'last_read_at',
         'unread_count',
         'is_muted',
+        'is_pinned',
+        'is_favorite',
+        'is_archived',
+        'folder',
         'is_typing',
         'typing_started_at',
     ];
@@ -24,6 +28,9 @@ class ConversationParticipant extends Model
     protected $casts = [
         'is_admin' => 'boolean',
         'is_muted' => 'boolean',
+        'is_pinned' => 'boolean',
+        'is_favorite' => 'boolean',
+        'is_archived' => 'boolean',
         'last_read_at' => 'datetime',
         'unread_count' => 'integer',
         'is_typing' => 'boolean',
@@ -71,6 +78,38 @@ class ConversationParticipant extends Model
     public function toggleMute(): void
     {
         $this->update(['is_muted' => !$this->is_muted]);
+    }
+
+    /**
+     * Toggle pin status.
+     */
+    public function togglePin(): void
+    {
+        $this->update(['is_pinned' => !$this->is_pinned]);
+    }
+
+    /**
+     * Toggle favorite status.
+     */
+    public function toggleFavorite(): void
+    {
+        $this->update(['is_favorite' => !$this->is_favorite]);
+    }
+
+    /**
+     * Toggle archive status.
+     */
+    public function toggleArchive(): void
+    {
+        $this->update(['is_archived' => !$this->is_archived]);
+    }
+
+    /**
+     * Set folder for this conversation.
+     */
+    public function setFolder(?string $folder): void
+    {
+        $this->update(['folder' => $folder]);
     }
 
     /**

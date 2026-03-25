@@ -14,6 +14,7 @@ class Conversation extends Model
 
     protected $fillable = [
         'type',
+        'group_id',
         'name',
         'avatar_path',
         'created_by',
@@ -37,6 +38,14 @@ class Conversation extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(UserProfile::class, 'created_by');
+    }
+
+    /**
+     * Get the linked group (for group conversations).
+     */
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(Group::class);
     }
 
     /**
@@ -125,6 +134,11 @@ class Conversation extends Model
      */
     public static function getOrCreatePrivate(int $userId1, int $userId2): self
     {
+        // Check if either user has blocked the other
+        if (BlockedUser::isEitherBlocked($userId1, $userId2)) {
+            throw new \App\Exceptions\UserBlockedException('Cannot start conversation with this user');
+        }
+
         // Look for existing private conversation
         $conversation = self::where('type', self::TYPE_PRIVATE)
             ->whereHas('participants', function ($query) use ($userId1) {
@@ -150,6 +164,32 @@ class Conversation extends Model
             $userId1 => ['is_admin' => false],
             $userId2 => ['is_admin' => false],
         ]);
+
+        return $conversation;
+    }
+
+    /**
+     * Create a group conversation linked to an existing group.
+     */
+    public static function createForGroup(Group $group): self
+    {
+        $conversation = self::create([
+            'type' => self::TYPE_GROUP,
+            'group_id' => $group->id,
+            'name' => $group->name,
+            'avatar_path' => $group->cover_photo_path,
+            'created_by' => $group->creator_id,
+        ]);
+
+        // Add all approved group members as participants
+        $members = $group->approvedMembers()->get();
+        foreach ($members as $member) {
+            ConversationParticipant::create([
+                'conversation_id' => $conversation->id,
+                'user_id' => $member->id,
+                'is_admin' => $group->isAdmin($member->id),
+            ]);
+        }
 
         return $conversation;
     }

@@ -7,6 +7,7 @@ use App\Models\Story;
 use App\Models\StoryHighlight;
 use App\Models\StoryReaction;
 use App\Models\StoryReply;
+use App\Services\Firebase\FirebaseLiveUpdateService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,12 @@ use Illuminate\Support\Facades\Validator;
 
 class StoryController extends Controller
 {
+    protected FirebaseLiveUpdateService $firebaseLiveUpdate;
+
+    public function __construct(FirebaseLiveUpdateService $firebaseLiveUpdate)
+    {
+        $this->firebaseLiveUpdate = $firebaseLiveUpdate;
+    }
     public function index(Request $request): JsonResponse
     {
         $currentUserId = $request->query('current_user_id');
@@ -108,6 +115,9 @@ class StoryController extends Controller
 
             $story->load(['user:id,first_name,last_name,username,profile_photo_path', 'music.artist']);
 
+            // Firebase: notify followers that stories updated
+            $this->firebaseLiveUpdate->notifyFriends((int) $request->user_id, 'stories_updated');
+
             return response()->json([
                 'success' => true,
                 'message' => 'Story created',
@@ -144,10 +154,15 @@ class StoryController extends Controller
             return response()->json(['success' => false, 'message' => 'Story not found'], 404);
         }
 
+        $storyAuthorId = (int) $story->user_id;
+
         if ($story->media_path) {
             Storage::disk('public')->delete($story->media_path);
         }
         $story->delete();
+
+        // Firebase: notify followers that stories updated
+        $this->firebaseLiveUpdate->notifyFriends($storyAuthorId, 'stories_updated');
 
         return response()->json(['success' => true, 'message' => 'Story deleted']);
     }

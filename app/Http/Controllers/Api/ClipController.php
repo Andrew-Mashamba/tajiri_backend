@@ -7,6 +7,9 @@ use App\Models\Clip;
 use App\Models\ClipComment;
 use App\Models\ClipHashtag;
 use App\Models\ClipShare;
+use App\Models\UserProfile;
+use App\Services\Firebase\FirebaseLiveUpdateService;
+use App\Support\FormCast;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +18,12 @@ use Illuminate\Support\Facades\Validator;
 
 class ClipController extends Controller
 {
+    protected FirebaseLiveUpdateService $firebaseLiveUpdate;
+
+    public function __construct(FirebaseLiveUpdateService $firebaseLiveUpdate)
+    {
+        $this->firebaseLiveUpdate = $firebaseLiveUpdate;
+    }
     public function index(Request $request): JsonResponse
     {
         $page = $request->query('page', 1);
@@ -60,7 +69,7 @@ class ClipController extends Controller
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'privacy' => 'nullable|in:public,friends,private',
-            'allow_comments' => 'nullable|boolean',
+            'allow_comments' => FormCast::allowCommentsRule(),
             'allow_duet' => 'nullable|boolean',
             'allow_stitch' => 'nullable|boolean',
             'allow_download' => 'nullable|boolean',
@@ -92,7 +101,7 @@ class ClipController extends Controller
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
                 'privacy' => $request->privacy ?? 'public',
-                'allow_comments' => $request->allow_comments ?? true,
+                'allow_comments' => FormCast::toBoolean($request->allow_comments, true),
                 'allow_duet' => $request->allow_duet ?? true,
                 'allow_stitch' => $request->allow_stitch ?? true,
                 'allow_download' => $request->allow_download ?? true,
@@ -119,6 +128,9 @@ class ClipController extends Controller
             }
 
             $clip->load(['user:id,first_name,last_name,username,profile_photo_path', 'music.artist']);
+
+            // Firebase: notify author and friends that feed updated (new clip)
+            $this->firebaseLiveUpdate->notifyUserAndFriends((int) $request->user_id, 'feed_updated');
 
             return response()->json([
                 'success' => true,
@@ -161,8 +173,13 @@ class ClipController extends Controller
             return response()->json(['success' => false, 'message' => 'Clip not found'], 404);
         }
 
+        $clipAuthorId = (int) $clip->user_id;
+
         Storage::disk('public')->delete($clip->video_path);
         $clip->delete();
+
+        // Firebase: notify author and friends that feed updated (clip deleted)
+        $this->firebaseLiveUpdate->notifyUserAndFriends($clipAuthorId, 'feed_updated');
 
         return response()->json(['success' => true, 'message' => 'Clip deleted']);
     }
@@ -204,6 +221,9 @@ class ClipController extends Controller
         if (!$clip->isLikedBy($request->user_id)) {
             $clip->likes()->attach($request->user_id);
             $clip->increment('likes_count');
+
+            // Firebase: notify clip author that clip updated
+            $this->firebaseLiveUpdate->notifyUser((int) $clip->user_id, 'post_updated', ['post_id' => $id]);
         }
 
         return response()->json(['success' => true, 'message' => 'Liked']);
@@ -227,6 +247,9 @@ class ClipController extends Controller
         if ($clip->isLikedBy($request->user_id)) {
             $clip->likes()->detach($request->user_id);
             $clip->decrement('likes_count');
+
+            // Firebase: notify clip author that clip updated
+            $this->firebaseLiveUpdate->notifyUser((int) $clip->user_id, 'post_updated', ['post_id' => $id]);
         }
 
         return response()->json(['success' => true, 'message' => 'Unliked']);
@@ -300,6 +323,9 @@ class ClipController extends Controller
 
         $clip->increment('shares_count');
 
+        // Firebase: notify clip author that clip updated (shared)
+        $this->firebaseLiveUpdate->notifyUser((int) $clip->user_id, 'post_updated', ['post_id' => $id]);
+
         return response()->json(['success' => true, 'message' => 'Shared']);
     }
 
@@ -367,6 +393,9 @@ class ClipController extends Controller
 
         $comment->load('user:id,first_name,last_name,username,profile_photo_path');
 
+        // Firebase: notify clip author that clip updated (new comment)
+        $this->firebaseLiveUpdate->notifyUser((int) $clip->user_id, 'post_updated', ['post_id' => $id]);
+
         return response()->json(['success' => true, 'data' => $comment], 201);
     }
 
@@ -388,6 +417,12 @@ class ClipController extends Controller
         if (!$comment->isLikedBy($request->user_id)) {
             $comment->likes()->attach($request->user_id);
             $comment->increment('likes_count');
+
+            // Firebase: notify clip author that clip updated (comment liked)
+            $clip = Clip::find($clipId);
+            if ($clip) {
+                $this->firebaseLiveUpdate->notifyUser((int) $clip->user_id, 'post_updated', ['post_id' => $clipId]);
+            }
         }
 
         return response()->json(['success' => true, 'message' => 'Comment liked']);
@@ -442,6 +477,103 @@ class ClipController extends Controller
                 'current_page' => $clips->currentPage(),
                 'last_page' => $clips->lastPage(),
                 'total' => $clips->total(),
+            ],
+        ]);
+    }
+
+    public function search(Request $request): JsonResponse
+    {
+        $q = $request->query('q', '');
+        $type = $request->query('type', 'all'); // all, hashtag, user
+        $page = $request->query('page', 1);
+        $perPage = $request->query('per_page', 20);
+        $currentUserId = $request->query('current_user_id');
+
+        if (empty($q)) {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'meta' => ['current_page' => 1, 'last_page' => 1, 'total' => 0],
+            ]);
+        }
+
+        $query = Clip::with([
+            'user:id,first_name,last_name,username,profile_photo_path',
+            'music.artist',
+        ])->published();
+
+        if ($type === 'hashtag') {
+            $query->whereHas('hashtags', function ($hq) use ($q) {
+                $hq->where('name', 'ilike', '%' . $q . '%');
+            });
+        } elseif ($type === 'user') {
+            $query->whereHas('user', function ($uq) use ($q) {
+                $uq->where('username', 'ilike', '%' . $q . '%')
+                    ->orWhereRaw("concat(first_name, ' ', last_name) ilike ?", ['%' . $q . '%']);
+            });
+        } else {
+            $query->where(function ($outer) use ($q) {
+                $outer->where('caption', 'ilike', '%' . $q . '%')
+                    ->orWhereHas('hashtags', function ($hq) use ($q) {
+                        $hq->where('name', 'ilike', '%' . $q . '%');
+                    })
+                    ->orWhereHas('user', function ($uq) use ($q) {
+                        $uq->where('username', 'ilike', '%' . $q . '%')
+                            ->orWhereRaw("concat(first_name, ' ', last_name) ilike ?", ['%' . $q . '%']);
+                    });
+            });
+        }
+
+        $clips = $query->orderByDesc('views_count')->paginate($perPage, ['*'], 'page', $page);
+
+        $clipsData = collect($clips->items())->map(function ($clip) use ($currentUserId) {
+            $data = $clip->toArray();
+            if ($currentUserId) {
+                $data['is_liked'] = $clip->likes()->where('user_id', $currentUserId)->exists();
+                $data['is_saved'] = $clip->saves()->where('user_id', $currentUserId)->exists();
+            }
+            return $data;
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $clipsData,
+            'meta' => [
+                'current_page' => $clips->currentPage(),
+                'last_page' => $clips->lastPage(),
+                'total' => $clips->total(),
+            ],
+        ]);
+    }
+
+    public function searchSuggestions(Request $request): JsonResponse
+    {
+        $q = $request->query('q', '');
+
+        if (strlen($q) < 2) {
+            return response()->json([
+                'success' => true,
+                'data' => ['hashtags' => [], 'users' => []],
+            ]);
+        }
+
+        $hashtags = ClipHashtag::where('name', 'ilike', '%' . $q . '%')
+            ->orderByDesc('clips_count')
+            ->limit(10)
+            ->get(['id', 'name', 'clips_count']);
+
+        $users = UserProfile::where(function ($uq) use ($q) {
+            $uq->where('username', 'ilike', '%' . $q . '%')
+                ->orWhereRaw("concat(first_name, ' ', last_name) ilike ?", ['%' . $q . '%']);
+        })
+            ->limit(10)
+            ->get(['id', 'first_name', 'last_name', 'username', 'profile_photo_path']);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'hashtags' => $hashtags,
+                'users' => $users,
             ],
         ]);
     }
