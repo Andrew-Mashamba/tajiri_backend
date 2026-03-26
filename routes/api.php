@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\FeedController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\PageController;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\UserEventController;
 use App\Http\Controllers\Api\PollController;
 use App\Http\Controllers\Api\StoryController;
 use App\Http\Controllers\Api\ClipController;
@@ -552,7 +553,8 @@ Route::prefix('events')->group(function () {
     Route::get('/user', [EventController::class, 'userEvents']);
     Route::get('/nearby', [EventController::class, 'nearby']);
     Route::get('/search', [EventController::class, 'search']);
-    Route::post('/', [EventController::class, 'store']);
+    // Calendar event creation (moved to avoid clashing with Flywheel tracking ingestion).
+    Route::post('/create', [EventController::class, 'store']);
     Route::get('/{identifier}', [EventController::class, 'show']);
     Route::put('/{id}', [EventController::class, 'update']);
     Route::delete('/{id}', [EventController::class, 'destroy']);
@@ -570,6 +572,13 @@ Route::prefix('events')->group(function () {
     Route::get('/{id}/posts', [EventController::class, 'posts']);
     Route::post('/{id}/posts', [EventController::class, 'createPost']);
 });
+
+/*
+|--------------------------------------------------------------------------
+| Flywheel Phase 1 — Event Tracking (Bearer auth)
+|--------------------------------------------------------------------------
+*/
+Route::post('/events', [UserEventController::class, 'store'])->middleware('auth:sanctum');
 
 /*
 |--------------------------------------------------------------------------
@@ -1109,4 +1118,12 @@ Route::prefix('files')->group(function () {
 
     // Download
     Route::get('/{id}/download', [FileController::class, 'download'])->where('id', '[0-9]+');
+});
+
+// Flywheel Phase 1 — Creator Metrics (read endpoints)
+Route::middleware("auth:sanctum")->group(function () {
+    Route::get("/creators/{id}/score", [\App\Http\Controllers\Api\CreatorMetricsController::class, "score"]);
+    Route::get("/creators/{id}/streak", [\App\Http\Controllers\Api\CreatorMetricsController::class, "creatorStreak"]);
+    Route::get("/users/{id}/streak", [\App\Http\Controllers\Api\CreatorMetricsController::class, "viewerStreak"]);
+    Route::get("/creators/{id}/fund-payout", [\App\Http\Controllers\Api\CreatorMetricsController::class, "fundPayout"]);
 });

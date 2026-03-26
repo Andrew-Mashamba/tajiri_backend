@@ -58,3 +58,8 @@ Schedule::command('model:prune', ['--model' => 'App\Models\PostDraft'])
     ->sundays()
     ->at('03:00')
     ->withoutOverlapping();
+
+// Flywheel Phase 1 — Scheduled jobs
+Schedule::command("flywheel:update-viewer-streaks")->daily();
+Schedule::command("flywheel:update-creator-streaks")->daily();
+Schedule::command("flywheel:calculate-creator-scores")->weeklyOn(1, "00:00"); // Monday midnight
