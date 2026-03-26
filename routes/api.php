@@ -1135,3 +1135,11 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::get("/gossip/digest", [\App\Http\Controllers\Api\GossipController::class, "digest"]);
     Route::get("/feed/personalized", [\App\Http\Controllers\Api\GossipController::class, "personalizedFeed"]);
 });
+
+// Flywheel Phase 3 — Creator Payments & Weekly Report
+Route::middleware("auth:sanctum")->group(function () {
+    Route::get("/creators/{id}/weekly-report", [\App\Http\Controllers\Api\PaymentController::class, "weeklyReport"]);
+    Route::get("/creators/{id}/payouts", [\App\Http\Controllers\Api\PaymentController::class, "payoutHistory"]);
+    Route::post("/creators/{id}/payout/request", [\App\Http\Controllers\Api\PaymentController::class, "requestPayout"]);
+    Route::get("/fund-pool/current", [\App\Http\Controllers\Api\PaymentController::class, "currentPool"]);
+});

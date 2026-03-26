@@ -66,3 +66,6 @@ Schedule::command("flywheel:calculate-creator-scores")->weeklyOn(1, "00:00"); //
 
 // Flywheel Phase 2 — Gossip thread detection
 Schedule::command("gossip:detect")->everyFiveMinutes()->withoutOverlapping();
+
+// Flywheel Phase 3 — Monthly fund distribution (1st of month)
+Schedule::command("fund:distribute")->monthlyOn(1, "00:00")->withoutOverlapping();
