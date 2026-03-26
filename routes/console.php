@@ -63,3 +63,6 @@ Schedule::command('model:prune', ['--model' => 'App\Models\PostDraft'])
 Schedule::command("flywheel:update-viewer-streaks")->daily();
 Schedule::command("flywheel:update-creator-streaks")->daily();
 Schedule::command("flywheel:calculate-creator-scores")->weeklyOn(1, "00:00"); // Monday midnight
+
+// Flywheel Phase 2 — Gossip thread detection
+Schedule::command("gossip:detect")->everyFiveMinutes()->withoutOverlapping();

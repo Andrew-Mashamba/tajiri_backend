@@ -1127,3 +1127,11 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::get("/users/{id}/streak", [\App\Http\Controllers\Api\CreatorMetricsController::class, "viewerStreak"]);
     Route::get("/creators/{id}/fund-payout", [\App\Http\Controllers\Api\CreatorMetricsController::class, "fundPayout"]);
 });
+
+// Flywheel Phase 2 — Gossip Engine
+Route::middleware("auth:sanctum")->group(function () {
+    Route::get("/gossip/threads", [\App\Http\Controllers\Api\GossipController::class, "threads"]);
+    Route::get("/gossip/threads/{id}", [\App\Http\Controllers\Api\GossipController::class, "show"]);
+    Route::get("/gossip/digest", [\App\Http\Controllers\Api\GossipController::class, "digest"]);
+    Route::get("/feed/personalized", [\App\Http\Controllers\Api\GossipController::class, "personalizedFeed"]);
+});
