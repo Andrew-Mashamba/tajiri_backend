@@ -61,7 +61,7 @@ class ContentDocumentFactory
     {
         $mediaTypes = [];
         if ($post->media && $post->media->count() > 0) {
-            $mediaTypes = $post->media->pluck('type')->unique()->values()->toArray();
+            $mediaTypes = $post->media->pluck('type')->filter(fn($t) => !is_null($t))->unique()->values()->toArray();
         }
         if ($post->audio_path) {
             $mediaTypes[] = 'audio';
@@ -71,11 +71,10 @@ class ContentDocumentFactory
         $hashtags = self::extractHashtags($body);
         $mentions = self::extractMentions($body);
 
-        if (!empty($post->hashtags)) {
-            $hashtags = array_unique(array_merge($hashtags, (array) $post->hashtags));
-        }
-        if (!empty($post->mentions)) {
-            $mentions = array_unique(array_merge($mentions, (array) $post->mentions));
+        // Merge hashtags from the BelongsToMany relation (pluck name strings)
+        $relationHashtags = $post->hashtags()->pluck('name')->toArray();
+        if (!empty($relationHashtags)) {
+            $hashtags = array_unique(array_merge($hashtags, array_map('mb_strtolower', $relationHashtags)));
         }
 
         return [
@@ -280,7 +279,7 @@ class ContentDocumentFactory
             'hashtags' => [],
             'mentions' => [],
             'language' => LanguageDetector::detect($body),
-            'creator_id' => $group->creator_id,
+            'creator_id' => $group->creator_id ?? 0,
             'privacy' => $group->privacy ?? 'public',
             'region_name' => null,
             'district_name' => null,
@@ -302,7 +301,7 @@ class ContentDocumentFactory
             'hashtags' => [],
             'mentions' => [],
             'language' => LanguageDetector::detect($body),
-            'creator_id' => $page->creator_id,
+            'creator_id' => $page->creator_id ?? 0,
             'privacy' => 'public',
             'region_name' => null,
             'district_name' => null,
