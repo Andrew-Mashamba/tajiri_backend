@@ -143,4 +143,59 @@ class TypesenseService
             return 0;
         }
     }
+
+    /**
+     * Search Typesense and return matching content_document IDs.
+     * Used by CandidateGeneratorService for keyword candidate generation.
+     *
+     * @return int[] Array of content_document IDs
+     */
+    public static function searchIds(string $query, int $limit = 200, array $filters = []): array
+    {
+        $tsConfig = config('content-engine.typesense');
+        $baseUrl = "{$tsConfig['protocol']}://{$tsConfig['host']}:{$tsConfig['port']}";
+        $apiKey = $tsConfig['api_key'];
+        $collection = $tsConfig['collection'];
+
+        $params = [
+            'q' => $query,
+            'query_by' => 'title,body,hashtags',
+            'per_page' => $limit,
+            'sort_by' => '_text_match:desc,composite_score:desc',
+        ];
+
+        // Build filter string
+        $filterParts = [];
+        if (isset($filters['source_type'])) {
+            $filterParts[] = "source_type:={$filters['source_type']}";
+        }
+        if (isset($filters['types']) && is_array($filters['types'])) {
+            $filterParts[] = "source_type:[" . implode(',', $filters['types']) . "]";
+        }
+        if (isset($filters['category'])) {
+            $filterParts[] = "category:={$filters['category']}";
+        }
+        if (isset($filters['region'])) {
+            $filterParts[] = "region_name:={$filters['region']}";
+        }
+        $filterParts[] = "content_tier:!=blackhole";
+
+        if (!empty($filterParts)) {
+            $params['filter_by'] = implode(' && ', $filterParts);
+        }
+
+        try {
+            $response = \Illuminate\Support\Facades\Http::timeout(5)
+                ->withHeaders(['X-TYPESENSE-API-KEY' => $apiKey])
+                ->get("{$baseUrl}/collections/{$collection}/documents/search", $params);
+
+            if (!$response->ok()) return [];
+
+            $hits = $response->json('hits', []);
+            return array_map(fn($hit) => (int) ($hit['document']['id'] ?? 0), $hits);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning("TypesenseService::searchIds failed", ['error' => $e->getMessage()]);
+            return [];
+        }
+    }
 }

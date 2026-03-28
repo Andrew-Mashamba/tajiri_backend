@@ -99,4 +99,57 @@ class UserSignalService
 
         Redis::hSet($hashKey, $field, json_encode($current));
     }
+
+    /**
+     * Get user's top N creators by affinity (most recent first).
+     * Reads from single hash user:{userId}:signals, field: liked_creators
+     * @return int[] Array of creator user IDs
+     */
+    public static function getTopCreators(int $userId, int $limit = 10): array
+    {
+        $key = "user:{$userId}:signals";
+        $json = Redis::hGet($key, 'liked_creators');
+        $creators = $json ? json_decode($json, true) : [];
+        if (!is_array($creators)) return [];
+        return array_map('intval', array_slice(array_reverse($creators), 0, $limit));
+    }
+
+    /**
+     * Get user's top N categories by affinity.
+     * @return string[] Array of category names
+     */
+    public static function getTopCategories(int $userId, int $limit = 5): array
+    {
+        $key = "user:{$userId}:signals";
+        $json = Redis::hGet($key, 'liked_categories');
+        $categories = $json ? json_decode($json, true) : [];
+        if (!is_array($categories)) return [];
+        return array_slice(array_reverse($categories), 0, $limit);
+    }
+
+    /**
+     * Get user's top N hashtags.
+     * @return string[]
+     */
+    public static function getTopHashtags(int $userId, int $limit = 30): array
+    {
+        $key = "user:{$userId}:signals";
+        $json = Redis::hGet($key, 'liked_hashtags');
+        $hashtags = $json ? json_decode($json, true) : [];
+        if (!is_array($hashtags)) return [];
+        return array_slice(array_reverse($hashtags), 0, $limit);
+    }
+
+    /**
+     * Get user's media type preferences (most preferred first).
+     * @return string[]
+     */
+    public static function getMediaPreferences(int $userId): array
+    {
+        $key = "user:{$userId}:signals";
+        $json = Redis::hGet($key, 'liked_media');
+        $media = $json ? json_decode($json, true) : [];
+        if (!is_array($media)) return [];
+        return array_reverse($media);
+    }
 }
