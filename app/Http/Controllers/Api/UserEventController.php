@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class UserEventController extends Controller
 {
@@ -14,7 +15,7 @@ class UserEventController extends Controller
     {
         $validated = $request->validate([
             'events' => ['required', 'array', 'min:1', 'max:500'],
-            'events.*.event_type' => ['required', 'string', 'in:view,like,share,save,scroll_past,dwell,comment,follow,unfollow'],
+            'events.*.event_type' => ['required', 'string', 'in:view,like,share,save,scroll_past,dwell,comment,follow,unfollow,depth_milestone,thread_view,thread_read_progress,shop_view,shop_search,product_view,add_to_cart,purchase'],
             'events.*.post_id' => ['nullable', 'integer', 'min:1'],
             'events.*.creator_id' => ['nullable', 'integer', 'min:1'],
             'events.*.timestamp' => ['required', 'date'],
@@ -50,6 +51,54 @@ class UserEventController extends Controller
 
         $inserted = DB::table('user_events')->insertOrIgnore($rows);
 
+        // Content Engine: fan out events to Redis Stream for signal processing
+        try {
+            // Resolve source_types for all post_ids in a single query (batch lookup)
+            $postIds = collect($validated['events'])->pluck('post_id')->filter()->unique()->values()->toArray();
+            $sourceTypeMap = [];
+            if (!empty($postIds)) {
+                $sourceTypeMap = \App\Models\ContentDocument::whereIn('source_id', $postIds)
+                    ->pluck('source_type', 'source_id')
+                    ->toArray();
+            }
+
+            $ip = $request->ip();
+            foreach ($validated['events'] as $event) {
+                $postId = $event['post_id'] ?? null;
+                if (!$postId) continue;
+
+                Redis::xAdd('engagement:signals', '*', [
+                    'user_id' => (string) $user->id,
+                    'event_type' => $event['event_type'],
+                    'post_id' => (string) $postId,
+                    'source_type' => $sourceTypeMap[$postId] ?? 'post',
+                    'creator_id' => (string) ($event['creator_id'] ?? ''),
+                    'duration_ms' => (string) ($event['duration_ms'] ?? 0),
+                    'session_id' => $event['session_id'],
+                    'timestamp' => $event['timestamp'],
+                    'ip' => $ip ?? '',
+                ]);
+            }
+        } catch (\Throwable $e) {
+            // Signal fanout failure is non-critical — don't break event storage
+            \Log::warning('Content Engine signal fanout failed', ['error' => $e->getMessage()]);
+        }
+
+        // Increment impression counters for sponsored posts
+        $viewedPostIds = collect($validated['events'])
+            ->where('event_type', 'view')
+            ->pluck('post_id')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+
+        if (!empty($viewedPostIds)) {
+            \App\Models\SponsoredPost::whereIn('post_id', $viewedPostIds)
+                ->where('status', 'active')
+                ->increment('impressions_delivered');
+        }
+
         return response()->json([
             'status' => 'ok',
             'accepted' => $inserted,
@@ -57,4 +106,3 @@ class UserEventController extends Controller
         ]);
     }
 }
-
