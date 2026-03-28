@@ -82,4 +82,41 @@ class ContentDocument extends Model
             ->where('source_id', $id)
             ->first();
     }
+
+    /**
+     * Recompute composite_score and content_tier from current score fields.
+     * Single source of truth for the scoring formula — called by ingestion,
+     * signal sync, freshness refresh, etc.
+     *
+     * @param bool $save Whether to persist changes to the database.
+     */
+    public function recomputeCompositeAndTier(bool $save = true): void
+    {
+        $weights = \App\Models\ScoringConfig::allWeights();
+
+        $this->composite_score = round(
+            ($this->freshness_score * ($weights['w_freshness'] ?? 0.25)) +
+            ($this->engagement_score * ($weights['w_engagement'] ?? 0.30)) +
+            ($this->quality_score * 10 * ($weights['w_quality'] ?? 0.15)) +
+            ($this->content_rank * ($weights['w_content_rank'] ?? 0.15)) +
+            ($this->creator_authority * ($weights['w_creator_auth'] ?? 0.10)) +
+            ($this->trending_score * ($weights['w_trending'] ?? 0.05)),
+            2
+        );
+
+        $this->content_tier = match (true) {
+            $this->spam_score > 7 => 'blackhole',
+            $this->composite_score > config('content-engine.tiers.viral', 85) => 'viral',
+            $this->composite_score > config('content-engine.tiers.high', 60) => 'high',
+            $this->composite_score > config('content-engine.tiers.medium', 30) => 'medium',
+            $this->composite_score > config('content-engine.tiers.low', 10) => 'low',
+            default => 'blackhole',
+        };
+
+        $this->scores_updated_at = now();
+
+        if ($save) {
+            $this->save();
+        }
+    }
 }

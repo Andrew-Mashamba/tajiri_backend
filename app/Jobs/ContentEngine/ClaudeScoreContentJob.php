@@ -3,7 +3,6 @@
 namespace App\Jobs\ContentEngine;
 
 use App\Models\ContentDocument;
-use App\Models\ScoringConfig;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -103,29 +102,6 @@ class ClaudeScoreContentJob implements ShouldQueue
 
     public static function recomputeComposite(ContentDocument $doc): void
     {
-        $weights = ScoringConfig::allWeights();
-
-        $composite =
-            ($doc->freshness_score * ($weights['w_freshness'] ?? 0.25)) +
-            ($doc->engagement_score * ($weights['w_engagement'] ?? 0.30)) +
-            ($doc->quality_score * 10 * ($weights['w_quality'] ?? 0.15)) +
-            ($doc->content_rank * ($weights['w_content_rank'] ?? 0.15)) +
-            ($doc->creator_authority * ($weights['w_creator_auth'] ?? 0.10)) +
-            ($doc->trending_score * ($weights['w_trending'] ?? 0.05));
-
-        $tier = match (true) {
-            $doc->spam_score > 7 => ContentDocument::TIER_BLACKHOLE,
-            $composite > 85 => ContentDocument::TIER_VIRAL,
-            $composite > 60 => ContentDocument::TIER_HIGH,
-            $composite > 30 => ContentDocument::TIER_MEDIUM,
-            $composite > 10 => ContentDocument::TIER_LOW,
-            default => ContentDocument::TIER_BLACKHOLE,
-        };
-
-        $doc->update([
-            'composite_score' => $composite,
-            'content_tier' => $tier,
-            'scores_updated_at' => now(),
-        ]);
+        $doc->recomputeCompositeAndTier(save: true);
     }
 }
