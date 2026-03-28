@@ -154,7 +154,7 @@ class ReRankerService
         // Check creator_scores for active streaks
         $streakCreators = \Illuminate\Support\Facades\DB::table('creator_scores')
             ->whereIn('user_id', $creatorIds)
-            ->where('current_streak_days', '>=', 3)
+            ->where('consistency_score', '>=', 0.5)
             ->pluck('user_id')
             ->all();
 

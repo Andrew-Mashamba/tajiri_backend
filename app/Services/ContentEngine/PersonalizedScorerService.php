@@ -148,8 +148,8 @@ class PersonalizedScorerService
 
     private static function getUserRegion(int $userId): ?array
     {
-        $profile = DB::table('user_profiles')->where('user_id', $userId)->first(['region', 'district']);
+        $profile = DB::table('user_profiles')->where('id', $userId)->first(['region_name', 'district_name']);
         if (!$profile) return null;
-        return ['region' => $profile->region, 'district' => $profile->district ?? null];
+        return ['region' => $profile->region_name, 'district' => $profile->district_name ?? null];
     }
 }

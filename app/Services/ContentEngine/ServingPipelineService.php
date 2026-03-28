@@ -32,9 +32,9 @@ class ServingPipelineService
 
         // For 'nearby' feed, detect user's region and pass as option
         if ($feedType === 'nearby') {
-            $profile = DB::table('user_profiles')->where('user_id', $userId)->first(['region', 'district']);
-            if ($profile && $profile->region) {
-                $options['region'] = $profile->region;
+            $profile = DB::table('user_profiles')->where('id', $userId)->first(['region_name', 'district_name']);
+            if ($profile && $profile->region_name) {
+                $options['region'] = $profile->region_name;
             }
         }
 
