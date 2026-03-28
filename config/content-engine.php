@@ -77,4 +77,63 @@ return [
         'low' => 10,
         // Below 10 = blackhole (or spam_score > 7)
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Signal Weights (engagement value per event type)
+    |--------------------------------------------------------------------------
+    */
+    'signal_weights' => [
+        'view_short' => 0.05,     // < 2s dwell
+        'view_glance' => 0.1,     // 2-5s dwell
+        'view_partial' => 0.3,    // 5-15s dwell
+        'view_deep' => 0.5,       // 15s+ dwell
+        'like' => 1.0,
+        'save' => 1.8,
+        'comment' => 2.0,
+        'share' => 2.5,
+        'reply' => 3.0,
+        'follow' => 2.0,          // follow after viewing
+        'scroll_past' => -0.2,    // < 0.5s
+        'not_interested' => -5.0,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Signal Decay Windows (weight multipliers by age)
+    |--------------------------------------------------------------------------
+    */
+    'signal_decay' => [
+        'hot_hours' => 1,         // 1.0x weight
+        'warm_hours' => 24,       // 0.5x weight
+        'cool_hours' => 168,      // 0.2x weight (7 days)
+        'cold_hours' => 720,      // 0.05x weight (30 days)
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Anti-Gaming Rules
+    |--------------------------------------------------------------------------
+    */
+    'anti_gaming' => [
+        'per_user_cap_per_hour' => 1,           // max 1 signal per type per doc per hour
+        'velocity_fraud_threshold' => 100,       // >100 in 5min from new accounts = fraud
+        'new_account_days' => 7,                 // accounts < 7 days old
+        'fraud_trending_cap' => 50,              // cap trending_score on fraud flag
+        'ip_cluster_threshold' => 10,            // >10 same doc same IP in 5min
+        'ip_cluster_count_limit' => 3,           // only first 3 count
+        'zero_social_weight' => 0.1,             // 0 friends + 0 posts → 0.1x signal
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Score Sync Configuration
+    |--------------------------------------------------------------------------
+    */
+    'score_sync' => [
+        'dirty_set_key' => 'scores:dirty',
+        'sync_interval_seconds' => 30,
+        'batch_size' => 200,
+    ],
+
 ];
