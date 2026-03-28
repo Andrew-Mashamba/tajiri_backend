@@ -101,3 +101,7 @@ Schedule::command("flywheel:track-viral-assists")->everyThirtyMinutes()->without
 Schedule::command('content:refresh-freshness')->everyFiveMinutes()->withoutOverlapping(10);
 Schedule::command('signal:detect-trending')->everyTwoMinutes()->withoutOverlapping(5);
 Schedule::command('content:refresh-creator-authority')->everyThirtyMinutes()->withoutOverlapping();
+
+// Content Engine Phase 3 — Graph schedules
+Schedule::command("content:detect-duplicates")->hourly()->withoutOverlapping();
+Schedule::command("content:build-graph --type=posts")->dailyAt("02:00")->withoutOverlapping();
