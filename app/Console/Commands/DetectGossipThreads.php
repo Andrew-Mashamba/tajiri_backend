@@ -22,8 +22,12 @@ class DetectGossipThreads extends Command
         $archivedThreads = 0;
 
         // Step 1: Calculate velocity for recent posts
+        // Exclude posts from users who have opted out of thread detection
         $posts = Post::where("created_at", ">=", $since)
             ->whereIn("status", ["published", "active"])
+            ->whereNotIn('user_id', function($q) {
+                $q->select('id')->from('user_profiles')->where('opt_out_threads', true);
+            })
             ->get()
             ->map(function ($p) {
                 $hours = max(Carbon::now()->diffInMinutes($p->created_at) / 60, 0.1);
@@ -187,6 +191,45 @@ class DetectGossipThreads extends Command
                     $thread->increment("post_count");
                 }
             }
+        }
+
+        // Step 6: Viral chain detection — posts with 50+ shares in the last hour
+        $oneHourAgo = Carbon::now()->subHour();
+
+        // Find post IDs already in active threads
+        $alreadyInThread = GossipThreadPost::whereHas("thread", fn($q) => $q->where("status", "active"))
+            ->pluck("post_id")
+            ->toArray();
+
+        $viralPosts = Post::whereNotIn("id", $alreadyInThread)
+            ->whereIn("status", ["published", "active"])
+            ->where("created_at", ">=", $oneHourAgo)
+            ->where("shares_count", ">=", 50)
+            ->get();
+
+        foreach ($viralPosts as $vPost) {
+            $snippet = \Str::limit($vPost->content ?? "Trending content", 50);
+            $viralTitle = "Going Viral: {$snippet}";
+
+            $thread = GossipThread::create([
+                "seed_post_id" => $vPost->id,
+                "title_key" => null,
+                "title_slots" => ["title" => $viralTitle],
+                "category" => "viral",
+                "velocity_score" => $vPost->shares_count ?? 0,
+                "post_count" => 1,
+                "participant_count" => 1,
+                "status" => "active",
+            ]);
+
+            GossipThreadPost::create([
+                "thread_id" => $thread->id,
+                "post_id" => $vPost->id,
+                "relevance_score" => $vPost->shares_count ?? 0,
+                "added_at" => now(),
+            ]);
+
+            $newThreads++;
         }
 
         $this->info("Gossip detection: {$newThreads} new, {$updatedThreads} updated, {$archivedThreads} archived");

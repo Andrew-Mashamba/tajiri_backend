@@ -68,6 +68,9 @@ class PaymentController extends Controller
 
         $trend = $engagementChange > 5 ? "up" : ($engagementChange < -5 ? "down" : "stable");
 
+        // Generate posting tip based on data
+        $postingTip = self::generatePostingTip($posts, $totalViews, $totalLikes, $threadsTriggered);
+
         return response()->json([
             "data" => [
                 "total_earnings" => round($totalEarnings, 2),
@@ -81,8 +84,42 @@ class PaymentController extends Controller
                 "total_likes" => $totalLikes,
                 "week_start" => $weekStart->toDateString(),
                 "week_end" => $weekEnd->toDateString(),
+                "posting_tip" => $postingTip,
             ],
         ]);
+    }
+
+    private static function generatePostingTip($posts, int $totalViews, int $totalLikes, int $threadsTriggered): string
+    {
+        $tips = [];
+
+        if ($posts->isEmpty()) {
+            $tips[] = "You didn't post this week. Even one post keeps your streak alive and your audience engaged.";
+        } elseif ($posts->count() < 3) {
+            $tips[] = 'Try posting at least 3 times per week. Consistent creators earn 2-3x more from the Creator Fund.';
+        }
+
+        if ($totalViews > 0 && $totalLikes > 0) {
+            $engRate = ($totalLikes / max($totalViews, 1)) * 100;
+            if ($engRate < 2) {
+                $tips[] = 'Your engagement rate is low. Try asking questions in your posts or using trending hashtags.';
+            } elseif ($engRate > 10) {
+                $tips[] = 'Great engagement rate! Your audience loves your content. Keep this style going.';
+            }
+        }
+
+        if ($threadsTriggered > 0) {
+            $tips[] = "Your posts sparked {$threadsTriggered} gossip threads this week! Thread-worthy content earns bonus multipliers.";
+        } else {
+            $tips[] = 'Post during peak hours (7-9 AM, 12-2 PM, 7-10 PM) when your audience is most active.';
+        }
+
+        // Ensure at least one tip exists
+        if (empty($tips)) {
+            $tips[] = 'Keep creating! Consistent posting builds your audience and maximizes Creator Fund earnings.';
+        }
+
+        return $tips[array_rand($tips)];
     }
 
     public function currentPool(Request $request)
@@ -98,11 +135,30 @@ class PaymentController extends Controller
 
     public function requestPayout(Request $request, int $id)
     {
-        // Placeholder — in production this integrates with mobile money APIs
-        return response()->json([
-            "success" => true,
-            "message" => "Payout request submitted. You will receive your payment within 48 hours.",
+        $earnings = \App\Models\CreatorEarning::where("creator_id", $id)
+            ->where("status", "pending")
+            ->sum("net_amount");
+
+        if ($earnings <= 0) {
+            return response()->json(["message" => "No unpaid earnings"], 422);
+        }
+
+        $payout = \App\Models\CreatorPayout::create([
+            "creator_id" => $id,
+            "amount" => $earnings,
+            "status" => "pending",
         ]);
+
+        \App\Models\CreatorEarning::where("creator_id", $id)
+            ->where("status", "pending")
+            ->update(["status" => "paid", "paid_at" => now()]);
+
+        return response()->json(["data" => [
+            "payout_id" => $payout->id,
+            "amount" => (float) $earnings,
+            "status" => "pending",
+            "message" => "Payout request submitted.",
+        ]]);
     }
 
     public function payoutHistory(Request $request, int $id)

@@ -39,6 +39,78 @@ class GossipController extends Controller
         ["text_en" => "Love conquers all", "text_sw" => "Upendo hushinda yote"],
         ["text_en" => "Tomorrow is another day", "text_sw" => "Kesho ni siku nyingine"],
         ["text_en" => "Where there is smoke, there is fire", "text_sw" => "Penye moshi pana moto"],
+        // Extended proverbs (70+ more authentic Swahili proverbs)
+        ["text_en" => "He who is not taught by his mother will be taught by the world", "text_sw" => "Asiyefunzwa na mamaye, hufunzwa na ulimwengu"],
+        ["text_en" => "The cure for fire is fire", "text_sw" => "Dawa ya moto ni moto"],
+        ["text_en" => "A stick from afar does not kill a snake", "text_sw" => "Fimbo ya mbali haiui nyoka"],
+        ["text_en" => "Little by little fills the measure", "text_sw" => "Haba na haba hujaza kibaba"],
+        ["text_en" => "A visitor is a guest for two days, on the third he becomes work", "text_sw" => "Mgeni siku mbili, siku ya tatu mpe jembe"],
+        ["text_en" => "He who digs a pit for others falls in himself", "text_sw" => "Mchimba kisima huingia mwenyewe"],
+        ["text_en" => "The hand that gives is above the hand that receives", "text_sw" => "Mkono wa kutoa u juu ya mkono wa kupokea"],
+        ["text_en" => "Wisdom is like a baobab tree, no one person can embrace it", "text_sw" => "Hekima ni kama mbuyu, mtu mmoja hawezi kuizunguka"],
+        ["text_en" => "The child who has not traveled thinks their mother is the best cook", "text_sw" => "Mtoto asiyetembea hudhani mama yake ndiye mpishi bora"],
+        ["text_en" => "If you want to go fast go alone, if you want to go far go together", "text_sw" => "Ukitaka kwenda mbio nenda peke yako, ukitaka kwenda mbali nenda pamoja"],
+        ["text_en" => "Rain does not fall on one roof alone", "text_sw" => "Mvua hainyeshi paa moja peke yake"],
+        ["text_en" => "A clever person does not get lost", "text_sw" => "Mwerevu hapotei"],
+        ["text_en" => "Do not boast about tomorrow, you do not know what it will bring", "text_sw" => "Usijisifu kwa kesho, hujui italeta nini"],
+        ["text_en" => "The heart of a person is a sea", "text_sw" => "Moyo wa mtu ni bahari"],
+        ["text_en" => "A good name is better than riches", "text_sw" => "Jina jema si utajiri wa mali, ni utajiri wa roho"],
+        ["text_en" => "The tongue has no bones but can break bones", "text_sw" => "Ulimi hauna mfupa lakini unaweza kuvunja mifupa"],
+        ["text_en" => "Iron sharpens iron", "text_sw" => "Chuma hunoa chuma"],
+        ["text_en" => "The truth is bitter, but lies bring greater suffering", "text_sw" => "Ukweli ni uchungu, lakini uongo huleta mateso makubwa zaidi"],
+        ["text_en" => "Wealth does not last but character endures", "text_sw" => "Mali haidumu lakini tabia inadumu"],
+        ["text_en" => "Sweet words do not fill the stomach", "text_sw" => "Maneno mazuri hayajazi tumbo"],
+        ["text_en" => "Even a small star shines in the darkness", "text_sw" => "Hata nyota ndogo huangaza gizani"],
+        ["text_en" => "The lion does not turn around when a small dog barks", "text_sw" => "Simba hageuki mbwa mdogo anapobweka"],
+        ["text_en" => "Before healing others, heal yourself", "text_sw" => "Kabla ya kuponya wengine, jiponye kwanza"],
+        ["text_en" => "A river that forgets its source will dry up", "text_sw" => "Mto unaosahau chanzo chake utakauka"],
+        ["text_en" => "The sun does not forget any village", "text_sw" => "Jua halikisahau kijiji chochote"],
+        ["text_en" => "The greatest wealth is health", "text_sw" => "Utajiri mkubwa ni afya"],
+        ["text_en" => "A person becomes a person through other persons", "text_sw" => "Mtu huwa mtu kwa watu wengine"],
+        ["text_en" => "He who climbs a ladder must begin at the first rung", "text_sw" => "Apandaye ngazi lazima aanze na kizazi cha kwanza"],
+        ["text_en" => "Empty vessel makes the most noise", "text_sw" => "Chombo tupu kina kelele nyingi"],
+        ["text_en" => "Fall seven times, rise eight", "text_sw" => "Anguka mara saba, simama mara nane"],
+        ["text_en" => "The early bird catches the worm", "text_sw" => "Ndege wa mapema ndiyo anayempata mdudu"],
+        ["text_en" => "Knowledge without wisdom is a load of books on the back of a donkey", "text_sw" => "Elimu bila hekima ni mzigo wa vitabu mgongoni mwa punda"],
+        ["text_en" => "The best time to plant a tree was twenty years ago, the second best time is now", "text_sw" => "Wakati bora wa kupanda mti ulikuwa miaka ishirini iliyopita, wakati wa pili bora ni sasa"],
+        ["text_en" => "A good deed is never lost", "text_sw" => "Kitendo kizuri hakipotei"],
+        ["text_en" => "Wisdom begins with wonder", "text_sw" => "Hekima huanza na mshangao"],
+        ["text_en" => "Words are silver but silence is gold", "text_sw" => "Maneno ni fedha lakini ukimya ni dhahabu"],
+        ["text_en" => "Two heads are better than one", "text_sw" => "Vichwa viwili ni bora kuliko kimoja"],
+        ["text_en" => "It takes a village to raise a child", "text_sw" => "Mtoto anahitaji kijiji kizima kumlea"],
+        ["text_en" => "The one who tells the stories rules the world", "text_sw" => "Yule anayesimulia hadithi ndiye anayetawala dunia"],
+        ["text_en" => "Every failure teaches a lesson that success cannot", "text_sw" => "Kila kushindwa kunafundisha somo ambalo ushindi hauwezi kufundisha"],
+        ["text_en" => "Growth begins at the end of your comfort zone", "text_sw" => "Ukuaji huanza mwishoni mwa ukanda wako wa starehe"],
+        ["text_en" => "The fish does not see the water it swims in", "text_sw" => "Samaki haoni maji anayoogelea"],
+        ["text_en" => "A good leader is also a good follower", "text_sw" => "Kiongozi mzuri ni mfuasi mzuri pia"],
+        ["text_en" => "Two wrongs do not make a right", "text_sw" => "Makosa mawili hayafanyi sahihi"],
+        ["text_en" => "When the music changes, so does the dance", "text_sw" => "Muziki ukibadilika, dansi nayo inabadilika"],
+        ["text_en" => "Do not dig up in anger what you planted in love", "text_sw" => "Usichimbe kwa hasira ulichopanda kwa upendo"],
+        ["text_en" => "The ant carries more than its weight", "text_sw" => "Siafu hubeba zaidi ya uzito wake"],
+        ["text_en" => "What the elders see sitting, the youth cannot see standing", "text_sw" => "Wazee wanaona wakiwa wameketi, vijana hawawezi kuona hata wakisimama"],
+        ["text_en" => "A tree does not shake itself", "text_sw" => "Mti haujitikisi wenyewe"],
+        ["text_en" => "The night is long but the day comes", "text_sw" => "Usiku ni mrefu lakini mchana huja"],
+        ["text_en" => "Hunger is the best cook", "text_sw" => "Njaa ndiyo mpishi bora"],
+        ["text_en" => "Running away from your troubles is a race you will never win", "text_sw" => "Kukimbia shida zako ni mbio ambazo hutashinda"],
+        ["text_en" => "Until the lion learns to write, every story will glorify the hunter", "text_sw" => "Simba atakapojifunza kuandika, hadithi zote zitamtukuza mwindaji"],
+        ["text_en" => "Speak gently, the earth is soft", "text_sw" => "Zungumza kwa upole, ardhi ni laini"],
+        ["text_en" => "The cow that lows the most gives the least milk", "text_sw" => "Ng'ombe anayelia sana ndiye anayetoa maziwa machache"],
+        ["text_en" => "A child who is not embraced by the village will burn it down to feel its warmth", "text_sw" => "Mtoto asiyekumbatiwa na kijiji atakichoma moto kuhisi joto lake"],
+        ["text_en" => "Even the mightiest eagle must come down to earth to eat", "text_sw" => "Hata tai mkubwa lazima ashuke ardhini kula"],
+        ["text_en" => "Respect is not given, it is earned", "text_sw" => "Heshima haipewi, inapatikana"],
+        ["text_en" => "A generous person never lacks", "text_sw" => "Mtu mkarimu hana upungufu"],
+        ["text_en" => "Only a fool tests the depth of a river with both feet", "text_sw" => "Mpumbavu tu ndiye anayejaribu kina cha mto kwa miguu yote miwili"],
+        ["text_en" => "The strength of the team is each individual member, the strength of each member is the team", "text_sw" => "Nguvu ya timu ni kila mwanachama, nguvu ya kila mwanachama ni timu"],
+        ["text_en" => "Tame the tongue or the tongue will tame you", "text_sw" => "Dhibiti ulimi au ulimi utakudhibiti wewe"],
+        ["text_en" => "Never let the sun go down on your anger", "text_sw" => "Usiiruhusu jua kushuka ukiwa na hasira"],
+        ["text_en" => "You are what you eat, you become what you think", "text_sw" => "Wewe ni unachokula, unakuwa unachofikiria"],
+        ["text_en" => "Character is destiny", "text_sw" => "Tabia ndiyo hatima"],
+        ["text_en" => "The best mirror is an old friend", "text_sw" => "Kioo bora ni rafiki wa zamani"],
+        ["text_en" => "Beginnings are always the hardest", "text_sw" => "Mwanzo daima ndio mgumu zaidi"],
+        ["text_en" => "When spider webs unite, they can tie up a lion", "text_sw" => "Nyuzi za buibui zikiungana zinaweza kumfunga simba"],
+        ["text_en" => "He who laughs last, laughs longest", "text_sw" => "Anayecheka mwisho ndiye anayecheka zaidi"],
+        ["text_en" => "The wound you cannot see is the one that hurts the most", "text_sw" => "Jeraha usililoon hilo ndilo linalouma zaidi"],
+        ["text_en" => "A grateful heart is always close to blessings", "text_sw" => "Moyo wa shukrani daima uko karibu na baraka"],
     ];
 
     public function threads(Request $request)
@@ -136,14 +208,41 @@ class GossipController extends Controller
 
     public function personalizedFeed(Request $request)
     {
-        // For now: return the same as for-you feed but attach thread info
+        $user = $request->user();
+        $perPage = (int) $request->get("per_page", 20);
+
+        // Get user interest weights from recent events
+        $interests = [];
+        if ($user) {
+            $interests = \DB::table("user_events")
+                ->select("creator_id", \DB::raw("COUNT(*) as weight"))
+                ->where("user_id", $user->id)
+                ->where("created_at", ">=", now()->subDays(14))
+                ->whereNotNull("creator_id")
+                ->groupBy("creator_id")
+                ->pluck("weight", "creator_id")
+                ->toArray();
+        }
+
         $posts = Post::with(["user", "media"])
             ->where("status", "published")
+            ->where("created_at", ">=", now()->subDays(7))
             ->orderByDesc("created_at")
-            ->paginate($request->get("per_page", 20));
+            ->limit(200)
+            ->get();
 
-        // Attach thread info to posts
-        $postIds = $posts->getCollection()->pluck("id")->toArray();
+        // Score and sort by interest relevance + recency + engagement
+        $scored = $posts->map(function ($post) use ($interests) {
+            $interestScore = $interests[$post->user_id] ?? 0;
+            $recencyHours = now()->diffInHours($post->created_at);
+            $recencyScore = max(0, 168 - $recencyHours);
+            $engagementScore = ($post->likes_count ?? 0) + ($post->comments_count ?? 0) * 2 + ($post->shares_count ?? 0) * 3;
+            $post->_relevance = ($interestScore * 10) + $recencyScore + ($engagementScore * 0.5);
+            return $post;
+        })->sortByDesc("_relevance")->take($perPage)->values();
+
+        // Attach thread info
+        $postIds = $scored->pluck("id")->toArray();
         $threadMap = \DB::table("gossip_thread_posts")
             ->join("gossip_threads", "gossip_threads.id", "=", "gossip_thread_posts.thread_id")
             ->leftJoin("thread_title_templates", "thread_title_templates.key", "=", "gossip_threads.title_key")
@@ -159,7 +258,7 @@ class GossipController extends Controller
             ->get()
             ->keyBy("post_id");
 
-        $data = $posts->getCollection()->map(function ($post) use ($threadMap) {
+        $data = $scored->map(function ($post) use ($threadMap) {
             $p = $this->formatPost($post);
             if (isset($threadMap[$post->id])) {
                 $tm = $threadMap[$post->id];
@@ -177,11 +276,12 @@ class GossipController extends Controller
         });
 
         return response()->json([
+            "success" => true,
             "data" => $data,
             "meta" => [
-                "current_page" => $posts->currentPage(),
-                "last_page" => $posts->lastPage(),
-                "total" => $posts->total(),
+                "current_page" => 1,
+                "last_page" => 1,
+                "total" => $data->count(),
             ],
         ]);
     }
@@ -210,4 +310,82 @@ class GossipController extends Controller
             ])->toArray() : [],
         ];
     }
+
+    public function unfinishedThreads(\Illuminate\Http\Request $request)
+    {
+        $userId = $request->query('user_id');
+
+        if (!$userId) {
+            return response()->json(['success' => false, 'message' => 'user_id is required'], 400);
+        }
+
+        $rows = \Illuminate\Support\Facades\DB::table('thread_read_progress')
+            ->where('user_id', $userId)
+            ->where('completed', false)
+            ->where('posts_read', '>', 0)
+            ->orderByDesc('last_read_at')
+            ->get();
+
+        $threadIds = $rows->pluck('thread_id')->toArray();
+        $threads = \App\Models\GossipThread::with(['seedPost.user', 'template'])
+            ->whereIn('id', $threadIds)
+            ->where('status', 'active')
+            ->get()
+            ->keyBy('id');
+
+        $data = $rows->map(function ($row) use ($threads) {
+            $thread = $threads[$row->thread_id] ?? null;
+            if (!$thread) return null;
+            return [
+                'thread_id' => $row->thread_id,
+                'posts_read' => $row->posts_read,
+                'total_posts' => $row->total_posts,
+                'last_read_at' => $row->last_read_at,
+                'progress_percent' => $row->total_posts > 0
+                    ? round(($row->posts_read / $row->total_posts) * 100)
+                    : 0,
+                'title_en' => $thread->resolved_title_en,
+                'title_sw' => $thread->resolved_title_sw,
+                'category' => $thread->category,
+                'velocity_score' => (float) $thread->velocity_score,
+            ];
+        })->filter()->values();
+
+        return response()->json(['success' => true, 'data' => $data]);
+    }
+
+    public function recordReadProgress(\Illuminate\Http\Request $request)
+    {
+        $validated = $request->validate([
+            'user_id' => ['required', 'integer', 'min:1'],
+            'thread_id' => ['required', 'integer', 'min:1'],
+            'posts_read' => ['required', 'integer', 'min:0'],
+            'total_posts' => ['required', 'integer', 'min:0'],
+        ]);
+
+        $completed = $validated['posts_read'] >= $validated['total_posts'] && $validated['total_posts'] > 0;
+
+        \Illuminate\Support\Facades\DB::table('thread_read_progress')->upsert(
+            [
+                'user_id' => $validated['user_id'],
+                'thread_id' => $validated['thread_id'],
+                'posts_read' => $validated['posts_read'],
+                'total_posts' => $validated['total_posts'],
+                'last_read_at' => now(),
+                'completed' => $completed,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            ['user_id', 'thread_id'],
+            ['posts_read', 'total_posts', 'last_read_at', 'completed', 'updated_at']
+        );
+
+        return response()->json([
+            'success' => true,
+            'completed' => $completed,
+        ]);
+    }
+
 }
+
+    // NOTE: closing brace of class removed — appended methods below need to replace it

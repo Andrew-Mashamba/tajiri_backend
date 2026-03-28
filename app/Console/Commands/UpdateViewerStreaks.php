@@ -27,6 +27,10 @@ class UpdateViewerStreaks extends Command
                 "current_streak_days" => 0, "longest_streak_days" => 0,
                 "is_frozen" => false,
             ]);
+            // Skip if already updated today (idempotency)
+            if ($streak->last_active_date === $today) {
+                continue;
+            }
             $streak->current_streak_days += 1;
             $streak->is_frozen = false;
             $streak->frozen_at = null;

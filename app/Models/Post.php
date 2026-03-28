@@ -69,6 +69,11 @@ class Post extends Model
         'video_speed',
         'text_overlays',
         'video_filter',
+        'reply_to_post_id',
+        'stitch_from_post_id',
+        'reply_layout',
+        'stitch_trim_start_ms',
+        'stitch_trim_end_ms',
     ];
 
     protected $casts = [
@@ -101,6 +106,10 @@ class Post extends Model
         'original_audio_volume' => 'decimal:2',
         'music_volume' => 'decimal:2',
         'video_speed' => 'decimal:2',
+        'reply_to_post_id' => 'integer',
+        'stitch_from_post_id' => 'integer',
+        'stitch_trim_start_ms' => 'integer',
+        'stitch_trim_end_ms' => 'integer',
         'scheduled_at' => 'datetime',
         'published_at' => 'datetime',
     ];
@@ -198,6 +207,26 @@ class Post extends Model
     public function likes(): HasMany
     {
         return $this->hasMany(PostLike::class);
+    }
+
+    public function replyToPost(): BelongsTo
+    {
+        return $this->belongsTo(Post::class, 'reply_to_post_id');
+    }
+
+    public function stitchFromPost(): BelongsTo
+    {
+        return $this->belongsTo(Post::class, 'stitch_from_post_id');
+    }
+
+    public function replies(): HasMany
+    {
+        return $this->hasMany(Post::class, 'reply_to_post_id');
+    }
+
+    public function stitches(): HasMany
+    {
+        return $this->hasMany(Post::class, 'stitch_from_post_id');
     }
 
     public function originalPost(): BelongsTo

@@ -16,7 +16,10 @@ class UpdateCreatorStreaks extends Command
         $cutoff48h = $now->copy()->subHours(48);
 
         // All users who have ever posted
-        $creatorIds = DB::table("posts")->distinct()->pluck("user_id");
+        $creatorIds = DB::table("posts")
+            ->join("users", "posts.user_id", "=", "users.id")
+            ->distinct()
+            ->pluck("posts.user_id");
         $updated = 0; $frozen = 0;
 
         foreach ($creatorIds as $userId) {
@@ -46,6 +49,14 @@ class UpdateCreatorStreaks extends Command
                     $streak->is_frozen = true;
                     $streak->frozen_at = $now;
                     $frozen++;
+
+                    \App\Services\FcmNotificationService::sendToUser(
+                        $streak->user_id,
+                        'streak_warning',
+                        [],
+                        'Streak at Risk',
+                        'Post today to keep your streak!'
+                    );
                 }
             }
 

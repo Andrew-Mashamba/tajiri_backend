@@ -54,6 +54,11 @@ class FollowController extends Controller
         UserProfile::where('id', $userId)->increment('following_count');
         UserProfile::where('id', $followId)->increment('followers_count');
 
+        // Rebuild interest profile asynchronously after follow
+        dispatch(function() use ($userId) {
+            \Artisan::call("flywheel:build-interest-profiles", ["--user" => $userId]);
+        })->afterResponse();
+
         return response()->json([
             'success' => true,
             'message' => 'User followed successfully',
@@ -86,6 +91,11 @@ class FollowController extends Controller
 
         UserProfile::where('id', $userId)->where('following_count', '>', 0)->decrement('following_count');
         UserProfile::where('id', $followId)->where('followers_count', '>', 0)->decrement('followers_count');
+
+        // Rebuild interest profile asynchronously after unfollow
+        dispatch(function() use ($userId) {
+            \Artisan::call("flywheel:build-interest-profiles", ["--user" => $userId]);
+        })->afterResponse();
 
         return response()->json([
             'success' => true,

@@ -66,7 +66,14 @@ class DistributeCreatorFund extends Command
 
             $tierMult = $score ? (float) $score->tier_multiplier : 1.0;
             $streakMult = $streak ? (float) $streak->streak_multiplier : 1.0;
-            $communityMult = 1.0; // TODO: calculate from reply rates
+            $postCount = DB::table("posts")->where("user_id", $userId)->where("created_at", ">=", $monthStart)->count();
+            $commentCount = DB::table("comments")
+                ->whereIn("post_id", function($q) use ($userId) {
+                    $q->select("id")->from("posts")->where("user_id", $userId);
+                })
+                ->where("created_at", ">=", $monthStart)
+                ->count();
+            $communityMult = $postCount > 0 ? min(2.0, 1.0 + ($commentCount / $postCount) * 0.1) : 1.0;
             $viralityMult = 1.0;
 
             // Check if any posts triggered gossip threads
@@ -76,10 +83,9 @@ class DistributeCreatorFund extends Command
                 $viralityMult = min(2.0 + ($threadCount - 1) * 1.0, 5.0);
             }
 
-            $effective = $tierMult * $streakMult * $communityMult * $viralityMult;
-            $effective = min($effective, 15.0); // Cap at 15x
+            $effectiveMultiplier = min($tierMult * $streakMult * $communityMult * $viralityMult, 15.0);
 
-            $finalScore = $baseScore * $effective;
+            $finalScore = $baseScore * $effectiveMultiplier;
             $totalFinalScore += $finalScore;
 
             $payouts[] = [
@@ -89,7 +95,7 @@ class DistributeCreatorFund extends Command
                 "streak_multiplier" => $streakMult,
                 "community_multiplier" => $communityMult,
                 "virality_multiplier" => $viralityMult,
-                "effective_multiplier" => $effective,
+                "effective_multiplier" => $effectiveMultiplier,
                 "final_score" => $finalScore,
             ];
         }

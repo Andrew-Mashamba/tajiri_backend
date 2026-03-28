@@ -7,13 +7,15 @@ use App\Models\Post;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class FeedController extends Controller
 {
     /**
      * Get personalized feed for a user.
-     * Includes posts from friends and public posts.
+     * Includes posts from friends and public posts, ranked by interest profile.
      */
     public function index(Request $request): JsonResponse
     {
@@ -34,6 +36,13 @@ class FeedController extends Controller
                 'success' => false,
                 'message' => 'User not found',
             ], 404);
+        }
+
+        // Cache personalized feed for 5 minutes per user
+        $cacheKey = "feed_personalized_{$userId}_page_{$page}";
+        $cached = Cache::get($cacheKey);
+        if ($cached) {
+            return response()->json($cached);
         }
 
         // Get friend IDs
@@ -70,7 +79,78 @@ class FeedController extends Controller
             return $post;
         });
 
-        return response()->json([
+        // Personalized re-ranking using interest profile
+        $profile = DB::table('user_interest_profiles')->where('user_id', $userId)->first();
+        if ($profile) {
+            $topCreators = json_decode($profile->top_creators ?? '[]', true) ?: [];
+            $topHashtags = json_decode($profile->top_hashtags ?? '[]', true) ?: [];
+            $preferredFormats = json_decode($profile->preferred_formats ?? '[]', true) ?: [];
+
+            $posts->getCollection()->transform(function ($post) use ($topCreators, $topHashtags, $preferredFormats, $userId) {
+                $score = 0;
+
+                // Creator affinity boost
+                if (in_array($post->user_id, $topCreators)) {
+                    $score += 30;
+                }
+
+                // Engagement signals
+                $score += min($post->likes_count * 0.5, 20);
+                $score += min($post->comments_count * 1.0, 20);
+
+                // Recency boost (decay over 48h)
+                $hoursAgo = now()->diffInHours($post->created_at);
+                $score += max(0, 30 - ($hoursAgo * 0.625)); // Full 30 points if <1h, 0 at 48h
+
+                // Thread boost (gossip thread posts get extra visibility)
+                if ($post->thread_id) {
+                    $score += 15;
+                }
+
+                // Collaboration boost: posts tagging multiple users get +20 score
+                if (isset($post->tagged_users_count) && $post->tagged_users_count > 1) {
+                    $score += 20;
+                }
+
+                $post->feed_score = $score;
+                return $post;
+            });
+
+            // Re-sort by feed score
+            $sorted = $posts->getCollection()->sortByDesc('feed_score')->values();
+            $posts->setCollection($sorted);
+        }
+
+        // Enrich post users with is_following and mutual follower data
+        $postItems = $posts->getCollection();
+        if ($userId && $postItems->isNotEmpty()) {
+            $authorIds = $postItems->pluck("user_id")->unique()->filter(fn($id) => $id != $userId)->values()->toArray();
+            if (!empty($authorIds)) {
+                $followingIds = \App\Models\UserFollow::where("follower_id", $userId)->whereIn("following_id", $authorIds)->pluck("following_id")->toArray();
+                $myFollowingIds = \App\Models\UserFollow::where("follower_id", $userId)->pluck("following_id")->toArray();
+                $mutualData = [];
+                if (!empty($myFollowingIds)) {
+                    foreach ($authorIds as $authorId) {
+                        $mutualFollowerIds = \App\Models\UserFollow::where("following_id", $authorId)->whereIn("follower_id", $myFollowingIds)->limit(3)->pluck("follower_id")->toArray();
+                        if (!empty($mutualFollowerIds)) {
+                            $names = \App\Models\UserProfile::whereIn("id", array_slice($mutualFollowerIds, 0, 2))->pluck("username")->toArray();
+                            $totalCount = \App\Models\UserFollow::where("following_id", $authorId)->whereIn("follower_id", $myFollowingIds)->count();
+                            $mutualData[$authorId] = ["names" => $names, "count" => $totalCount];
+                        }
+                    }
+                }
+                foreach ($postItems as $post) {
+                    if ($post->user) {
+                        $post->user->is_following = in_array($post->user_id, $followingIds);
+                        $mutual = $mutualData[$post->user_id] ?? null;
+                        $post->user->mutual_followers_count = $mutual ? $mutual["count"] : 0;
+                        $post->user->mutual_follower_names = $mutual ? $mutual["names"] : [];
+                    }
+                }
+            }
+        }
+
+        $responseData = [
             'success' => true,
             'data' => $posts->items(),
             'meta' => [
@@ -79,11 +159,16 @@ class FeedController extends Controller
                 'per_page' => $posts->perPage(),
                 'total' => $posts->total(),
             ],
-        ]);
+        ];
+
+        // Cache the response for 5 minutes
+        Cache::put($cacheKey, $responseData, 300);
+
+        return response()->json($responseData);
     }
 
     /**
-     * Get feed with only friends' posts.
+     * Get feed with only friends posts.
      */
     public function friendsFeed(Request $request): JsonResponse
     {

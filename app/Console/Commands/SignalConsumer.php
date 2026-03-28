@@ -62,11 +62,12 @@ class SignalConsumer extends Command
                     $timeout
                 );
 
-                if (empty($messages) || empty($messages[$stream])) {
+                $streamMessages = !empty($messages) ? (reset($messages) ?: []) : [];
+                if (empty($streamMessages)) {
                     continue;
                 }
 
-                foreach ($messages[$stream] as $messageId => $data) {
+                foreach ($streamMessages as $messageId => $data) {
                     try {
                         $this->processEvent($data);
                         Redis::xAck($stream, $group, [$messageId]);
