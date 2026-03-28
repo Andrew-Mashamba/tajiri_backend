@@ -25,6 +25,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Content Engine: observe all content models for ingestion
+        $ingestionObserver = \App\Observers\ContentIngestionObserver::class;
+        \App\Models\Post::observe($ingestionObserver);
+        \App\Models\Clip::observe($ingestionObserver);
+        \App\Models\Story::observe($ingestionObserver);
+        \App\Models\MusicTrack::observe($ingestionObserver);
+        \App\Models\LiveStream::observe($ingestionObserver);
+        \App\Models\Event::observe($ingestionObserver);
+        \App\Models\Campaign::observe($ingestionObserver);
+        \App\Models\Shop\Product::observe($ingestionObserver);
+        \App\Models\Group::observe($ingestionObserver);
+        \App\Models\Page::observe($ingestionObserver);
+        \App\Models\UserProfile::observe($ingestionObserver);
+        \App\Models\GossipThread::observe($ingestionObserver);
+
         $this->configureRateLimiting();
     }
 
