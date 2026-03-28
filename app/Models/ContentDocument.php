@@ -64,13 +64,13 @@ class ContentDocument extends Model
     public function graphEdgesAsSource()
     {
         return $this->hasMany(ContentGraphEdge::class, 'source_id')
-            ->where('source_type', 'document');
+            ->where('source_type', 'doc');
     }
 
     public function graphEdgesAsTarget()
     {
         return $this->hasMany(ContentGraphEdge::class, 'target_id')
-            ->where('target_type', 'document');
+            ->where('target_type', 'doc');
     }
 
     /**

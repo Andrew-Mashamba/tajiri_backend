@@ -35,6 +35,18 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\Event::observe($ingestionObserver);
         \App\Models\Campaign::observe($ingestionObserver);
         \App\Models\Shop\Product::observe($ingestionObserver);
+
+        // Content Engine: observe content models for graph edge creation
+        $graphObserver = \App\Observers\ContentGraphObserver::class;
+        \App\Models\Post::observe($graphObserver);
+        \App\Models\Clip::observe($graphObserver);
+        \App\Models\GossipThread::observe($graphObserver);
+        \App\Models\Story::observe($graphObserver);
+        \App\Models\MusicTrack::observe($graphObserver);
+        \App\Models\LiveStream::observe($graphObserver);
+        \App\Models\Event::observe($graphObserver);
+        \App\Models\Campaign::observe($graphObserver);
+        \App\Models\Shop\Product::observe($graphObserver);
         \App\Models\Group::observe($ingestionObserver);
         \App\Models\Page::observe($ingestionObserver);
         \App\Models\UserProfile::observe($ingestionObserver);
