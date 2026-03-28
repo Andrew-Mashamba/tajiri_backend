@@ -1121,25 +1121,79 @@ Route::prefix('files')->group(function () {
 });
 
 // Flywheel Phase 1 — Creator Metrics (read endpoints)
-Route::middleware("auth:sanctum")->group(function () {
-    Route::get("/creators/{id}/score", [\App\Http\Controllers\Api\CreatorMetricsController::class, "score"]);
-    Route::get("/creators/{id}/streak", [\App\Http\Controllers\Api\CreatorMetricsController::class, "creatorStreak"]);
-    Route::get("/users/{id}/streak", [\App\Http\Controllers\Api\CreatorMetricsController::class, "viewerStreak"]);
-    Route::get("/creators/{id}/fund-payout", [\App\Http\Controllers\Api\CreatorMetricsController::class, "fundPayout"]);
-});
+// Public read endpoints (no auth required)
+Route::get("/creators/leaderboard", [\App\Http\Controllers\Api\CreatorMetricsController::class, "leaderboard"]);
+Route::get("/creators/{id}/score", [\App\Http\Controllers\Api\CreatorMetricsController::class, "score"]);
+Route::get("/creators/{id}/streak", [\App\Http\Controllers\Api\CreatorMetricsController::class, "creatorStreak"]);
+Route::get("/users/{id}/streak", [\App\Http\Controllers\Api\CreatorMetricsController::class, "viewerStreak"]);
+Route::post("/users/{id}/streak/resume", [\App\Http\Controllers\Api\CreatorMetricsController::class, "resumeViewerStreak"]);
+Route::get("/creators/{id}/fund-payout", [\App\Http\Controllers\Api\CreatorMetricsController::class, "fundPayout"]);
+Route::get("/creators/{id}/score-history", [\App\Http\Controllers\Api\CreatorMetricsController::class, "scoreHistory"]);
+Route::get("creators/{id}/viral-assists", [\App\Http\Controllers\Api\CreatorMetricsController::class, "viralAssists"]);
+Route::get("creators/{id}/posting-nudge", [\App\Http\Controllers\Api\CreatorMetricsController::class, "postingNudge"]);
+Route::get("creators/{id}/content-calendar", [\App\Http\Controllers\Api\CreatorMetricsController::class, "contentCalendar"]);
 
-// Flywheel Phase 2 — Gossip Engine
+
+// Flywheel Phase 2 — Gossip Engine (public read endpoints, no auth)
+Route::get("/gossip/threads", [\App\Http\Controllers\Api\GossipController::class, "threads"]);
+Route::get("/gossip/threads/{id}", [\App\Http\Controllers\Api\GossipController::class, "show"]);
+Route::get("/threads/unfinished", [\App\Http\Controllers\Api\GossipController::class, "unfinishedThreads"]);
+Route::post("/threads/read-progress", [\App\Http\Controllers\Api\GossipController::class, "recordReadProgress"]);
+Route::get("/gossip/digest", [\App\Http\Controllers\Api\GossipController::class, "digest"]);
+// Personalized feed still requires auth
 Route::middleware("auth:sanctum")->group(function () {
-    Route::get("/gossip/threads", [\App\Http\Controllers\Api\GossipController::class, "threads"]);
-    Route::get("/gossip/threads/{id}", [\App\Http\Controllers\Api\GossipController::class, "show"]);
-    Route::get("/gossip/digest", [\App\Http\Controllers\Api\GossipController::class, "digest"]);
     Route::get("/feed/personalized", [\App\Http\Controllers\Api\GossipController::class, "personalizedFeed"]);
 });
 
 // Flywheel Phase 3 — Creator Payments & Weekly Report
-Route::middleware("auth:sanctum")->group(function () {
+
     Route::get("/creators/{id}/weekly-report", [\App\Http\Controllers\Api\PaymentController::class, "weeklyReport"]);
     Route::get("/creators/{id}/payouts", [\App\Http\Controllers\Api\PaymentController::class, "payoutHistory"]);
     Route::post("/creators/{id}/payout/request", [\App\Http\Controllers\Api\PaymentController::class, "requestPayout"]);
-    Route::get("/fund-pool/current", [\App\Http\Controllers\Api\PaymentController::class, "currentPool"]);
+
+
+Route::get("/fund-pool/current", [\App\Http\Controllers\Api\PaymentController::class, "currentPool"]);
+// ── Phase 4: Flywheel — Sponsored Posts, Battles, Collaboration, Analytics ──
+
+Route::prefix('sponsored-posts')->group(function () {
+    Route::get('/active', [\App\Http\Controllers\Api\SponsoredPostController::class, 'active']);
+    Route::get('/creators', [\App\Http\Controllers\Api\SponsoredPostController::class, 'creators']);
+    Route::post('/', [\App\Http\Controllers\Api\SponsoredPostController::class, 'store'])->middleware('auth:sanctum');
+});
+
+Route::get('creators/{id}/sponsored', [\App\Http\Controllers\Api\SponsoredPostController::class, 'creatorSponsored']);
+
+Route::get('creators/{id}/collaborations', [\App\Http\Controllers\Api\CollaborationController::class, 'suggestions']);
+Route::post('collaborations/{id}/respond', [\App\Http\Controllers\Api\CollaborationController::class, 'respond'])->middleware('auth:sanctum');
+
+Route::prefix('creator-battles')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Api\CreatorBattleController::class, 'index']);
+    Route::get('/{id}', [\App\Http\Controllers\Api\CreatorBattleController::class, 'show']);
+    Route::post('/{id}/vote', [\App\Http\Controllers\Api\CreatorBattleController::class, 'vote'])->middleware('auth:sanctum');
+});
+
+Route::prefix('creators/{id}/analytics')->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\Api\AnalyticsController::class, 'dashboard']);
+    Route::get('/posts', [\App\Http\Controllers\Api\AnalyticsController::class, 'postPerformance']);
+    Route::get('/audience', [\App\Http\Controllers\Api\AnalyticsController::class, 'audienceInsights']);
+});
+
+Route::get('users/{id}/engagement-level', [\App\Http\Controllers\Api\AnalyticsController::class, 'engagementLevel']);
+
+// Issue #7: Battle creation route
+Route::post('/creator-battles', [\App\Http\Controllers\Api\CreatorBattleController::class, 'store'])->middleware('auth:sanctum');
+
+// Issue #8: Sponsored post respond route
+Route::post('sponsored-posts/{id}/respond', [\App\Http\Controllers\Api\SponsoredPostController::class, 'respond'])->middleware('auth:sanctum');
+
+// Opt-out preferences sync
+Route::put('users/{id}/preferences', [\App\Http\Controllers\Api\UserPreferencesController::class, 'update'])->middleware('auth:sanctum');
+
+// Account deletion
+Route::delete('/account', [UserProfileController::class, 'deleteAccount'])->middleware('auth:sanctum');
+
+// Content Engine v2 API
+Route::prefix("v2")->middleware("auth:sanctum")->group(function () {
+    Route::get("/feed", [\App\Http\Controllers\Api\V2\FeedController::class, "feed"]);
+    Route::get("/search", [\App\Http\Controllers\Api\V2\SearchController::class, "search"]);
 });
