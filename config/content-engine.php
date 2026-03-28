@@ -136,4 +136,78 @@ return [
         'batch_size' => 200,
     ],
 
+
+    // ============================================================
+    // Serving Pipeline (Phase 4)
+    // ============================================================
+
+    'serving' => [
+        'candidate_limits' => [
+            'typesense' => 200,
+            'pgvector' => 100,
+            'trending' => 50,
+            'personal' => 100,
+            'social' => 100,
+        ],
+
+        'feed_sources' => [
+            'for_you' => [
+                'pgvector' => 100, 'trending' => 50, 'personal' => 100, 'social' => 50,
+            ],
+            'friends' => [
+                'social' => 500,
+            ],
+            'discover' => [
+                'pgvector' => 100, 'trending' => 100,
+            ],
+            'trending' => [
+                'trending' => 200,
+            ],
+            'nearby' => [
+                'trending' => 100, 'social' => 50,
+            ],
+            'shorts' => [
+                'typesense' => 100, 'trending' => 50, 'personal' => 50,
+            ],
+            'audio' => [
+                'typesense' => 100, 'trending' => 50, 'personal' => 50,
+            ],
+            'search' => [
+                'typesense' => 200, 'pgvector' => 100, 'trending' => 30,
+            ],
+        ],
+
+        'personalized_scoring' => [
+            'creator_affinity_max' => 15,
+            'category_affinity_max' => 10,
+            'hashtag_affinity_max' => 8,
+            'media_preference_max' => 5,
+            'social_proximity_friend' => 20,
+            'social_proximity_fof' => 8,
+            'regional_same_region' => 5,
+            'regional_same_district' => 3,
+        ],
+
+        'reranker' => [
+            'max_consecutive_same_creator' => 2,
+            'max_consecutive_same_type' => 4,
+            'freshness_1h_boost' => 1.2,
+            'freshness_15min_boost' => 1.4,
+            'exploration_pct' => 0.10,
+            'exploration_pct_new_user' => 0.30,
+            'new_user_days' => 7,
+            'anti_bubble_pct' => 0.05,
+            'streak_bonus' => 1.1,
+            // Sponsored insertion deferred to Phase 5
+        ],
+
+        'cache' => [
+            'feed_ttl' => 60,
+            'search_ttl' => 300,
+            'trending_ttl' => 120,
+        ],
+
+        'per_page_default' => 20,
+        'per_page_max' => 50,
+    ],
 ];
