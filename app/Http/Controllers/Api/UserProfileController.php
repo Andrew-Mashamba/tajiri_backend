@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\UserProfile;
+use App\Models\User;
 use App\Models\Post;
 use App\Models\Photo;
 use App\Models\Friendship;
@@ -755,4 +756,55 @@ class UserProfileController extends Controller
             return false;
         }
     }
+
+
+    /**
+     * Delete (soft-delete) a user account.
+     *
+     * Soft-deletes the user profile and revokes all auth tokens.
+     */
+    public function deleteAccount(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer|exists:user_profiles,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        try {
+            $userId = $request->input('user_id');
+
+            // Soft-delete the user profile
+            $profile = UserProfile::findOrFail($userId);
+            $profile->delete();
+
+            // Revoke all Sanctum tokens for the corresponding auth user
+            $user = User::find($userId);
+            if ($user) {
+                $user->tokens()->delete();
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Account deleted successfully',
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Account deletion failed', [
+                'user_id' => $request->input('user_id'),
+                'error' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete account',
+            ], 500);
+        }
+    }
+
 }

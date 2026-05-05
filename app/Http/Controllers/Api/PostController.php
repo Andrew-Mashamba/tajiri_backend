@@ -12,6 +12,7 @@ use App\Models\Report;
 use App\Models\Hashtag;
 use App\Models\UserProfile;
 use App\Models\Friend;
+use App\Jobs\ComposeReplyVideo;
 use App\Services\VideoProcessingService;
 use App\Services\AudioProcessingService;
 use App\Services\ImageProcessingService;
@@ -158,6 +159,11 @@ class PostController extends Controller
             'video_speed' => 'nullable|numeric|between:0.5,2',
             'text_overlays' => 'nullable|json',
             'video_filter' => 'nullable|string|max:50',
+            'reply_to_post_id' => 'nullable|integer|exists:posts,id',
+            'stitch_from_post_id' => 'nullable|integer|exists:posts,id',
+            'reply_layout' => 'nullable|string|in:side_by_side,top_bottom,pip',
+            'stitch_trim_start_ms' => 'nullable|integer|min:0',
+            'stitch_trim_end_ms' => 'nullable|integer|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -198,6 +204,11 @@ class PostController extends Controller
                 'video_speed' => $request->video_speed ?? 1.0,
                 'text_overlays' => $request->text_overlays ? json_decode($request->text_overlays, true) : null,
                 'video_filter' => $request->video_filter,
+                'reply_to_post_id' => $request->reply_to_post_id,
+                'stitch_from_post_id' => $request->stitch_from_post_id,
+                'reply_layout' => $request->reply_layout,
+                'stitch_trim_start_ms' => $request->stitch_trim_start_ms,
+                'stitch_trim_end_ms' => $request->stitch_trim_end_ms,
             ];
             \Log::info('Creating post with data:', $postData);
 
@@ -342,6 +353,13 @@ class PostController extends Controller
 
             DB::commit();
 
+
+            // Dispatch video composition job for reply/stitch posts
+            if ($post->reply_to_post_id) {
+                ComposeReplyVideo::dispatch($post->id, 'reply')->onQueue('video-compose');
+            } elseif ($post->stitch_from_post_id) {
+                ComposeReplyVideo::dispatch($post->id, 'stitch')->onQueue('video-compose');
+            }
             \Log::info('Post created successfully, id: ' . $post->id);
 
             // Firebase: notify author and friends that feed updated
@@ -350,7 +368,7 @@ class PostController extends Controller
             }
 
             // Load relationships (include musicTrack for posts with music)
-            $post->load(['user:id,first_name,last_name,username,profile_photo_path', 'media', 'hashtags', 'musicTrack']);
+            $post->load(['user:id,first_name,last_name,username,profile_photo_path', 'media', 'hashtags', 'musicTrack', 'replyToPost.user:id,first_name,last_name,username,profile_photo_path', 'replyToPost.media', 'stitchFromPost.user:id,first_name,last_name,username,profile_photo_path', 'stitchFromPost.media']);
 
             \Log::info('=== POST STORE END (SUCCESS) ===');
 
@@ -503,6 +521,13 @@ class PostController extends Controller
 
             DB::commit();
 
+
+            // Dispatch video composition job for reply/stitch posts
+            if ($post->reply_to_post_id) {
+                ComposeReplyVideo::dispatch($post->id, 'reply')->onQueue('video-compose');
+            } elseif ($post->stitch_from_post_id) {
+                ComposeReplyVideo::dispatch($post->id, 'stitch')->onQueue('video-compose');
+            }
             // Firebase: notify author with post_updated and friends with feed_updated
             $this->firebaseLiveUpdate->notifyUser($postAuthorId, 'post_updated', ['post_id' => $postId]);
             $this->firebaseLiveUpdate->notifyUserAndFriends($postAuthorId, 'feed_updated');
@@ -543,6 +568,7 @@ class PostController extends Controller
                 $post->is_saved = $post->isSavedBy($userId);
                 $post->user_reaction = $post->getReactionBy($userId);
             }
+            $this->enrichPostUsers($posts, (int) $userId);
         }
 
         return response()->json([
@@ -590,6 +616,7 @@ class PostController extends Controller
             $post->is_saved = $post->isSavedBy($userId);
             $post->user_reaction = $post->getReactionBy($userId);
         }
+        $this->enrichPostUsers($posts, (int) $userId);
 
         return response()->json([
             'success' => true,
@@ -620,6 +647,7 @@ class PostController extends Controller
                 $post->is_saved = $post->isSavedBy($userId);
                 $post->user_reaction = $post->getReactionBy($userId);
             }
+            $this->enrichPostUsers($posts, (int) $userId);
         }
 
         return response()->json([
@@ -660,6 +688,7 @@ class PostController extends Controller
                 $post->is_saved = $post->isSavedBy($userId);
                 $post->user_reaction = $post->getReactionBy($userId);
             }
+            $this->enrichPostUsers($posts, (int) $userId);
         }
 
         return response()->json([
@@ -1154,6 +1183,13 @@ class PostController extends Controller
 
             DB::commit();
 
+
+            // Dispatch video composition job for reply/stitch posts
+            if ($post->reply_to_post_id) {
+                ComposeReplyVideo::dispatch($post->id, 'reply')->onQueue('video-compose');
+            } elseif ($post->stitch_from_post_id) {
+                ComposeReplyVideo::dispatch($post->id, 'stitch')->onQueue('video-compose');
+            }
             // Firebase: notify sharer's friends with feed_updated, and original author with post_updated
             $this->firebaseLiveUpdate->notifyUserAndFriends((int) $request->user_id, 'feed_updated');
             $this->firebaseLiveUpdate->notifyUser((int) $originalPost->user_id, 'post_updated', ['post_id' => $originalPost->id]);
@@ -1622,4 +1658,68 @@ class PostController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Enrich posts with is_following and mutual follower data on the user object.
+     * Call after loading posts and before returning JSON.
+     */
+    protected function enrichPostUsers(iterable $posts, ?int $currentUserId): void
+    {
+        if (!$currentUserId) return;
+
+        // Collect unique author IDs (exclude self)
+        $authorIds = collect($posts)
+            ->pluck("user_id")
+            ->unique()
+            ->filter(fn($id) => $id !== $currentUserId)
+            ->values()
+            ->toArray();
+
+        if (empty($authorIds)) return;
+
+        // Batch check: which authors does the current user follow?
+        $followingIds = \App\Models\UserFollow::where("follower_id", $currentUserId)
+            ->whereIn("following_id", $authorIds)
+            ->pluck("following_id")
+            ->toArray();
+
+        // Get who the current user follows
+        $myFollowingIds = \App\Models\UserFollow::where("follower_id", $currentUserId)
+            ->pluck("following_id")
+            ->toArray();
+
+        // For each author, find mutual followers (people current user follows who also follow this author)
+        $mutualData = [];
+        if (!empty($myFollowingIds)) {
+            foreach ($authorIds as $authorId) {
+                // People who follow this author AND are followed by current user
+                $mutuals = \App\Models\UserFollow::where("following_id", $authorId)
+                    ->whereIn("follower_id", $myFollowingIds)
+                    ->limit(3)
+                    ->pluck("follower_id")
+                    ->toArray();
+
+                if (!empty($mutuals)) {
+                    $names = \App\Models\UserProfile::whereIn("id", array_slice($mutuals, 0, 2))
+                        ->pluck("username")
+                        ->toArray();
+                    $totalCount = \App\Models\UserFollow::where("following_id", $authorId)
+                        ->whereIn("follower_id", $myFollowingIds)
+                        ->count();
+                    $mutualData[$authorId] = ["names" => $names, "count" => $totalCount];
+                }
+            }
+        }
+
+        // Attach to each post user
+        foreach ($posts as $post) {
+            if ($post->user) {
+                $post->user->is_following = in_array($post->user_id, $followingIds);
+                $mutual = $mutualData[$post->user_id] ?? null;
+                $post->user->mutual_followers_count = $mutual ? $mutual["count"] : 0;
+                $post->user->mutual_follower_names = $mutual ? $mutual["names"] : [];
+            }
+        }
+    }
+
 }
