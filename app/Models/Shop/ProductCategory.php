@@ -26,6 +26,16 @@ class ProductCategory extends Model
         'product_count' => 'integer',
     ];
 
+    protected $appends = [
+        'image_path',
+    ];
+
+    /** Flutter expects {@see ProductCategory.imagePath} derived from stored URL/path. */
+    public function getImagePathAttribute(): ?string
+    {
+        return $this->image_url;
+    }
+
     public function parent(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class, 'parent_id');

@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\BusinessController;
 use App\Http\Controllers\Api\UserProfileController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\PostEarningsController;
+use App\Http\Controllers\Api\CreatorEarningsController;
+use App\Http\Controllers\Api\CreatorRateCardController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\AlbumController;
@@ -45,6 +47,25 @@ use App\Http\Controllers\Api\V1\Shop\OrderController as ShopOrderController;
 use App\Http\Controllers\Api\V1\Shop\ReviewController as ShopReviewController;
 use App\Http\Controllers\Api\V1\Shop\FavoriteController as ShopFavoriteController;
 use App\Http\Controllers\Api\V1\Shop\SellerDashboardController as ShopSellerDashboardController;
+use App\Http\Controllers\Api\V1\Shop\PromoController as ShopPromoController;
+use App\Http\Controllers\Api\V1\Shop\SellerShopController as ShopSellerShopController;
+use App\Http\Controllers\Api\V1\Shop\ShippingQuoteController as ShopShippingQuoteController;
+use App\Http\Controllers\Api\V1\Shop\SearchController as ShopSearchController;
+use App\Http\Controllers\Api\V1\Shop\SellerReviewsController as ShopSellerReviewsController;
+use App\Http\Controllers\Api\V1\Shop\ProductReportController as ShopProductReportController;
+use App\Http\Controllers\Api\V1\Shop\CommerceAnalyticsController as ShopCommerceAnalyticsController;
+use App\Http\Controllers\Api\V1\Shop\InventoryController as ShopInventoryController;
+use App\Http\Controllers\Api\V1\Shop\ShopModerationController;
+use App\Http\Controllers\Api\V1\Shop\ShopAdsController;
+use App\Http\Controllers\Api\V1\Shop\ShopAffiliateController;
+use App\Http\Controllers\Api\V1\Shop\ShopSubscriptionsController;
+use App\Http\Controllers\Api\V1\Shop\ShopSocialCommerceController;
+use App\Http\Controllers\Api\V1\Shop\ShopLiveCommerceController;
+use App\Http\Controllers\Api\V1\Shop\ShopAiController;
+use App\Http\Controllers\Api\V1\Shop\ShopPaymentsController;
+use App\Http\Controllers\Api\V1\Shop\ShopSellerPayoutsController;
+use App\Http\Controllers\Api\V1\Shop\ShopSupportController;
+use App\Http\Controllers\Api\V1\Shop\ShopNotificationsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -268,8 +289,10 @@ Route::prefix('posts')->group(function () {
     // View tracking & engagement
     Route::post('/{id}/view', [PostController::class, 'recordView']);
 
-    // Earnings estimation for creators (post monetization)
+    // Earnings — backed by event ledger (Creators Fund engine, strategy §1.2 + §9)
     Route::get('/{postId}/earnings', [PostEarningsController::class, 'earnings']);
+    Route::get('/{postId}/earnings/events', [PostEarningsController::class, 'earningsEvents']);
+    Route::post('/{postId}/discovery-mode', [PostEarningsController::class, 'discoveryMode']);
 
     // Save/Bookmark
     Route::post('/{id}/save', [PostController::class, 'savePost']);
@@ -957,6 +980,9 @@ Route::prefix('campaigns')->group(function () {
 */
 Route::prefix('shop')->group(function () {
 
+    Route::post('/checkout', [ShopOrderController::class, 'checkout']);
+    Route::post('/promo/validate', [ShopPromoController::class, 'validateCode']);
+
     // Categories
     Route::get('/categories', [ShopCategoryController::class, 'index']);
     Route::get('/categories/{id}', [ShopCategoryController::class, 'show']);
@@ -967,6 +993,7 @@ Route::prefix('shop')->group(function () {
     Route::get('/products/featured', [ShopProductController::class, 'featured']);
     Route::get('/products/trending', [ShopProductController::class, 'trending']);
     Route::get('/products/nearby', [ShopProductController::class, 'nearby']);
+    Route::get('/flash-deals', [ShopProductController::class, 'flashDeals']);
     Route::get('/products/recommended', [ShopProductController::class, 'recommended']);
     Route::get('/products/seller', [ShopProductController::class, 'sellerProducts']);
     Route::get('/products/{id}', [ShopProductController::class, 'show']);
@@ -994,6 +1021,8 @@ Route::prefix('shop')->group(function () {
     Route::get('/orders/{id}', [ShopOrderController::class, 'show']);
     Route::put('/orders/{id}/status', [ShopOrderController::class, 'updateStatus']);
     Route::post('/orders/{id}/cancel', [ShopOrderController::class, 'cancel']);
+    Route::post('/orders/{id}/received', [ShopOrderController::class, 'confirmReceived']);
+    Route::post('/orders/{id}/return', [ShopOrderController::class, 'requestReturn']);
 
     // Reviews
     Route::post('/products/{id}/reviews', [ShopReviewController::class, 'store']);
@@ -1011,6 +1040,117 @@ Route::prefix('shop')->group(function () {
     Route::get('/sellers/{userId}/products', [ShopProductController::class, 'sellerProducts']);
 });
 
+foreach (['shop', 'v1/shop'] as $__shopPrefix) {
+    Route::prefix($__shopPrefix)->group(function () {
+        Route::get('/services', [ShopProductController::class, 'servicesIndex']);
+        Route::post('/services', [ShopProductController::class, 'storeService']);
+        Route::get('/services/{id}', [ShopProductController::class, 'servicesShow']);
+        Route::put('/services/{id}', [ShopProductController::class, 'updateService']);
+
+        Route::get('/seller/shop', [ShopSellerShopController::class, 'show']);
+        Route::put('/seller/shop', [ShopSellerShopController::class, 'update']);
+        Route::put('/shops/{userId}', [ShopSellerShopController::class, 'update']);
+
+        Route::post('/shipping/quote', [ShopShippingQuoteController::class, 'quote']);
+        Route::post('/checkout/shipping-quote', [ShopShippingQuoteController::class, 'checkoutQuote']);
+        Route::get('/shipping/orders/{id}/tracking', [ShopOrderController::class, 'tracking']);
+        Route::get('/orders/{id}/tracking', [ShopOrderController::class, 'tracking']);
+
+        Route::post('/coupons/apply', [ShopPromoController::class, 'applyCoupon']);
+
+        Route::get('/search/products', [ShopSearchController::class, 'products']);
+        Route::get('/search/trending', [ShopSearchController::class, 'trending']);
+        Route::get('/search/suggestions', [ShopSearchController::class, 'suggestions']);
+        Route::post('/search/semantic', [ShopSearchController::class, 'semantic']);
+
+        Route::get('/sellers/{userId}/reviews', [ShopSellerReviewsController::class, 'index']);
+
+        Route::post('/products/{id}/reports', [ShopProductReportController::class, 'store']);
+
+        Route::get('/moderation/reports', [ShopModerationController::class, 'reports']);
+        Route::patch('/moderation/reports/{id}', [ShopModerationController::class, 'updateReport']);
+        Route::get('/moderation/banned-sellers', [ShopModerationController::class, 'bannedSellers']);
+        Route::post('/moderation/sellers/{sellerUserId}/ban', [ShopModerationController::class, 'banSeller']);
+
+        Route::post('/analytics/events', [ShopCommerceAnalyticsController::class, 'storeBatch']);
+
+        Route::get('/products/{productId}/stock', [ShopInventoryController::class, 'stock']);
+        Route::patch('/products/{productId}/stock', [ShopInventoryController::class, 'patchStock']);
+        Route::get('/products/{productId}/inventory/history', [ShopInventoryController::class, 'history']);
+        Route::post('/inventory/sync', [ShopInventoryController::class, 'sync']);
+
+        Route::get('/payments/methods', [ShopPaymentsController::class, 'methods']);
+        Route::post('/payments/methods', [ShopPaymentsController::class, 'storeMethod']);
+        Route::get('/payments/transactions', [ShopPaymentsController::class, 'transactions']);
+        Route::post('/payments/intent', [ShopPaymentsController::class, 'intent']);
+        Route::post('/payments/capture', [ShopPaymentsController::class, 'capture']);
+        Route::post('/payments/webhook/{provider}', [ShopPaymentsController::class, 'webhook']);
+        Route::post('/payments/mobile-money/{gateway?}', [ShopPaymentsController::class, 'mobileMoney']);
+
+        Route::get('/seller/payouts', [ShopSellerPayoutsController::class, 'index']);
+        Route::post('/seller/payouts', [ShopSellerPayoutsController::class, 'store']);
+        Route::get('/seller/payout-methods', [ShopSellerPayoutsController::class, 'payoutMethods']);
+        Route::post('/seller/payout-methods', [ShopSellerPayoutsController::class, 'storePayoutMethod']);
+
+        Route::get('/ads/campaigns', [ShopAdsController::class, 'campaigns']);
+        Route::post('/ads/campaigns', [ShopAdsController::class, 'storeCampaign']);
+        Route::get('/ads/campaigns/{id}', [ShopAdsController::class, 'showCampaign']);
+        Route::patch('/ads/campaigns/{id}', [ShopAdsController::class, 'updateCampaign']);
+        Route::delete('/ads/campaigns/{id}', [ShopAdsController::class, 'destroyCampaign']);
+        Route::post('/ads/campaigns/{id}/schedule', [ShopAdsController::class, 'scheduleCampaign']);
+        Route::patch('/ads/campaigns/{id}/budget', [ShopAdsController::class, 'budgetCampaign']);
+        Route::get('/ads/targeting/segments', [ShopAdsController::class, 'targetingSegments']);
+        Route::post('/ads/campaigns/{id}/targeting', [ShopAdsController::class, 'targeting']);
+        Route::get('/ads/creatives', [ShopAdsController::class, 'creatives']);
+        Route::post('/ads/campaigns/{id}/creatives', [ShopAdsController::class, 'storeCreative']);
+        Route::post('/ads/auction', [ShopAdsController::class, 'auction']);
+        Route::post('/ads/serve', [ShopAdsController::class, 'serve']);
+        Route::post('/ads/events/impression', [ShopAdsController::class, 'impression']);
+        Route::post('/ads/events/click', [ShopAdsController::class, 'click']);
+        Route::post('/ads/events/conversion', [ShopAdsController::class, 'conversion']);
+        Route::get('/ads/campaigns/{id}/analytics', [ShopAdsController::class, 'campaignAnalytics']);
+        Route::get('/ads/invoices', [ShopAdsController::class, 'invoices']);
+        Route::get('/ads/moderation/queue', [ShopAdsController::class, 'moderationQueue']);
+        Route::patch('/ads/moderation/{id}', [ShopAdsController::class, 'moderationUpdate']);
+
+        Route::get('/affiliate/dashboard', [ShopAffiliateController::class, 'dashboard']);
+        Route::get('/affiliate/links', [ShopAffiliateController::class, 'links']);
+        Route::post('/affiliate/links', [ShopAffiliateController::class, 'storeLink']);
+        Route::get('/affiliate/commissions', [ShopAffiliateController::class, 'commissions']);
+        Route::get('/affiliate/payouts', [ShopAffiliateController::class, 'payouts']);
+
+        Route::get('/subscriptions/plans', [ShopSubscriptionsController::class, 'plans']);
+        Route::post('/subscriptions/checkout', [ShopSubscriptionsController::class, 'checkout']);
+        Route::get('/subscriptions/me', [ShopSubscriptionsController::class, 'me']);
+
+        Route::get('/social-commerce/feed', [ShopSocialCommerceController::class, 'feed']);
+        Route::get('/social-commerce/posts', [ShopSocialCommerceController::class, 'posts']);
+        Route::get('/social-commerce/sponsored', [ShopSocialCommerceController::class, 'sponsored']);
+        Route::post('/social-commerce/posts/{id}/boost', [ShopSocialCommerceController::class, 'boost']);
+        Route::get('/social-commerce/trending-products', [ShopSocialCommerceController::class, 'trendingProducts']);
+
+        Route::get('/live/sessions/{liveStreamId}/products', [ShopLiveCommerceController::class, 'listProducts']);
+        Route::post('/live/sessions/{liveStreamId}/products', [ShopLiveCommerceController::class, 'attachProducts']);
+        Route::post('/live/sessions/{liveStreamId}/auction/bid', [ShopLiveCommerceController::class, 'auctionBid']);
+
+        Route::post('/ai/shop/recommendations/refresh', [ShopAiController::class, 'refreshRecommendations']);
+        Route::post('/ai/shop/trending', [ShopAiController::class, 'refreshTrending']);
+        Route::post('/ai/shop/search/intent', [ShopAiController::class, 'searchIntent']);
+        Route::post('/ai/shop/products/auto-tags', [ShopAiController::class, 'autoTags']);
+        Route::post('/ai/shop/pricing/suggest', [ShopAiController::class, 'pricingSuggest']);
+        Route::post('/ai/shop/chat/assistant', [ShopAiController::class, 'chatAssistant']);
+        Route::post('/ai/shop/chat/seller-support', [ShopAiController::class, 'chatSellerSupport']);
+        Route::post('/ai/shop/content/product-description', [ShopAiController::class, 'contentProductDescription']);
+        Route::post('/ai/shop/content/ad-copy', [ShopAiController::class, 'contentAdCopy']);
+        Route::post('/ai/moderate/product', [ShopAiController::class, 'moderateProduct']);
+        Route::post('/ai/moderate/review', [ShopAiController::class, 'moderateReview']);
+
+        Route::get('/support/tickets', [ShopSupportController::class, 'tickets']);
+        Route::get('/users/me/notifications/shop', [ShopNotificationsController::class, 'index']);
+        Route::get('/creators/{userId}/shop', [ShopProductController::class, 'sellerProducts']);
+    });
+}
+
 /*
 |--------------------------------------------------------------------------
 | Shop (C2C Marketplace) API Routes — versioned alias (/api/v1/shop/...)
@@ -1023,19 +1163,22 @@ Route::prefix('v1/shop')->group(function () {
     Route::get('/categories/{id}', [ShopCategoryController::class, 'show']);
     Route::get('/categories/{id}/products', [ShopCategoryController::class, 'products']);
 
-    // Products (public browsing)
+    // Products (public browsing) — static paths before /products/{id}
     Route::get('/products', [ShopProductController::class, 'index']);
     Route::get('/products/featured', [ShopProductController::class, 'featured']);
     Route::get('/products/trending', [ShopProductController::class, 'trending']);
     Route::get('/products/nearby', [ShopProductController::class, 'nearby']);
+    Route::get('/flash-deals', [ShopProductController::class, 'flashDeals']);
+    Route::get('/products/recommended', [ShopProductController::class, 'recommended']);
+    Route::get('/products/seller', [ShopProductController::class, 'sellerProducts']);
+    Route::post('/products', [ShopProductController::class, 'store']);
+    Route::get('/sellers/{userId}/products', [ShopProductController::class, 'sellerProducts']);
+
+    Route::get('/seller/{userId}/stats', [ShopSellerDashboardController::class, 'stats']);
+
     Route::get('/products/{id}', [ShopProductController::class, 'show']);
     Route::post('/products/{id}/view', [ShopProductController::class, 'incrementView']);
     Route::get('/products/{id}/reviews', [ShopReviewController::class, 'index']);
-    Route::get('/sellers/{userId}/products', [ShopProductController::class, 'sellerProducts']);
-
-    // Products (authenticated)
-    Route::get('/products/recommended', [ShopProductController::class, 'recommended']);
-    Route::post('/products', [ShopProductController::class, 'store']);
     Route::put('/products/{id}', [ShopProductController::class, 'update']);
     Route::delete('/products/{id}', [ShopProductController::class, 'destroy']);
 
@@ -1050,6 +1193,9 @@ Route::prefix('v1/shop')->group(function () {
     Route::delete('/cart/items/{productId}', [ShopCartController::class, 'removeItem']);
     Route::delete('/cart', [ShopCartController::class, 'clear']);
 
+    Route::post('/checkout', [ShopOrderController::class, 'checkout']);
+    Route::post('/promo/validate', [ShopPromoController::class, 'validateCode']);
+
     // Orders
     Route::post('/orders', [ShopOrderController::class, 'store']);
     Route::get('/orders/buyer', [ShopOrderController::class, 'buyerOrders']);
@@ -1057,6 +1203,8 @@ Route::prefix('v1/shop')->group(function () {
     Route::get('/orders/{id}', [ShopOrderController::class, 'show']);
     Route::put('/orders/{id}/status', [ShopOrderController::class, 'updateStatus']);
     Route::post('/orders/{id}/cancel', [ShopOrderController::class, 'cancel']);
+    Route::post('/orders/{id}/received', [ShopOrderController::class, 'confirmReceived']);
+    Route::post('/orders/{id}/return', [ShopOrderController::class, 'requestReturn']);
 
     // Reviews
     Route::post('/products/{id}/reviews', [ShopReviewController::class, 'store']);
@@ -1109,4 +1257,16 @@ Route::prefix('files')->group(function () {
 
     // Download
     Route::get('/{id}/download', [FileController::class, 'download'])->where('id', '[0-9]+');
+});
+
+// ─── Creators Fund / Earnings (Strategy v3 — Phase 1) ──────────────────
+// Public rate card.
+Route::get('/creators/rate-card', [CreatorRateCardController::class, 'show']);
+
+// Creator dashboard + provenance ledger + tax + disputes.
+Route::prefix('users/me/earnings')->group(function () {
+    Route::get('/',          [CreatorEarningsController::class, 'dashboard']);
+    Route::get('/events',    [CreatorEarningsController::class, 'events']);
+    Route::get('/tax',       [CreatorEarningsController::class, 'tax']);
+    Route::post('/disputes', [CreatorEarningsController::class, 'fileDispute']);
 });

@@ -66,11 +66,11 @@ class CategoryController extends Controller
             ->with(['category:id,name,slug', 'seller:id,first_name,last_name,username,profile_photo_path,is_verified'])
             ->whereIn('category_id', $categoryIds);
 
-        // Sorting
+        // Sorting (match ProductController / Flutter)
         $query = match ($request->input('sort_by', 'newest')) {
             'oldest' => $query->orderBy('created_at', 'asc'),
-            'price_low' => $query->orderBy('price', 'asc'),
-            'price_high' => $query->orderBy('price', 'desc'),
+            'price_low', 'price_asc' => $query->orderBy('price', 'asc'),
+            'price_high', 'price_desc' => $query->orderBy('price', 'desc'),
             'popular' => $query->orderBy('orders_count', 'desc'),
             'rating' => $query->orderBy('rating', 'desc'),
             default => $query->orderBy('created_at', 'desc'),

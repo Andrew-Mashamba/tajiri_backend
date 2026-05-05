@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Shop;
 use App\Http\Controllers\Controller;
 use App\Models\Shop\Product;
 use App\Models\Shop\ProductFavorite;
+use App\Support\Shop\ShopProductFormatter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -12,6 +13,8 @@ class FavoriteController extends Controller
 {
     /**
      * GET /v1/shop/favorites
+     *
+     * Flutter treats `data` as a List<Product> plus optional pagination `meta`.
      */
     public function index(Request $request): JsonResponse
     {
@@ -19,7 +22,7 @@ class FavoriteController extends Controller
         $perPage = min($request->input('per_page', 20), 50);
 
         $favorites = ProductFavorite::where('user_id', $request->user_id)
-            ->with(['product' => fn($q) => $q->with([
+            ->with(['product' => fn ($q) => $q->with([
                 'category:id,name,slug',
                 'seller:id,first_name,last_name,username,profile_photo_path,is_verified',
             ])])
@@ -27,33 +30,23 @@ class FavoriteController extends Controller
             ->paginate($perPage);
 
         $items = $favorites->map(function ($fav) {
-            if (!$fav->product) return null;
-            $product = $fav->product;
-            $seller = $product->seller;
-            $data = $product->toArray();
-            $data['seller'] = $seller ? [
-                'id' => $seller->id,
-                'name' => trim($seller->first_name . ' ' . $seller->last_name),
-                'username' => $seller->username,
-                'avatar_url' => $seller->profile_photo_path,
-                'is_verified' => (bool) ($seller->is_verified ?? false),
-            ] : null;
-            $data['is_favorited'] = true;
-            $data['favorited_at'] = $fav->created_at;
-            return $data;
-        })->filter()->values();
+            if (! $fav->product) {
+                return null;
+            }
+
+            return ShopProductFormatter::product($fav->product, [$fav->product_id]);
+        })->filter()->values()->all();
 
         return response()->json([
             'success' => true,
-            'data' => [
-                'items' => $items,
-                'pagination' => [
-                    'current_page' => $favorites->currentPage(),
-                    'per_page' => $favorites->perPage(),
-                    'total' => $favorites->total(),
-                    'total_pages' => $favorites->lastPage(),
-                    'has_more' => $favorites->hasMorePages(),
-                ],
+            'data' => $items,
+            'meta' => [
+                'current_page' => $favorites->currentPage(),
+                'per_page' => $favorites->perPage(),
+                'total' => $favorites->total(),
+                'total_pages' => $favorites->lastPage(),
+                'last_page' => $favorites->lastPage(),
+                'has_more' => $favorites->hasMorePages(),
             ],
         ]);
     }
@@ -67,7 +60,7 @@ class FavoriteController extends Controller
         $userId = $request->input('user_id');
 
         $product = Product::find($id);
-        if (!$product) {
+        if (! $product) {
             return response()->json(['success' => false, 'message' => 'Product not found'], 404);
         }
 
@@ -76,6 +69,7 @@ class FavoriteController extends Controller
         if ($existing) {
             $existing->delete();
             $product->where('id', $id)->where('favorites_count', '>', 0)->decrement('favorites_count');
+
             return response()->json([
                 'success' => true,
                 'message' => 'Removed from favorites',

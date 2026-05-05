@@ -9,16 +9,40 @@ use App\Models\Shop\ProductReview;
 use App\Models\Shop\ReviewHelpfulVote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ReviewController extends Controller
 {
+    /**
+     * Shape for TAJIRI Flutter Review.fromJson.
+     *
+     * @param  array<int>  $helpfulIds
+     */
+    private function formatReview(ProductReview $review, array $helpfulIds = []): array
+    {
+        $data = $review->toArray();
+        if ($review->relationLoaded('user') && $review->user) {
+            $data['user'] = [
+                'id' => $review->user->id,
+                'first_name' => $review->user->first_name,
+                'last_name' => $review->user->last_name,
+                'username' => $review->user->username,
+                'profile_photo_path' => $review->user->profile_photo_path,
+            ];
+        }
+        $data['is_helpful'] = in_array($review->id, $helpfulIds, true);
+        unset($data['deleted_at']);
+
+        return $data;
+    }
+
     /**
      * GET /v1/shop/products/{productId}/reviews
      */
     public function index(Request $request, int $productId): JsonResponse
     {
         $product = Product::find($productId);
-        if (!$product) {
+        if (! $product) {
             return response()->json(['success' => false, 'message' => 'Product not found'], 404);
         }
 
@@ -28,6 +52,10 @@ class ReviewController extends Controller
 
         $query = ProductReview::where('product_id', $productId)
             ->with('user:id,first_name,last_name,username,profile_photo_path');
+
+        if ($request->filled('rating')) {
+            $query->where('rating', (int) $request->input('rating'));
+        }
 
         $query = match ($sortBy) {
             'oldest' => $query->orderBy('created_at', 'asc'),
@@ -39,31 +67,17 @@ class ReviewController extends Controller
 
         $reviews = $query->paginate($perPage);
 
-        // Check which reviews user has voted helpful
         $helpfulIds = [];
         if ($userId) {
             $helpfulIds = ReviewHelpfulVote::where('user_id', $userId)
                 ->whereIn('review_id', $reviews->pluck('id'))
                 ->pluck('review_id')
-                ->toArray();
+                ->map(fn ($id) => (int) $id)
+                ->all();
         }
 
-        $items = $reviews->map(function ($review) use ($helpfulIds) {
-            $data = $review->toArray();
-            if ($review->user) {
-                $data['user'] = [
-                    'id' => $review->user->id,
-                    'name' => trim($review->user->first_name . ' ' . $review->user->last_name),
-                    'username' => $review->user->username,
-                    'avatar_url' => $review->user->profile_photo_path,
-                ];
-            }
-            $data['is_helpful_by_me'] = in_array($review->id, $helpfulIds);
-            unset($data['deleted_at']);
-            return $data;
-        });
+        $list = $reviews->map(fn ($r) => $this->formatReview($r, $helpfulIds))->values()->all();
 
-        // Rating distribution
         $distribution = ProductReview::where('product_id', $productId)
             ->selectRaw('rating, COUNT(*) as count')
             ->groupBy('rating')
@@ -72,26 +86,25 @@ class ReviewController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => [
-                'items' => $items,
-                'summary' => [
-                    'average_rating' => (float) $product->rating,
-                    'total_reviews' => $product->reviews_count,
-                    'distribution' => [
-                        '5' => $distribution[5] ?? 0,
-                        '4' => $distribution[4] ?? 0,
-                        '3' => $distribution[3] ?? 0,
-                        '2' => $distribution[2] ?? 0,
-                        '1' => $distribution[1] ?? 0,
-                    ],
+            'data' => $list,
+            'stats' => [
+                'average_rating' => (float) $product->rating,
+                'total_reviews' => (int) $product->reviews_count,
+                'rating_distribution' => [
+                    '5' => (int) ($distribution[5] ?? 0),
+                    '4' => (int) ($distribution[4] ?? 0),
+                    '3' => (int) ($distribution[3] ?? 0),
+                    '2' => (int) ($distribution[2] ?? 0),
+                    '1' => (int) ($distribution[1] ?? 0),
                 ],
-                'pagination' => [
-                    'current_page' => $reviews->currentPage(),
-                    'per_page' => $reviews->perPage(),
-                    'total' => $reviews->total(),
-                    'total_pages' => $reviews->lastPage(),
-                    'has_more' => $reviews->hasMorePages(),
-                ],
+            ],
+            'meta' => [
+                'current_page' => $reviews->currentPage(),
+                'per_page' => $reviews->perPage(),
+                'total' => $reviews->total(),
+                'total_pages' => $reviews->lastPage(),
+                'last_page' => $reviews->lastPage(),
+                'has_more' => $reviews->hasMorePages(),
             ],
         ]);
     }
@@ -105,44 +118,66 @@ class ReviewController extends Controller
             'user_id' => 'required|integer',
             'rating' => 'required|integer|between:1,5',
             'comment' => 'nullable|string|max:2000',
-            'images' => 'nullable|array|max:5',
-            'images.*' => 'string',
         ]);
 
-        $userId = $request->input('user_id');
+        $userId = (int) $request->input('user_id');
         $product = Product::find($productId);
 
-        if (!$product) {
+        if (! $product) {
             return response()->json(['success' => false, 'message' => 'Product not found'], 404);
         }
 
-        // Check if already reviewed
         $existing = ProductReview::where('product_id', $productId)->where('user_id', $userId)->first();
         if ($existing) {
             return response()->json(['success' => false, 'message' => 'You have already reviewed this product'], 422);
         }
 
-        // Check if user has a completed order for this product
-        $completedOrder = Order::where('buyer_id', $userId)
+        $eligibleOrder = Order::where('buyer_id', $userId)
             ->where('product_id', $productId)
-            ->where('status', Order::STATUS_COMPLETED)
+            ->whereIn('status', [Order::STATUS_DELIVERED, Order::STATUS_COMPLETED])
+            ->orderByDesc('id')
             ->first();
 
-        if (!$completedOrder) {
+        if (! $eligibleOrder) {
             return response()->json(['success' => false, 'message' => 'You can only review products you have purchased and received'], 422);
+        }
+
+        $imagePaths = [];
+
+        foreach ($request->allFiles() as $key => $file) {
+            if (! str_starts_with($key, 'images')) {
+                continue;
+            }
+            if (is_array($file)) {
+                foreach ($file as $sub) {
+                    if ($sub && $sub->isValid()) {
+                        $path = $sub->store("reviews/product-{$productId}/user-{$userId}", 'public');
+                        $imagePaths[] = Storage::disk('public')->url($path);
+                    }
+                }
+            } elseif ($file && $file->isValid()) {
+                $path = $file->store("reviews/product-{$productId}/user-{$userId}", 'public');
+                $imagePaths[] = Storage::disk('public')->url($path);
+            }
+        }
+
+        if (empty($imagePaths) && $request->has('images')) {
+            $raw = $request->input('images');
+            if (is_array($raw)) {
+                $imagePaths = array_values(array_filter(array_map('strval', $raw)));
+            }
         }
 
         $review = ProductReview::create([
             'product_id' => $productId,
             'user_id' => $userId,
-            'order_id' => $completedOrder->id,
+            'order_id' => $eligibleOrder->id,
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'images' => $request->images,
+            'images' => $imagePaths ?: null,
             'is_verified_purchase' => true,
         ]);
 
-        // Recalculate product rating
         $product->recalculateRating();
 
         $review->load('user:id,first_name,last_name,username,profile_photo_path');
@@ -150,7 +185,7 @@ class ReviewController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Review submitted successfully',
-            'data' => ['review' => $review],
+            'data' => $this->formatReview($review, []),
         ], 201);
     }
 
@@ -163,11 +198,10 @@ class ReviewController extends Controller
             'user_id' => 'required|integer',
             'rating' => 'integer|between:1,5',
             'comment' => 'nullable|string|max:2000',
-            'images' => 'nullable|array|max:5',
         ]);
 
         $review = ProductReview::find($id);
-        if (!$review) {
+        if (! $review) {
             return response()->json(['success' => false, 'message' => 'Review not found'], 404);
         }
 
@@ -175,20 +209,20 @@ class ReviewController extends Controller
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
         }
 
-        // Can only update within 30 days
         if ($review->created_at->diffInDays(now()) > 30) {
             return response()->json(['success' => false, 'message' => 'Reviews can only be edited within 30 days'], 422);
         }
 
-        $review->update($request->only(['rating', 'comment', 'images']));
+        $review->update($request->only(['rating', 'comment']));
 
-        // Recalculate product rating
         $review->product->recalculateRating();
+
+        $review->load('user:id,first_name,last_name,username,profile_photo_path');
 
         return response()->json([
             'success' => true,
             'message' => 'Review updated',
-            'data' => ['review' => $review],
+            'data' => $this->formatReview($review, []),
         ]);
     }
 
@@ -200,7 +234,7 @@ class ReviewController extends Controller
         $request->validate(['user_id' => 'required|integer']);
 
         $review = ProductReview::find($id);
-        if (!$review) {
+        if (! $review) {
             return response()->json(['success' => false, 'message' => 'Review not found'], 404);
         }
 
@@ -211,7 +245,6 @@ class ReviewController extends Controller
         $product = $review->product;
         $review->delete();
 
-        // Recalculate product rating
         $product->recalculateRating();
 
         return response()->json([
@@ -229,21 +262,20 @@ class ReviewController extends Controller
         $userId = $request->input('user_id');
 
         $review = ProductReview::find($id);
-        if (!$review) {
+        if (! $review) {
             return response()->json(['success' => false, 'message' => 'Review not found'], 404);
         }
 
-        // Cannot vote on own review
         if ($review->user_id == $userId) {
             return response()->json(['success' => false, 'message' => 'Cannot vote on your own review'], 422);
         }
 
-        // Toggle vote
         $existing = ReviewHelpfulVote::where('review_id', $id)->where('user_id', $userId)->first();
 
         if ($existing) {
             $existing->delete();
             $review->recalculateHelpful();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Helpful vote removed',

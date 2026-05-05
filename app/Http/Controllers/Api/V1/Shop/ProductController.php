@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api\V1\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Models\BlockedUser;
 use App\Models\Shop\Product;
 use App\Models\Shop\ProductCategory;
 use App\Models\Shop\ProductFavorite;
-use App\Models\BlockedUser;
+use App\Support\Shop\ShopProductFormatter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,7 @@ class ProductController extends Controller
             'per_page' => 'integer|min:1|max:50',
             'category_id' => 'integer|exists:product_categories,id',
             'search' => 'string|max:255',
-            'sort_by' => 'string|in:newest,oldest,price_low,price_high,popular,rating',
+            'sort_by' => 'string|in:newest,oldest,price_low,price_high,price_asc,price_desc,popular,rating',
             'min_price' => 'numeric|min:0',
             'max_price' => 'numeric|min:0',
             'condition' => 'string|in:new,used,refurbished',
@@ -67,11 +68,11 @@ class ProductController extends Controller
             $query->where('user_id', $request->seller_id);
         }
 
-        // Sorting
+        // Sorting (Flutter uses price_asc / price_desc)
         $query = match ($request->input('sort_by', 'newest')) {
             'oldest' => $query->orderBy('created_at', 'asc'),
-            'price_low' => $query->orderBy('price', 'asc'),
-            'price_high' => $query->orderBy('price', 'desc'),
+            'price_low', 'price_asc' => $query->orderBy('price', 'asc'),
+            'price_high', 'price_desc' => $query->orderBy('price', 'desc'),
             'popular' => $query->orderBy('orders_count', 'desc'),
             'rating' => $query->orderBy('rating', 'desc')->orderBy('reviews_count', 'desc'),
             default => $query->orderBy('created_at', 'desc'),
@@ -88,7 +89,7 @@ class ProductController extends Controller
                 ->toArray();
         }
 
-        $items = $products->map(fn($p) => $this->formatProduct($p, $favoriteIds));
+        $items = $products->map(fn ($p) => ShopProductFormatter::product($p, $favoriteIds));
 
         return response()->json([
             'success' => true,
@@ -99,6 +100,7 @@ class ProductController extends Controller
                     'per_page' => $products->perPage(),
                     'total' => $products->total(),
                     'total_pages' => $products->lastPage(),
+                    'last_page' => $products->lastPage(),
                     'has_more' => $products->hasMorePages(),
                 ],
             ],
@@ -124,7 +126,7 @@ class ProductController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $products->map(fn($p) => $this->formatProduct($p, $favoriteIds)),
+            'data' => $products->map(fn ($p) => ShopProductFormatter::product($p, $favoriteIds)),
         ]);
     }
 
@@ -147,7 +149,7 @@ class ProductController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $products->map(fn($p) => $this->formatProduct($p, $favoriteIds)),
+            'data' => $products->map(fn ($p) => ShopProductFormatter::product($p, $favoriteIds)),
         ]);
     }
 
@@ -190,7 +192,11 @@ class ProductController extends Controller
         }
 
         if ($preferredCategories->isNotEmpty()) {
-            $query->orderByRaw('CASE WHEN category_id IN (' . $preferredCategories->implode(',') . ') THEN 0 ELSE 1 END');
+            $ids = $preferredCategories->unique()->filter()->values()->all();
+            if (! empty($ids)) {
+                $placeholders = implode(',', array_fill(0, count($ids), '?'));
+                $query->orderByRaw("CASE WHEN category_id IN ($placeholders) THEN 0 ELSE 1 END", $ids);
+            }
         }
 
         $products = $query->orderByRaw('(rating * reviews_count + orders_count * 2 + views_count * 0.1) DESC')
@@ -201,36 +207,89 @@ class ProductController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $products->map(fn($p) => $this->formatProduct($p, $favoriteIds)),
+            'data' => $products->map(fn ($p) => ShopProductFormatter::product($p, $favoriteIds)),
         ]);
     }
 
     /**
      * GET /v1/shop/products/nearby
+     *
+     * Flutter sends lat, lng, radius, page, per_page (legacy: near_lat, near_lng, radius_km, limit).
      */
     public function nearby(Request $request): JsonResponse
     {
+        $lat = $request->input('lat', $request->input('near_lat'));
+        $lng = $request->input('lng', $request->input('near_lng'));
+        $request->merge([
+            'near_lat' => $lat,
+            'near_lng' => $lng,
+        ]);
+
         $request->validate([
             'near_lat' => 'required|numeric|between:-90,90',
             'near_lng' => 'required|numeric|between:-180,180',
-            'radius_km' => 'integer|min:1|max:100',
+            'radius' => 'nullable|numeric|min:0.1|max:200',
+            'radius_km' => 'nullable|integer|min:1|max:200',
+            'page' => 'integer|min:1',
+            'per_page' => 'integer|min:1|max:50',
+            'limit' => 'integer|min:1|max:50',
         ]);
 
         $userId = $request->input('user_id');
-        $radiusKm = $request->input('radius_km', 10);
-        $limit = min($request->input('limit', 20), 50);
+        $radiusKm = (float) ($request->input('radius', $request->input('radius_km', 10)));
+        $perPage = min($request->input('per_page', $request->input('limit', 20)), 50);
 
         $products = Product::active()
             ->with(['category:id,name,slug', 'seller:id,first_name,last_name,username,profile_photo_path,is_verified'])
-            ->nearby($request->near_lat, $request->near_lng, $radiusKm)
-            ->limit($limit)
-            ->get();
+            ->nearby((float) $lat, (float) $lng, $radiusKm)
+            ->paginate($perPage);
 
         $favoriteIds = $userId ? ProductFavorite::where('user_id', $userId)->whereIn('product_id', $products->pluck('id'))->pluck('product_id')->toArray() : [];
 
         return response()->json([
             'success' => true,
-            'data' => $products->map(fn($p) => $this->formatProduct($p, $favoriteIds)),
+            'data' => $products->map(fn ($p) => ShopProductFormatter::product($p, $favoriteIds))->values()->all(),
+            'meta' => [
+                'current_page' => $products->currentPage(),
+                'per_page' => $products->perPage(),
+                'total' => $products->total(),
+                'total_pages' => $products->lastPage(),
+                'last_page' => $products->lastPage(),
+                'has_more' => $products->hasMorePages(),
+            ],
+        ]);
+    }
+
+    /**
+     * GET /v1/shop/flash-deals
+     */
+    public function flashDeals(Request $request): JsonResponse
+    {
+        $perPage = min($request->input('per_page', 20), 50);
+        $userId = $request->input('user_id');
+
+        $products = Product::active()
+            ->with(['category:id,name,slug', 'seller:id,first_name,last_name,username,profile_photo_path,is_verified'])
+            ->whereNotNull('compare_at_price')
+            ->whereColumn('compare_at_price', '>', 'price')
+            ->orderByRaw('(compare_at_price - price) DESC')
+            ->paginate($perPage);
+
+        $favoriteIds = $userId ? ProductFavorite::where('user_id', $userId)->whereIn('product_id', $products->pluck('id'))->pluck('product_id')->toArray() : [];
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'items' => $products->map(fn ($p) => ShopProductFormatter::product($p, $favoriteIds)),
+                'pagination' => [
+                    'current_page' => $products->currentPage(),
+                    'per_page' => $products->perPage(),
+                    'total' => $products->total(),
+                    'total_pages' => $products->lastPage(),
+                    'last_page' => $products->lastPage(),
+                    'has_more' => $products->hasMorePages(),
+                ],
+            ],
         ]);
     }
 
@@ -257,26 +316,17 @@ class ProductController extends Controller
 
         $isFavorited = $userId ? ProductFavorite::where('user_id', $userId)->where('product_id', $id)->exists() : false;
 
-        // Seller stats
-        $sellerData = null;
-        if ($product->seller) {
-            $sellerData = [
-                'id' => $product->seller->id,
-                'name' => trim($product->seller->first_name . ' ' . $product->seller->last_name),
-                'username' => $product->seller->username,
-                'avatar_url' => $product->seller->profile_photo_path,
-                'is_verified' => (bool) ($product->seller->is_verified ?? false),
-                'rating' => round(Product::where('user_id', $product->user_id)->where('reviews_count', '>', 0)->avg('rating') ?? 0, 2),
-                'products_count' => Product::where('user_id', $product->user_id)->active()->count(),
-            ];
+        $favoriteIds = $isFavorited ? [$id] : [];
+        $data = ShopProductFormatter::product($product, $favoriteIds);
+
+        if ($product->seller && isset($data['seller']) && is_array($data['seller'])) {
+            $data['seller']['rating'] = round(Product::where('user_id', $product->user_id)->where('reviews_count', '>', 0)->avg('rating') ?? 0, 2);
+            $data['seller']['product_count'] = Product::where('user_id', $product->user_id)->active()->count();
         }
 
         return response()->json([
             'success' => true,
-            'data' => array_merge($product->toArray(), [
-                'seller' => $sellerData,
-                'is_favorited' => $isFavorited,
-            ]),
+            'data' => $data,
         ]);
     }
 
@@ -296,7 +346,7 @@ class ProductController extends Controller
             'description' => 'nullable|string|max:5000',
             'type' => 'required|string|in:physical,digital,service',
             'price' => 'required|numeric|min:0',
-            'compare_at_price' => 'nullable|numeric|min:0|gt:price',
+            'compare_at_price' => 'nullable|numeric|min:0',
             'stock_quantity' => 'integer|min:0',
             'category_id' => 'nullable|integer|exists:product_categories,id',
             'tags' => 'nullable|array',
@@ -317,6 +367,16 @@ class ProductController extends Controller
             'status' => 'string|in:draft,active',
         ]);
 
+        if (
+            $request->filled('compare_at_price')
+            && (float) $request->input('compare_at_price') <= (float) $request->input('price')
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'compare_at_price must be greater than price when set',
+            ], 422);
+        }
+
         $product = Product::create(array_merge(
             $request->only([
                 'user_id', 'title', 'description', 'type', 'price', 'compare_at_price',
@@ -331,11 +391,18 @@ class ProductController extends Controller
             ]
         ));
 
-        // Handle image uploads
-        if ($request->hasFile('images')) {
+        // Handle image uploads (multipart field `images` or `images[]`)
+        $uploadBatch = $request->file('images', []);
+        if (! is_array($uploadBatch)) {
+            $uploadBatch = array_filter([$uploadBatch]);
+        }
+        if (! empty($uploadBatch)) {
             $imagePaths = [];
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('products/' . $product->id, 'public');
+            foreach ($uploadBatch as $image) {
+                if (! $image || ! $image->isValid()) {
+                    continue;
+                }
+                $path = $image->store('products/'.$product->id, 'public');
                 $imagePaths[] = Storage::disk('public')->url($path);
             }
             $product->update([
@@ -500,35 +567,48 @@ class ProductController extends Controller
      */
     public function sellerProducts(Request $request, ?int $userId = null): JsonResponse
     {
-        $userId = $userId ?? (int) $request->input('user_id') ?: (int) $request->input('seller_id');
-        if (!$userId) {
+        /** Shop whose products are listed (route param or ?user_id=sellerId — see ShopService.getSellerProducts). */
+        $sellerUserId = $userId ?? (int) $request->input('user_id');
+        if (! $sellerUserId && $request->filled('seller_id')) {
+            $sellerUserId = (int) $request->input('seller_id');
+        }
+        if (! $sellerUserId) {
             return response()->json(['success' => false, 'message' => 'user_id or seller_id is required'], 422);
         }
 
         $perPage = min($request->input('per_page', 20), 50);
-        $currentUserId = $request->input('user_id');
+        /** Viewer for favorites / privacy (Flutter sends current_user_id when browsing another seller). */
+        $viewerId = $request->filled('current_user_id')
+            ? (int) $request->input('current_user_id')
+            : (int) $request->input('user_id');
 
-        $query = Product::where('user_id', $userId)
-            ->with(['category:id,name,slug']);
+        $query = Product::where('user_id', $sellerUserId)
+            ->with(['category:id,name,slug', 'seller:id,first_name,last_name,username,profile_photo_path,is_verified']);
 
-        // Non-owners only see active products
-        if (!$currentUserId || $currentUserId != $userId) {
+        if ($viewerId !== $sellerUserId) {
             $query->active();
+        }
+
+        if ($request->filled('status') && $viewerId === $sellerUserId) {
+            $query->where('status', $request->string('status')->toString());
         }
 
         $products = $query->orderBy('created_at', 'desc')->paginate($perPage);
 
-        $favoriteIds = $currentUserId ? ProductFavorite::where('user_id', $currentUserId)->whereIn('product_id', $products->pluck('id'))->pluck('product_id')->toArray() : [];
+        $favoriteIds = $viewerId
+            ? ProductFavorite::where('user_id', $viewerId)->whereIn('product_id', $products->pluck('id'))->pluck('product_id')->toArray()
+            : [];
 
         return response()->json([
             'success' => true,
             'data' => [
-                'items' => $products->map(fn($p) => $this->formatProduct($p, $favoriteIds)),
+                'items' => $products->map(fn ($p) => ShopProductFormatter::product($p, $favoriteIds)),
                 'pagination' => [
                     'current_page' => $products->currentPage(),
                     'per_page' => $products->perPage(),
                     'total' => $products->total(),
                     'total_pages' => $products->lastPage(),
+                    'last_page' => $products->lastPage(),
                     'has_more' => $products->hasMorePages(),
                 ],
             ],
@@ -536,23 +616,48 @@ class ProductController extends Controller
     }
 
     /**
-     * Format product for API response
+     * GET /shop/services — marketplace services (type=service).
      */
-    private function formatProduct(Product $product, array $favoriteIds = []): array
+    public function servicesIndex(Request $request): JsonResponse
     {
-        $seller = $product->seller;
+        $request->merge(['type' => 'service']);
 
-        $data = $product->toArray();
-        $data['seller'] = $seller ? [
-            'id' => $seller->id,
-            'name' => trim($seller->first_name . ' ' . $seller->last_name),
-            'username' => $seller->username,
-            'avatar_url' => $seller->profile_photo_path,
-            'is_verified' => (bool) ($seller->is_verified ?? false),
-        ] : null;
-        $data['is_favorited'] = in_array($product->id, $favoriteIds);
+        return $this->index($request);
+    }
 
-        unset($data['deleted_at']);
-        return $data;
+    /**
+     * GET /shop/services/{id}
+     */
+    public function servicesShow(Request $request, int $id): JsonResponse
+    {
+        $product = Product::find($id);
+        if (! $product || $product->type !== 'service') {
+            return response()->json(['success' => false, 'message' => 'Service not found'], 404);
+        }
+
+        return $this->show($request, $id);
+    }
+
+    /**
+     * POST /shop/services
+     */
+    public function storeService(Request $request): JsonResponse
+    {
+        $request->merge(['type' => 'service']);
+
+        return $this->store($request);
+    }
+
+    /**
+     * PUT /shop/services/{id}
+     */
+    public function updateService(Request $request, int $id): JsonResponse
+    {
+        $product = Product::find($id);
+        if (! $product || $product->type !== 'service') {
+            return response()->json(['success' => false, 'message' => 'Service not found'], 404);
+        }
+
+        return $this->update($request, $id);
     }
 }
